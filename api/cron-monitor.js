@@ -27,7 +27,10 @@ export default async function handler(req, res) {
   const isMonday = dayOfWeek === 1;
   const isFirstOfMonth = dayOfMonth === 1;
 
-  const results = { monitored: 0, weeklyReports: 0, monthlyReports: 0, contentGenerated: 0, errors: [] };
+  const month = now.getUTCMonth(); // 0-indexed
+  const isQuarterStart = isFirstOfMonth && (month === 0 || month === 3 || month === 6 || month === 9);
+
+  const results = { monitored: 0, weeklyReports: 0, monthlyReports: 0, contentGenerated: 0, quarterlyReaudits: 0, errors: [] };
 
   try {
     const clients = await listClients();
@@ -88,6 +91,38 @@ export default async function handler(req, res) {
             results.contentGenerated++;
           } catch (e) { results.errors.push(`Content: ${client.businessName}: ${e.message}`); }
         }
+      }
+
+      // Quarterly full re-audit for Scale clients (Jan, Apr, Jul, Oct 1st)
+      if (plan === 'scale' && isQuarterStart) {
+        try {
+          await fetch(`${baseUrl}/api/scan`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              businessName: client.businessName,
+              url: client.url,
+              email: client.email,
+              contactName: client.contactName || client.businessName,
+              industry: client.industry || 'other',
+              companySize: client.companySize || '',
+              annualTurnover: client.annualTurnover || '',
+            }),
+          });
+          // Also send the PDF report
+          await fetch(`${baseUrl}/api/generate-report`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              businessName: client.businessName,
+              url: client.url,
+              email: client.email,
+              contactName: client.contactName || client.businessName,
+              industry: client.industry || 'other',
+            }),
+          });
+          results.quarterlyReaudits++;
+        } catch (e) { results.errors.push(`Quarterly re-audit: ${client.businessName}: ${e.message}`); }
       }
     }
 

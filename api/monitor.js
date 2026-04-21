@@ -278,19 +278,21 @@ async function runMonitorCheck(businessName, industry, perplexityKey, websiteUrl
 
 /* ---------- change detection & alerts ---------- */
 
-function detectChanges(current, previous) {
+function detectChanges(current, previous, plan) {
   if (!previous) return [{ type: 'initial', severity: 'info', message: 'First monitoring check completed' }];
   const changes = [];
+  // Scale gets alerts at >=5pt, Growth at >=8pt, Starter at >=10pt
+  const threshold = plan === 'scale' ? 5 : plan === 'growth' ? 8 : 10;
   const scoreDiff = current.aiScore - previous.aiScore;
-  if (Math.abs(scoreDiff) >= 10) {
+  if (Math.abs(scoreDiff) >= threshold) {
     changes.push({ type: 'visibility_change', severity: scoreDiff > 0 ? 'positive' : 'critical', message: `AI visibility ${scoreDiff > 0 ? 'improved' : 'dropped'} by ${Math.abs(scoreDiff)} points (${previous.aiScore} → ${current.aiScore})` });
   }
   const seoDiff = current.seoScore - (previous.seoScore || 0);
-  if (Math.abs(seoDiff) >= 10) {
+  if (Math.abs(seoDiff) >= threshold) {
     changes.push({ type: 'seo_change', severity: seoDiff > 0 ? 'positive' : 'warning', message: `SEO score ${seoDiff > 0 ? 'improved' : 'dropped'} by ${Math.abs(seoDiff)} points (${previous.seoScore || 0} → ${current.seoScore})` });
   }
   const convDiff = current.convScore - (previous.convScore || 0);
-  if (Math.abs(convDiff) >= 10) {
+  if (Math.abs(convDiff) >= threshold) {
     changes.push({ type: 'conv_change', severity: convDiff > 0 ? 'positive' : 'warning', message: `Conversion score ${convDiff > 0 ? 'improved' : 'dropped'} by ${Math.abs(convDiff)} points (${previous.convScore || 0} → ${current.convScore})` });
   }
   const prevNames = new Set((previous.competitors || []).map(c => c.name));
@@ -369,7 +371,7 @@ export default async function handler(req, res) {
   try {
     const currentCheck = await runMonitorCheck(businessName, industry || 'default', perplexityKey, url || '');
     const previousCheck = await getLatestMonitorCheck(clientId);
-    const changes = detectChanges(currentCheck, previousCheck);
+    const changes = detectChanges(currentCheck, previousCheck, plan);
     currentCheck.changes = changes;
 
     // Store in KV

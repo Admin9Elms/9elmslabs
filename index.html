@@ -263,7 +263,7 @@ section { position: relative; z-index: 1; }
 }
 
 /* ========== PROBLEM ========== */
-.problem-section { padding: 40px 0; }
+.problem-section { padding: 30px 0; }
 .problem-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .problem-card {
   background: var(--bg-card); border: 1px solid var(--border);
@@ -281,13 +281,13 @@ section { position: relative; z-index: 1; }
 
 /* ========== SOLUTION ========== */
 .solution-section {
-  padding: 40px 0; background: var(--bg-secondary);
+  padding: 30px 0; background: var(--bg-secondary);
   border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
 }
-.solution-pillars { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-bottom: 80px; }
+.solution-pillars { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 40px; }
 .pillar-card {
   background: var(--bg-primary); border: 1px solid var(--border);
-  border-radius: 20px; padding: 48px 40px; position: relative; overflow: hidden;
+  border-radius: 20px; padding: 32px 28px; position: relative; overflow: hidden;
 }
 .pillar-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
 .pillar-card.cyan::before { background: var(--gradient-main); }
@@ -298,15 +298,15 @@ section { position: relative; z-index: 1; }
 }
 .pillar-card.cyan .pillar-number { color: var(--accent-cyan); }
 .pillar-card.purple .pillar-number { color: var(--accent-purple); }
-.pillar-card h3 { font-size: 28px; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
-.pillar-card .pillar-desc { font-size: 16px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 32px; }
-.pillar-features { list-style: none; }
+.pillar-card h3 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; }
+.pillar-card .pillar-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px; }
+.pillar-features { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
 .pillar-features li {
-  display: flex; align-items: flex-start; gap: 12px;
-  padding: 12px 0; border-top: 1px solid var(--border);
-  font-size: 14px; color: var(--text-secondary);
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 8px 0; border-top: 1px solid var(--border);
+  font-size: 13px; color: var(--text-secondary);
 }
-.pillar-features li:first-child { border-top: none; }
+.pillar-features li:nth-child(1), .pillar-features li:nth-child(2) { border-top: none; }
 .feature-check {
   flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px;
   display: flex; align-items: center; justify-content: center;
@@ -332,7 +332,7 @@ section { position: relative; z-index: 1; }
 .process-step p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
 
 /* ========== CTA SECTION (TWO OPTIONS) ========== */
-.cta-dual-section { padding: 40px 0; }
+.cta-dual-section { padding: 20px 0; }
 .cta-dual-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
 .cta-card {
   background: var(--bg-card); border: 1px solid var(--border);
@@ -517,7 +517,7 @@ section { position: relative; z-index: 1; }
 .result-btns .btn-primary, .result-btns .btn-secondary { padding: 14px 28px; font-size: 14px; }
 
 /* ========== PRICING ========== */
-.pricing-section { padding: 120px 0; }
+.pricing-section { padding: 40px 0; }
 .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .pricing-card {
   background: var(--bg-card); border: 1px solid var(--border);
@@ -549,7 +549,7 @@ section { position: relative; z-index: 1; }
 .pricing-card .btn-primary, .pricing-card .btn-secondary { width: 100%; text-align: center; }
 
 /* ========== FAQ ========== */
-.faq-section { padding: 40px 0; }
+.faq-section { padding: 30px 0; }
 .faq-grid { max-width: 800px; margin: 0 auto; }
 .faq-item { border-bottom: 1px solid var(--border); }
 .faq-question {
@@ -566,7 +566,7 @@ section { position: relative; z-index: 1; }
 .faq-answer p { font-size: 15px; color: var(--text-secondary); line-height: 1.7; }
 
 /* ========== FINAL CTA ========== */
-.final-cta { padding: 40px 0; text-align: center; }
+.final-cta { padding: 30px 0; text-align: center; }
 .final-cta h2 {
   font-size: clamp(32px, 4vw, 52px); font-weight: 800;
   letter-spacing: -1.5px; margin-bottom: 20px;
@@ -797,7 +797,7 @@ section { position: relative; z-index: 1; }
 </section>
 
 <!-- ==================== FREE AI AUDIT ==================== -->
-<section class="problem-section" id="free-audit" style="padding: 80px 0;">
+<section class="problem-section" id="free-audit" style="padding: 40px 0;">
   <div class="container" style="text-align:center; max-width:800px;">
     <div class="section-label">Free AI Audit</div>
     <h2 class="section-title">Find Out Where You Stand &mdash; In 30 Seconds</h2>
@@ -843,44 +843,41 @@ section { position: relative; z-index: 1; }
         <div class="pricing-card">
           <div class="pricing-tier">Starter</div>
           <div class="pricing-price">&pound;199<span>/month</span></div>
-          <p class="pricing-desc">For businesses getting started with AI visibility and basic conversion tracking.</p>
+          <p class="pricing-desc">Essential AI visibility monitoring and conversion tracking for small businesses.</p>
           <ul class="pricing-features">
-            <li><span class="check">&check;</span> AI visibility monitoring (monthly)</li>
-            <li><span class="check">&check;</span> 2 AI-optimised content pieces/month</li>
-            <li><span class="check">&check;</span> Schema markup implementation</li>
-            <li><span class="check">&check;</span> Basic conversion snippet</li>
-            <li><span class="check">&check;</span> Monthly performance report</li>
-            <li><span class="check">&check;</span> Email support</li>
+            <li><span class="check">&check;</span> Monthly AI visibility scan across all platforms</li>
+            <li><span class="check">&check;</span> 2 content recommendations/month</li>
+            <li><span class="check">&check;</span> Conversion A/B testing snippet</li>
+            <li><span class="check">&check;</span> Monthly performance report (email)</li>
+            <li><span class="check">&check;</span> Dashboard with score history</li>
           </ul>
           <a href="checkout.html?plan=starter" class="btn-secondary" style="width:100%;text-align:center;display:inline-block;">Get Started</a>
         </div>
         <div class="pricing-card featured">
           <div class="pricing-tier">Growth</div>
           <div class="pricing-price">&pound;499<span>/month</span></div>
-          <p class="pricing-desc">For businesses ready to be found by AI and convert more visitors.</p>
+          <p class="pricing-desc">Weekly monitoring, AI-written content, and competitor tracking.</p>
           <ul class="pricing-features">
             <li><span class="check">&check;</span> Everything in Starter</li>
             <li><span class="check">&check;</span> Weekly AI visibility monitoring</li>
-            <li><span class="check">&check;</span> 6 AI-optimised content pieces/month</li>
-            <li><span class="check">&check;</span> Full conversion optimisation</li>
-            <li><span class="check">&check;</span> Competitor tracking</li>
-            <li><span class="check">&check;</span> Weekly reports</li>
-            <li><span class="check">&check;</span> Priority support</li>
+            <li><span class="check">&check;</span> 4 AI-written SEO articles/month (with schema)</li>
+            <li><span class="check">&check;</span> Competitor tracking &amp; alerts</li>
+            <li><span class="check">&check;</span> Weekly performance reports</li>
+            <li><span class="check">&check;</span> Score change alert emails</li>
           </ul>
           <a href="checkout.html?plan=growth" class="btn-primary" style="width:100%;text-align:center;display:inline-block;">Get Started</a>
         </div>
         <div class="pricing-card">
           <div class="pricing-tier">Scale</div>
           <div class="pricing-price">&pound;999<span>/month</span></div>
-          <p class="pricing-desc">Aggressive growth with full AI optimisation across visibility and conversion.</p>
+          <p class="pricing-desc">Daily monitoring, maximum content output, and quarterly full re-audits.</p>
           <ul class="pricing-features">
             <li><span class="check">&check;</span> Everything in Growth</li>
             <li><span class="check">&check;</span> Daily AI visibility monitoring</li>
-            <li><span class="check">&check;</span> Unlimited AI content</li>
-            <li><span class="check">&check;</span> Custom integrations</li>
-            <li><span class="check">&check;</span> Dedicated account manager</li>
-            <li><span class="check">&check;</span> Quarterly strategy reviews</li>
-            <li><span class="check">&check;</span> White-glove onboarding</li>
+            <li><span class="check">&check;</span> 8 AI-written SEO articles/month</li>
+            <li><span class="check">&check;</span> Sensitive alert thresholds (5pt changes)</li>
+            <li><span class="check">&check;</span> Quarterly full re-audit &amp; PDF report</li>
+            <li><span class="check">&check;</span> Daily competitor intelligence</li>
           </ul>
           <a href="checkout.html?plan=scale" class="btn-secondary" style="width:100%;text-align:center;display:inline-block;">Get Started</a>
         </div>
