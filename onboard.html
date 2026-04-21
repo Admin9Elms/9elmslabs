@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to 9 Elms Labs — Setup</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0e27;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .onboard-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 48px 40px;
+            max-width: 560px;
+            width: 90%;
+        }
+        .logo { font-size: 36px; font-weight: 900; letter-spacing: 2px; text-align: center; }
+        .logo-sub { font-size: 14px; color: #00d4ff; text-align: center; margin-bottom: 8px; }
+        .plan-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #00d4ff, #9d4edd);
+            color: #0a0e27;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            margin: 0 auto 24px;
+        }
+        .plan-badge-wrap { text-align: center; }
+        h2 { font-size: 22px; margin-bottom: 8px; text-align: center; }
+        .subtitle { color: #8888a0; font-size: 14px; margin-bottom: 28px; text-align: center; line-height: 1.6; }
+        .input-group { margin-bottom: 18px; }
+        .input-group label { display: block; font-size: 13px; color: #8888a0; margin-bottom: 6px; }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 13px 16px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+        }
+        .input-group input:focus, .input-group select:focus { border-color: #00d4ff; }
+        .input-group select option { background: #1a1f3a; color: white; }
+        .row { display: flex; gap: 12px; }
+        .row .input-group { flex: 1; }
+        .btn-primary {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: #00d4ff;
+            color: #0a0e27;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .btn-primary:hover { opacity: 0.9; }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .status-msg { margin-top: 16px; font-size: 14px; text-align: center; }
+        .status-msg.error { color: #e74c3c; }
+
+        /* Success state */
+        .success-state { display: none; text-align: center; }
+        .success-state .icon { font-size: 56px; margin-bottom: 16px; }
+        .success-state h2 { color: #2ecc71; }
+        .success-state p { color: #8888a0; font-size: 14px; line-height: 1.7; margin-bottom: 16px; }
+        .success-state .what-next { background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.2); border-radius: 12px; padding: 20px; margin: 20px 0; text-align: left; }
+        .success-state .what-next h4 { color: #00d4ff; margin-bottom: 10px; }
+        .success-state .what-next li { color: #c0c0d0; font-size: 13px; margin-bottom: 8px; list-style: none; }
+        .success-state .what-next li::before { content: '✓ '; color: #2ecc71; }
+    </style>
+</head>
+<body>
+    <div class="onboard-card">
+        <div class="logo">9EL</div>
+        <div class="logo-sub">9 Elms Labs</div>
+        <div class="plan-badge-wrap"><span class="plan-badge" id="planBadge">Growth Plan</span></div>
+
+        <div id="formState">
+            <h2>Let's get you set up</h2>
+            <p class="subtitle">Complete your details below. We'll run your first AI visibility scan immediately and set up your monitoring dashboard.</p>
+
+            <form id="onboardForm">
+                <div class="row">
+                    <div class="input-group">
+                        <label>Your name</label>
+                        <input type="text" id="contactName" placeholder="Jane Smith" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Email address</label>
+                        <input type="email" id="email" placeholder="you@company.com" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Business name</label>
+                    <input type="text" id="businessName" placeholder="Acme Ltd" required>
+                </div>
+                <div class="input-group">
+                    <label>Website URL</label>
+                    <input type="url" id="websiteUrl" placeholder="https://acme.co.uk" required>
+                </div>
+                <div class="row">
+                    <div class="input-group">
+                        <label>Industry</label>
+                        <select id="industry">
+                            <option value="other">Select industry...</option>
+                            <option value="dental">Dental / Orthodontics</option>
+                            <option value="legal">Legal Services</option>
+                            <option value="restaurant">Restaurant / Hospitality</option>
+                            <option value="ecommerce">E-commerce / Retail</option>
+                            <option value="saas">SaaS / Technology</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="finance">Financial Services</option>
+                            <option value="realestate">Real Estate</option>
+                            <option value="construction">Construction / Trades</option>
+                            <option value="travel">Travel / Tourism</option>
+                            <option value="education">Education</option>
+                            <option value="fitness">Fitness / Wellness</option>
+                            <option value="automotive">Automotive</option>
+                            <option value="agency">Marketing Agency</option>
+                            <option value="consulting">Consulting</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Phone (optional)</label>
+                        <input type="tel" id="phone" placeholder="+44 7xxx xxx xxx">
+                    </div>
+                </div>
+                <input type="hidden" id="plan" value="growth">
+                <button type="submit" class="btn-primary" id="submitBtn">Activate My Account</button>
+            </form>
+            <div class="status-msg" id="statusMsg"></div>
+        </div>
+
+        <div class="success-state" id="successState">
+            <div class="icon">🎉</div>
+            <h2>You're all set!</h2>
+            <p>Your account is active and your first AI visibility scan is running now.</p>
+            <div class="what-next">
+                <h4>What happens next</h4>
+                <ul id="nextStepsList">
+                    <li>Your first scan results will be ready in ~2 minutes</li>
+                    <li>Check your email — we've sent your dashboard login link</li>
+                    <li>Weekly monitoring reports start next Monday</li>
+                    <li>Your conversion tracking snippet is ready in the dashboard</li>
+                </ul>
+            </div>
+            <a href="/login.html" class="btn-primary" style="display:inline-block;text-decoration:none;margin-top:12px;">Go to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        const params = new URLSearchParams(window.location.search);
+        const plan = params.get('plan') || 'growth';
+        document.getElementById('plan').value = plan;
+
+        const planNames = {
+            'growth': 'Growth Plan — £499/mo',
+            'scale': 'Scale Plan — £1,499/mo',
+            'enterprise': 'Enterprise Plan — £2,999/mo',
+            'full-audit': 'Full Audit — £2,499',
+        };
+        document.getElementById('planBadge').textContent = planNames[plan] || plan;
+
+        // Pre-fill from localStorage if available (from checkout)
+        try {
+            const saved = JSON.parse(localStorage.getItem('9el_checkout') || '{}');
+            if (saved.businessName) document.getElementById('businessName').value = saved.businessName;
+            if (saved.email) document.getElementById('email').value = saved.email;
+            if (saved.contactName) document.getElementById('contactName').value = saved.contactName;
+            if (saved.websiteUrl) document.getElementById('websiteUrl').value = saved.websiteUrl;
+            if (saved.industry) document.getElementById('industry').value = saved.industry;
+            if (saved.phone) document.getElementById('phone').value = saved.phone;
+        } catch(e) {}
+
+        // Plan-specific next steps
+        const nextSteps = {
+            'full-audit': [
+                'Your deep-dive AI audit is now in progress',
+                'Check your email — we\'ve sent your dashboard login link',
+                'Full report delivered within 5-7 business days',
+                'We\'ll email you to schedule your 90-minute strategy call',
+                'Your 90-day implementation roadmap will be included in the report',
+            ],
+            growth: [
+                'Your first scan results will be ready in ~2 minutes',
+                'Check your email — we\'ve sent your dashboard login link',
+                'Weekly AI visibility reports start next Monday',
+                'Your conversion tracking snippet is ready in the dashboard',
+                'Monthly content recommendations arrive on the 1st',
+            ],
+            scale: [
+                'Your first scan results will be ready in ~2 minutes',
+                'Check your email — we\'ve sent your dashboard login link',
+                'Daily AI monitoring starts tomorrow morning',
+                'Your first batch of 4 optimised content articles arrives within 48 hours',
+                'Competitor movement alerts are now active',
+                'Your conversion snippet with A/B testing is ready in the dashboard',
+            ],
+            enterprise: [
+                'Your first scan results will be ready in ~2 minutes',
+                'Check your email — we\'ve sent your dashboard login link',
+                'Real-time AI monitoring is now active',
+                'Your dedicated account manager will reach out within 24 hours',
+                'First batch of 8 content pieces arrives within 48 hours',
+                'Competitor intelligence briefing starts this week',
+                'API access credentials are in your dashboard',
+            ],
+        };
+        const list = document.getElementById('nextStepsList');
+        const steps = nextSteps[plan] || nextSteps.growth;
+        list.innerHTML = steps.map(s => `<li>${s}</li>`).join('');
+
+        // Form submit
+        document.getElementById('onboardForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const msg = document.getElementById('statusMsg');
+            btn.disabled = true;
+            btn.textContent = 'Setting up your account...';
+            msg.textContent = '';
+
+            const payload = {
+                businessName: document.getElementById('businessName').value.trim(),
+                email: document.getElementById('email').value.trim().toLowerCase(),
+                contactName: document.getElementById('contactName').value.trim(),
+                websiteUrl: document.getElementById('websiteUrl').value.trim(),
+                industry: document.getElementById('industry').value,
+                phone: document.getElementById('phone').value.trim(),
+                plan: plan,
+            };
+
+            try {
+                const resp = await fetch('/api/register-client', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                const data = await resp.json();
+                if (data.success) {
+                    document.getElementById('formState').style.display = 'none';
+                    document.getElementById('successState').style.display = 'block';
+                    // Clear checkout data
+                    try { localStorage.removeItem('9el_checkout'); } catch(e) {}
+                } else {
+                    msg.textContent = data.error || 'Something went wrong. Please try again.';
+                    msg.className = 'status-msg error';
+                    btn.disabled = false;
+                    btn.textContent = 'Activate My Account';
+                }
+            } catch(err) {
+                msg.textContent = 'Network error. Please try again.';
+                msg.className = 'status-msg error';
+                btn.disabled = false;
+                btn.textContent = 'Activate My Account';
+            }
+        });
+    })();
+    </script>
+</body>
+</html>

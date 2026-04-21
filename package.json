@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@vercel/kv": "^2.0.0",
+    "pdfkit": "^0.14.0",
+    "resend": "^3.0.0"
+  }
+}

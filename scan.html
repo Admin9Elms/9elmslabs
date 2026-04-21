@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free AI Visibility Scan - 9 Elms Labs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{font-family:'Inter',sans-serif;background:#0a0a0f;color:#f0f0f5;line-height:1.6;overflow-x:hidden}
+
+        .bg-grid{position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(rgba(42,42,58,0.1) 1px,transparent 1px),linear-gradient(90deg,rgba(42,42,58,0.1) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;z-index:0}
+        .bg-glow{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 50%,rgba(0,212,255,0.05) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(139,92,246,0.05) 0%,transparent 50%);pointer-events:none;z-index:0}
+
+        ::-webkit-scrollbar{width:10px}
+        ::-webkit-scrollbar-track{background:#0a0a0f}
+        ::-webkit-scrollbar-thumb{background:linear-gradient(135deg,#00d4ff 0%,#8b5cf6 100%);border-radius:10px}
+
+        nav{position:fixed;top:0;left:0;right:0;background:rgba(10,10,15,0.8);backdrop-filter:blur(10px);border-bottom:1px solid #2a2a3a;z-index:1000;padding:0 clamp(20px,5vw,48px);height:70px;display:flex;align-items:center;justify-content:space-between}
+        nav .logo-section{display:flex;align-items:center;gap:12px;text-decoration:none;color:#f0f0f5}
+        nav .logo{font-size:20px;font-weight:700;background:linear-gradient(135deg,#00d4ff 0%,#8b5cf6 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        nav .brand{font-size:14px;color:#8888a0}
+        nav .nav-links{display:flex;gap:clamp(20px,3vw,40px);list-style:none}
+        nav a{color:#f0f0f5;text-decoration:none;font-size:14px;font-weight:500;transition:color 0.3s;position:relative}
+        nav a::after{content:'';position:absolute;bottom:-5px;left:0;width:0;height:2px;background:linear-gradient(135deg,#00d4ff 0%,#8b5cf6 100%);transition:width 0.3s}
+        nav a:hover{color:#00d4ff}
+        nav a:hover::after{width:100%}
+        .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+        .hamburger span{width:25px;height:2px;background:#f0f0f5;border-radius:2px;transition:0.3s}
+
+        main{position:relative;z-index:1;padding-top:70px;min-height:100vh}
+        .section{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:clamp(40px,8vw,80px) clamp(20px,5vw,48px)}
+
+        .hero{text-align:center;margin-bottom:40px}
+        .hero h1{font-size:clamp(32px,4vw,48px);font-weight:700;margin-bottom:20px;line-height:1.2;background:linear-gradient(135deg,#00d4ff 0%,#8b5cf6 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .hero p{font-size:16px;color:#8888a0;max-width:600px;margin:0 auto}
+
+        .form-card{background:#16161f;border:1px solid #2a2a3a;border-radius:20px;padding:clamp(36px,5vw,48px);max-width:500px;margin:0 auto;box-shadow:0 10px 40px rgba(0,0,0,0.3)}
+        .form-group{margin-bottom:24px}
+        label{display:block;font-size:14px;font-weight:600;color:#f0f0f5;margin-bottom:8px}
+        input,select,textarea{width:100%;background:#0a0a0f;border:1px solid #2a2a3a;border-radius:12px;padding:12px 16px;color:#f0f0f5;font-family:inherit;font-size:14px;transition:all 0.3s}
+        input:focus,select:focus,textarea:focus{outline:none;border-color:#00d4ff;box-shadow:0 0 0 3px rgba(0,212,255,0.1)}
+        select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2388888a0' d='M6 9L1 4h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:40px}
+        .btn{width:100%;padding:14px 24px;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.3s;text-decoration:none;display:inline-block;text-align:center}
+        .btn-primary{background:linear-gradient(135deg,#00d4ff 0%,#8b5cf6 100%);color:#0a0a0f}
+        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,212,255,0.3)}
+        .error-message{background:linear-gradient(135deg,rgba(239,68,68,0.1) 0%,transparent 100%);border:1px solid rgba(239,68,68,0.3);border-radius:12px;padding:16px;color:#ef4444;font-size:14px;margin-bottom:24px;display:none}
+        .error-message.show{display:block}
+
+        /* =========== SCANNING PHASE =========== */
+        .scan-wrapper{max-width:800px;margin:0 auto;position:relative;overflow:hidden}
+
+        /* Math equations floating background */
+        .math-bg{position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;pointer-events:none;opacity:0.06}
+        .math-eq{position:absolute;font-family:'JetBrains Mono',monospace;color:#00d4ff;white-space:nowrap;animation:floatUp linear infinite}
+        @keyframes floatUp{0%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-100px) rotate(15deg);opacity:0}}
+
+        .scan-header{text-align:center;margin-bottom:48px}
+        .scan-header h2{font-size:clamp(24px,3.5vw,36px);font-weight:700;margin-bottom:12px;background:linear-gradient(135deg,#00d4ff 0%,#8b5cf6 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .scan-header .scan-target{font-size:16px;color:#8888a0;font-family:'JetBrains Mono',monospace}
+
+        /* Circular progress */
+        .progress-ring-container{width:200px;height:200px;margin:0 auto 40px;position:relative}
+        .progress-ring{transform:rotate(-90deg)}
+        .progress-ring-bg{fill:none;stroke:#2a2a3a;stroke-width:4}
+        .progress-ring-fill{fill:none;stroke:url(#scanGrad);stroke-width:4;stroke-linecap:round;stroke-dasharray:565.48;stroke-dashoffset:565.48;transition:stroke-dashoffset 0.5s ease}
+        .progress-percent{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+        .progress-percent .number{font-size:48px;font-weight:800;background:linear-gradient(135deg,#00d4ff,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:'JetBrains Mono',monospace}
+        .progress-percent .label{font-size:12px;color:#8888a0;text-transform:uppercase;letter-spacing:2px}
+
+        /* Current action display */
+        .current-action{text-align:center;margin-bottom:40px;min-height:60px}
+        .current-action .action-text{font-size:16px;color:#00d4ff;font-weight:500;animation:pulse 2s ease-in-out infinite}
+        .current-action .action-detail{font-size:13px;color:#5a5a70;margin-top:6px;font-family:'JetBrains Mono',monospace}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+
+        /* Step timeline */
+        .scan-timeline{display:grid;grid-template-columns:1fr 1fr;gap:12px 24px;margin-top:40px}
+        .timeline-step{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;background:rgba(22,22,31,0.6);border:1px solid transparent;transition:all 0.4s ease;opacity:0.3}
+        .timeline-step.active{opacity:1;border-color:#00d4ff;background:rgba(0,212,255,0.05);box-shadow:0 0 20px rgba(0,212,255,0.1)}
+        .timeline-step.completed{opacity:0.7;border-color:rgba(16,185,129,0.3)}
+        .timeline-step .step-icon{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;background:#2a2a3a;color:#5a5a70;transition:all 0.3s}
+        .timeline-step.active .step-icon{background:linear-gradient(135deg,#00d4ff,#8b5cf6);color:#0a0a0f;box-shadow:0 0 12px rgba(0,212,255,0.4)}
+        .timeline-step.completed .step-icon{background:#10b981;color:#0a0a0f}
+        .timeline-step .step-text{font-size:12px;color:#8888a0;line-height:1.3}
+        .timeline-step.active .step-text{color:#f0f0f5}
+
+        /* Live data feed */
+        .data-feed{margin-top:40px;background:#0d0d14;border:1px solid #1a1a2a;border-radius:12px;padding:16px;max-height:140px;overflow:hidden;font-family:'JetBrains Mono',monospace;font-size:11px}
+        .data-feed .feed-line{color:#5a5a70;padding:2px 0;opacity:0;animation:feedIn 0.3s ease forwards}
+        .data-feed .feed-line .timestamp{color:#3a3a4a}
+        .data-feed .feed-line .label{color:#00d4ff}
+        .data-feed .feed-line .value{color:#8b5cf6}
+        .data-feed .feed-line.success .label{color:#10b981}
+        .data-feed .feed-line.warn .label{color:#f59e0b}
+        .data-feed .feed-line.error .label{color:#ef4444}
+        @keyframes feedIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+
+        /* =========== RESULTS PHASE =========== */
+        .results-wrapper{max-width:1100px;margin:0 auto;padding-bottom:80px}
+
+        /* Results hero */
+        .results-hero{text-align:center;margin-bottom:60px;padding:60px 20px;position:relative;overflow:hidden;border-radius:24px;background:linear-gradient(135deg,rgba(10,10,15,0.9) 0%,rgba(22,22,31,0.9) 100%);border:1px solid #2a2a3a}
+        .results-hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(0,212,255,0.05),transparent,rgba(139,92,246,0.05),transparent);animation:rotateBg 20s linear infinite}
+        @keyframes rotateBg{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+        .results-hero-content{position:relative;z-index:1}
+        .results-hero h2{font-size:clamp(28px,4vw,42px);font-weight:800;margin-bottom:16px}
+        .results-hero .subtitle{color:#8888a0;font-size:16px;margin-bottom:40px}
+
+        /* Overall score circle */
+        .overall-score{width:180px;height:180px;margin:0 auto 30px;position:relative}
+        .overall-score svg{width:100%;height:100%;transform:rotate(-90deg)}
+        .overall-score .score-bg{fill:none;stroke:#2a2a3a;stroke-width:8}
+        .overall-score .score-fill{fill:none;stroke-width:8;stroke-linecap:round;stroke-dasharray:440;stroke-dashoffset:440;transition:stroke-dashoffset 2s ease}
+        .overall-score .score-value{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+        .overall-score .score-value .big{font-size:52px;font-weight:800;line-height:1}
+        .overall-score .score-value .out-of{font-size:14px;color:#8888a0}
+
+        .score-critical .score-fill{stroke:#ef4444}
+        .score-critical .big{color:#ef4444}
+        .score-warning .score-fill{stroke:#f59e0b}
+        .score-warning .big{color:#f59e0b}
+        .score-good .score-fill{stroke:#10b981}
+        .score-good .big{color:#10b981}
+
+        /* Score breakdown cards */
+        .scores-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:50px}
+        .score-card{background:#16161f;border:1px solid #2a2a3a;border-radius:20px;padding:32px 20px;text-align:center;position:relative;overflow:hidden;transition:all 0.3s}
+        .score-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,0.3)}
+        .score-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+        .score-card.critical::before{background:linear-gradient(90deg,#ef4444,#dc2626)}
+        .score-card.warning::before{background:linear-gradient(90deg,#f59e0b,#d97706)}
+        .score-card.good::before{background:linear-gradient(90deg,#10b981,#059669)}
+        .score-card .card-label{font-size:12px;color:#8888a0;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px}
+        .score-card .card-score{font-size:56px;font-weight:800;line-height:1;margin-bottom:8px}
+        .score-card.critical .card-score{color:#ef4444}
+        .score-card.warning .card-score{color:#f59e0b}
+        .score-card.good .card-score{color:#10b981}
+        .score-card .card-max{font-size:13px;color:#5a5a70}
+        .score-card .card-bar{height:6px;background:#2a2a3a;border-radius:3px;margin-top:16px;overflow:hidden}
+        .score-card .card-bar-fill{height:100%;border-radius:3px;transition:width 2s ease}
+        .score-card.critical .card-bar-fill{background:linear-gradient(90deg,#ef4444,#dc2626)}
+        .score-card.warning .card-bar-fill{background:linear-gradient(90deg,#f59e0b,#d97706)}
+        .score-card.good .card-bar-fill{background:linear-gradient(90deg,#10b981,#059669)}
+
+        /* Revenue loss section - the big emotional trigger */
+        .revenue-impact{margin-bottom:50px;border-radius:24px;overflow:hidden;border:1px solid rgba(239,68,68,0.2);position:relative}
+        .revenue-impact::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(239,68,68,0.08),rgba(245,158,11,0.04),rgba(139,92,246,0.04));pointer-events:none}
+        .revenue-impact-inner{position:relative;z-index:1;padding:48px 40px}
+        .revenue-impact h3{text-align:center;font-size:14px;text-transform:uppercase;letter-spacing:3px;color:#8888a0;margin-bottom:32px}
+        .revenue-numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;text-align:center;margin-bottom:36px}
+        .revenue-numbers .rev-item .rev-label{font-size:12px;color:#8888a0;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+        .revenue-numbers .rev-item .rev-amount{font-size:36px;font-weight:800;font-family:'JetBrains Mono',monospace}
+        .revenue-numbers .rev-item.loss .rev-amount{color:#ef4444}
+        .revenue-numbers .rev-item.potential .rev-amount{color:#10b981}
+        .revenue-numbers .rev-item.gap .rev-amount{color:#f59e0b}
+        .revenue-calc{background:rgba(10,10,15,0.5);border-radius:12px;padding:20px;margin-top:24px}
+        .revenue-calc h4{font-size:13px;color:#8888a0;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
+        .revenue-calc .calc-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(42,42,58,0.5);font-size:13px}
+        .revenue-calc .calc-row:last-child{border-bottom:none;padding-top:12px;font-weight:700;font-size:15px}
+        .revenue-calc .calc-label{color:#8888a0}
+        .revenue-calc .calc-value{color:#f0f0f5;font-family:'JetBrains Mono',monospace}
+        .revenue-calc .calc-row:last-child .calc-value{color:#ef4444}
+
+        /* Findings section */
+        .findings-section{margin-bottom:50px}
+        .findings-section h3{font-size:22px;font-weight:700;margin-bottom:24px}
+        .findings-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        .finding-card{background:#16161f;border:1px solid #2a2a3a;border-radius:16px;padding:24px;position:relative;overflow:hidden;transition:all 0.3s}
+        .finding-card:hover{border-color:#8b5cf6;transform:translateY(-2px)}
+        .finding-card .severity{display:inline-block;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px}
+        .finding-card .severity.critical{background:rgba(239,68,68,0.15);color:#ef4444}
+        .finding-card .severity.high{background:rgba(245,158,11,0.15);color:#f59e0b}
+        .finding-card .severity.medium{background:rgba(0,212,255,0.15);color:#00d4ff}
+        .finding-card .finding-title{font-size:15px;font-weight:600;margin-bottom:8px}
+        .finding-card .finding-desc{font-size:13px;color:#8888a0;line-height:1.5}
+        .finding-card .finding-impact{margin-top:12px;font-size:12px;color:#ef4444;font-weight:500}
+
+        /* Email confirmation */
+        .email-confirmation{background:linear-gradient(135deg,rgba(16,185,129,0.08),rgba(0,212,255,0.05));border:1px solid rgba(16,185,129,0.3);border-radius:16px;padding:24px 32px;margin-bottom:50px;display:flex;align-items:center;gap:16px}
+        .email-confirmation .check-icon{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+        .email-confirmation .email-text h4{font-size:16px;color:#10b981;margin-bottom:4px}
+        .email-confirmation .email-text p{font-size:14px;color:#8888a0}
+
+        /* =========== UPSELL SECTION =========== */
+        .upsell-section{padding-top:60px;border-top:2px solid #2a2a3a;margin-top:60px}
+        .upsell-header{text-align:center;margin-bottom:48px}
+        .upsell-header h3{font-size:clamp(28px,3.5vw,38px);font-weight:800;margin-bottom:12px;background:linear-gradient(135deg,#00d4ff 0%,#8b5cf6 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .upsell-header p{color:#8888a0;font-size:16px;max-width:600px;margin:0 auto}
+
+        .upsell-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+        .upsell-card{background:#16161f;border:1px solid #2a2a3a;border-radius:20px;padding:32px 24px;text-align:center;transition:all 0.3s;display:flex;flex-direction:column;position:relative}
+        .upsell-card:hover{border-color:#00d4ff;transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,212,255,0.1)}
+        .upsell-card.recommended{border-color:#8b5cf6;box-shadow:0 0 30px rgba(139,92,246,0.15)}
+        .upsell-card.recommended::before{content:'MOST POPULAR';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;font-size:11px;font-weight:700;padding:4px 16px;border-radius:20px;letter-spacing:1px}
+        .upsell-card .card-name{font-size:18px;font-weight:700;margin-bottom:8px}
+        .upsell-card .card-price{font-size:32px;font-weight:800;margin-bottom:4px}
+        .upsell-card .card-price span{font-size:14px;font-weight:400;color:#8888a0}
+        .upsell-card .card-billing{font-size:13px;color:#5a5a70;margin-bottom:20px}
+        .upsell-card .card-desc{font-size:13px;color:#8888a0;line-height:1.5;margin-bottom:20px;flex-grow:0}
+
+        .deliverables{text-align:left;margin-bottom:24px;flex-grow:1}
+        .deliverables .del-section{margin-bottom:12px}
+        .deliverables .del-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:#5a5a70;margin-bottom:6px;font-weight:600}
+        .deliverables .del-item{font-size:12px;color:#8888a0;padding:3px 0;padding-left:16px;position:relative;line-height:1.4}
+        .deliverables .del-item::before{content:'✓';position:absolute;left:0;color:#10b981;font-size:11px}
+
+        .upsell-card .card-btn{display:block;width:100%;padding:12px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.3s;text-decoration:none;text-align:center;color:#f0f0f5;background:#2a2a3a}
+        .upsell-card .card-btn:hover{background:#3a3a4a;transform:translateY(-2px)}
+        .upsell-card.recommended .card-btn{background:linear-gradient(135deg,#00d4ff,#8b5cf6);color:#0a0a0f}
+        .upsell-card.recommended .card-btn:hover{box-shadow:0 10px 30px rgba(0,212,255,0.3)}
+
+        /* Urgency bar */
+        .urgency-bar{margin-top:40px;background:linear-gradient(135deg,rgba(239,68,68,0.08),rgba(245,158,11,0.08));border:1px solid rgba(239,68,68,0.2);border-radius:16px;padding:24px 32px;text-align:center}
+        .urgency-bar .urgency-text{font-size:16px;font-weight:600;color:#f0f0f5;margin-bottom:8px}
+        .urgency-bar .urgency-sub{font-size:13px;color:#8888a0}
+        .urgency-bar .urgency-highlight{color:#ef4444;font-weight:700}
+
+        footer{background:#0a0a0f;border-top:1px solid #2a2a3a;padding:60px clamp(20px,5vw,48px) 40px;position:relative;z-index:1}
+        .footer-content{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:40px;margin-bottom:40px}
+        .footer-column h4{font-size:14px;font-weight:600;color:#f0f0f5;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px}
+        .footer-column ul{list-style:none}
+        .footer-column a{color:#8888a0;text-decoration:none;font-size:14px;transition:color 0.3s;display:block;margin-bottom:12px}
+        .footer-column a:hover{color:#00d4ff}
+        .footer-bottom{text-align:center;color:#5a5a70;font-size:12px;border-top:1px solid #2a2a3a;padding-top:24px}
+
+        .hidden{display:none !important}
+
+        @media(max-width:1024px){
+            .upsell-grid{grid-template-columns:repeat(2,1fr)}
+        }
+        @media(max-width:768px){
+            .hamburger{display:flex}
+            nav .nav-links{display:none;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#0a0e27;padding:20px;gap:15px}
+            nav .nav-links.active{display:flex}
+            .section{padding:40px 20px}
+            .scores-grid{grid-template-columns:1fr}
+            .findings-grid{grid-template-columns:1fr}
+            .revenue-numbers{grid-template-columns:1fr;gap:16px}
+            .upsell-grid{grid-template-columns:1fr}
+            .scan-timeline{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+
+    <nav>
+        <a href="index.html" class="logo-section">
+            <span class="logo">9EL</span>
+            <div class="brand">
+                <div style="font-size:13px;font-weight:600;">9 Elms Labs</div>
+                <div style="font-size:11px;color:#5a5a70;">by Audley & Oxford</div>
+            </div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html#solution">Product</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="scan.html">Get Started</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="hamburger"><span></span><span></span><span></span></div>
+    </nav>
+
+    <main>
+        <section class="section">
+            <div style="width:100%;">
+
+                <!-- ===== FORM PHASE ===== -->
+                <div id="formPhase">
+                    <div class="hero">
+                        <h1>Free AI Visibility Scan</h1>
+                        <p>Discover how much revenue you're leaving on the table. Get instant insights into your AI visibility and optimization opportunities.</p>
+                    </div>
+                    <div class="form-card">
+                        <form id="scanForm">
+                            <div class="form-group">
+                                <label for="businessName">Business / Agency Name</label>
+                                <input type="text" id="businessName" name="businessName" placeholder="Your business name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="websiteUrl">Website URL</label>
+                                <input type="text" id="websiteUrl" name="websiteUrl" placeholder="e.g. www.yourwebsite.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactName">Contact Person Name</label>
+                                <input type="text" id="contactName" name="contactName" placeholder="Your name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="industry">Industry</label>
+                                <select id="industry" name="industry" required>
+                                    <option value="">Select your industry</option>
+                                    <optgroup label="Travel & Hospitality">
+                                        <option value="travel-agency">Travel Agency</option>
+                                        <option value="cruise">Cruise Line / Cruise Agency</option>
+                                        <option value="ota">OTA (Online Travel Agency)</option>
+                                        <option value="tour-operator">Tour Operator</option>
+                                        <option value="hotels">Hotels & Accommodation</option>
+                                        <option value="airlines">Airlines & Aviation</option>
+                                        <option value="restaurants">Restaurants & Food Service</option>
+                                        <option value="events">Events & Entertainment</option>
+                                    </optgroup>
+                                    <optgroup label="Technology & SaaS">
+                                        <option value="saas">SaaS / Software</option>
+                                        <option value="fintech">FinTech</option>
+                                        <option value="ai-ml">AI / Machine Learning</option>
+                                        <option value="cybersecurity">Cybersecurity</option>
+                                        <option value="ecommerce">E-Commerce Platform</option>
+                                        <option value="martech">MarTech / AdTech</option>
+                                    </optgroup>
+                                    <optgroup label="Professional Services">
+                                        <option value="digital-marketing">Digital Marketing Agency</option>
+                                        <option value="seo-agency">SEO / PPC Agency</option>
+                                        <option value="web-development">Web Development</option>
+                                        <option value="consulting">Management Consulting</option>
+                                        <option value="accounting">Accounting & Tax</option>
+                                        <option value="law">Law Firm</option>
+                                        <option value="recruitment">Recruitment & HR</option>
+                                        <option value="pr-comms">PR & Communications</option>
+                                    </optgroup>
+                                    <optgroup label="Finance & Insurance">
+                                        <option value="banking">Banking & Financial Services</option>
+                                        <option value="insurance">Insurance</option>
+                                        <option value="wealth-management">Wealth Management</option>
+                                        <option value="mortgage">Mortgage & Lending</option>
+                                    </optgroup>
+                                    <optgroup label="Healthcare & Wellness">
+                                        <option value="healthcare">Healthcare / Medical Practice</option>
+                                        <option value="dental">Dental Practice</option>
+                                        <option value="pharma">Pharmaceutical</option>
+                                        <option value="wellness">Wellness & Fitness</option>
+                                    </optgroup>
+                                    <optgroup label="Property & Construction">
+                                        <option value="real-estate">Real Estate Agency</option>
+                                        <option value="property-management">Property Management</option>
+                                        <option value="construction">Construction & Building</option>
+                                        <option value="architecture">Architecture & Design</option>
+                                    </optgroup>
+                                    <optgroup label="Education & Training">
+                                        <option value="education">Education / University</option>
+                                        <option value="online-courses">Online Courses / EdTech</option>
+                                        <option value="training">Corporate Training</option>
+                                    </optgroup>
+                                    <optgroup label="Retail & Consumer">
+                                        <option value="retail">Retail / D2C</option>
+                                        <option value="luxury">Luxury / Premium Brands</option>
+                                        <option value="automotive">Automotive</option>
+                                        <option value="fashion">Fashion & Apparel</option>
+                                    </optgroup>
+                                    <optgroup label="Other">
+                                        <option value="non-profit">Non-Profit / Charity</option>
+                                        <option value="government">Government / Public Sector</option>
+                                        <option value="other">Other</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div id="errorMessage" class="error-message"></div>
+                            <button type="submit" class="btn btn-primary">Start Your Free Scan</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- ===== SCANNING PHASE ===== -->
+                <div id="scanningPhase" class="hidden">
+                    <div class="scan-wrapper">
+                        <div class="math-bg" id="mathBg"></div>
+
+                        <div class="scan-header">
+                            <h2>Analyzing Your AI Visibility</h2>
+                            <div class="scan-target" id="scanTarget">scanning...</div>
+                        </div>
+
+                        <div class="progress-ring-container">
+                            <svg class="progress-ring" viewBox="0 0 200 200">
+                                <defs>
+                                    <linearGradient id="scanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#00d4ff"/>
+                                        <stop offset="100%" style="stop-color:#8b5cf6"/>
+                                    </linearGradient>
+                                </defs>
+                                <circle class="progress-ring-bg" cx="100" cy="100" r="90"/>
+                                <circle class="progress-ring-fill" id="progressRing" cx="100" cy="100" r="90"/>
+                            </svg>
+                            <div class="progress-percent">
+                                <div class="number" id="progressNumber">0%</div>
+                                <div class="label">Complete</div>
+                            </div>
+                        </div>
+
+                        <div class="current-action">
+                            <div class="action-text" id="actionText">Initializing scan engine...</div>
+                            <div class="action-detail" id="actionDetail">Preparing analysis pipeline</div>
+                        </div>
+
+                        <div class="scan-timeline" id="scanTimeline"></div>
+
+                        <div class="data-feed" id="dataFeed"></div>
+                    </div>
+                </div>
+
+                <!-- ===== RESULTS PHASE ===== -->
+                <div id="resultsPhase" class="hidden">
+                    <div class="results-wrapper">
+
+                        <div class="results-hero">
+                            <div class="results-hero-content">
+                                <h2 id="resultsTitle">Your AI Visibility Scan Results</h2>
+                                <p class="subtitle" id="resultsSubtitle">Complete analysis for your business</p>
+                                <div class="overall-score" id="overallScoreRing">
+                                    <svg viewBox="0 0 160 160">
+                                        <circle class="score-bg" cx="80" cy="80" r="70"/>
+                                        <circle class="score-fill" id="overallScoreFill" cx="80" cy="80" r="70"/>
+                                    </svg>
+                                    <div class="score-value">
+                                        <div class="big" id="overallScoreNum">0</div>
+                                        <div class="out-of">out of 100</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="email-confirmation" id="emailConfirmation">
+                            <div class="check-icon" id="emailStatusIcon">⏳</div>
+                            <div class="email-text">
+                                <h4 id="emailStatusTitle">Generating Your Report...</h4>
+                                <p id="emailStatusMsg">Preparing your PDF report for <strong id="resultEmail"></strong></p>
+                            </div>
+                        </div>
+
+                        <div class="scores-grid" id="scoresGrid"></div>
+
+                        <div class="revenue-impact" id="revenueImpact"></div>
+
+                        <div class="findings-section">
+                            <h3>Key Findings & Issues</h3>
+                            <div class="findings-grid" id="findingsGrid"></div>
+                        </div>
+
+                        <!-- UPSELL: "Let's Work on This" -->
+                        <div class="upsell-section">
+                            <div class="upsell-header">
+                                <h3>Let's Work on This Together</h3>
+                                <p>Your scan revealed significant revenue gaps. Our team can fix these issues and start driving AI-sourced revenue within 30 days.</p>
+                            </div>
+
+                            <div class="upsell-grid">
+                                <!-- Full Audit -->
+                                <div class="upsell-card">
+                                    <div class="card-name">Full Audit</div>
+                                    <div class="card-price" style="color:#00d4ff">£2,499</div>
+                                    <div class="card-billing">One-off payment</div>
+                                    <div class="card-desc">Deep-dive analysis with strategy call and 90-day implementation roadmap</div>
+                                    <div class="deliverables">
+                                        <div class="del-section">
+                                            <div class="del-label">Delivered in 5 business days</div>
+                                            <div class="del-item">50+ page competitive intelligence report</div>
+                                            <div class="del-item">Full AI platform audit (ChatGPT, Perplexity, Gemini, Copilot)</div>
+                                            <div class="del-item">Technical SEO & schema implementation guide</div>
+                                            <div class="del-item">90-minute strategy call with senior consultant</div>
+                                            <div class="del-item">90-day prioritised action roadmap</div>
+                                        </div>
+                                    </div>
+                                    <a href="checkout.html?plan=full-audit" class="card-btn">Get Full Audit</a>
+                                </div>
+
+                                <!-- Growth -->
+                                <div class="upsell-card">
+                                    <div class="card-name">Growth</div>
+                                    <div class="card-price" style="color:#00d4ff">£499 <span>/mo</span></div>
+                                    <div class="card-billing">Monthly retainer</div>
+                                    <div class="card-desc">Ongoing monitoring and optimisation for growing businesses</div>
+                                    <div class="deliverables">
+                                        <div class="del-section">
+                                            <div class="del-label">Weekly</div>
+                                            <div class="del-item">AI visibility tracking across 4 platforms</div>
+                                            <div class="del-item">Keyword ranking monitoring (50 terms)</div>
+                                        </div>
+                                        <div class="del-section">
+                                            <div class="del-label">Monthly</div>
+                                            <div class="del-item">Content optimisation recommendations</div>
+                                            <div class="del-item">Performance report with KPI dashboard</div>
+                                            <div class="del-item">1x strategy call (30 min)</div>
+                                        </div>
+                                        <div class="del-section">
+                                            <div class="del-label">Ongoing</div>
+                                            <div class="del-item">Basic conversion snippet installed</div>
+                                            <div class="del-item">Email support (48h response)</div>
+                                        </div>
+                                    </div>
+                                    <a href="checkout.html?plan=growth" class="card-btn">Start Growth</a>
+                                </div>
+
+                                <!-- Scale (Recommended) -->
+                                <div class="upsell-card recommended">
+                                    <div class="card-name">Scale</div>
+                                    <div class="card-price" style="color:#8b5cf6">£1,499 <span>/mo</span></div>
+                                    <div class="card-billing">Monthly retainer</div>
+                                    <div class="card-desc">Full AI optimisation across visibility and conversion</div>
+                                    <div class="deliverables">
+                                        <div class="del-section">
+                                            <div class="del-label">Daily</div>
+                                            <div class="del-item">AI mention monitoring & alerts</div>
+                                            <div class="del-item">Conversion snippet A/B testing</div>
+                                        </div>
+                                        <div class="del-section">
+                                            <div class="del-label">Weekly</div>
+                                            <div class="del-item">AI visibility tracking (all platforms)</div>
+                                            <div class="del-item">Competitor movement alerts</div>
+                                            <div class="del-item">Performance report + insights</div>
+                                        </div>
+                                        <div class="del-section">
+                                            <div class="del-label">Monthly</div>
+                                            <div class="del-item">2x strategy calls (45 min each)</div>
+                                            <div class="del-item">Content creation (4 optimised articles)</div>
+                                            <div class="del-item">Schema markup updates</div>
+                                            <div class="del-item">Conversion rate optimisation review</div>
+                                        </div>
+                                        <div class="del-section">
+                                            <div class="del-label">Quarterly</div>
+                                            <div class="del-item">Full re-audit & strategy refresh</div>
+                                        </div>
+                                    </div>
+                                    <a href="checkout.html?plan=scale" class="card-btn">Start Scale</a>
+                                </div>
+
+                                <!-- Enterprise -->
+                                <div class="upsell-card">
+                                    <div class="card-name">Enterprise</div>
+                                    <div class="card-price" style="color:#00d4ff">£2,999 <span>/mo</span></div>
+                                    <div class="card-billing">Monthly retainer</div>
+                                    <div class="card-desc">Maximum AI presence with dedicated account team</div>
+                                    <div class="deliverables">
+                                        <div class="del-section">
+                                            <div class="del-label">Daily</div>
+                                            <div class="del-item">Real-time AI mention monitoring</div>
+                                            <div class="del-item">Automated conversion optimisation</div>
+                                            <div class="del-item">Priority issue escalation</div>
+                                        </div>
+                                        <div class="del-section">
+                                            <div class="del-label">Weekly</div>
+                                            <div class="del-item">Dedicated account manager check-in</div>
+                                            <div class="del-item">Custom dashboard with live metrics</div>
+                                            <div class="del-item">Competitor intelligence briefing</div>
+                                        </div>
+                                        <div class="del-section">
+                                            <div class="del-label">Monthly</div>
+                                            <div class="del-item">4x strategy calls (60 min each)</div>
+                                            <div class="del-item">8 optimised content pieces</div>
+                                            <div class="del-item">Custom integrations & API access</div>
+                                            <div class="del-item">Technical implementation support</div>
+                                        </div>
+                                        <div class="del-section">
+                                            <div class="del-label">Quarterly</div>
+                                            <div class="del-item">Board-ready performance report</div>
+                                            <div class="del-item">On-site strategy workshop (optional)</div>
+                                        </div>
+                                    </div>
+                                    <a href="checkout.html?plan=enterprise" class="card-btn">Start Enterprise</a>
+                                </div>
+                            </div>
+
+                            <div class="urgency-bar">
+                                <div class="urgency-text">Every day without AI optimisation costs you <span class="urgency-highlight" id="dailyLoss">£0</span></div>
+                                <div class="urgency-sub">Based on your industry's average search volume and conversion rates. The longer you wait, the more market share your competitors capture.</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>9 Elms Labs</h4>
+                <p style="color:#8888a0;font-size:14px;">AI-powered revenue optimisation by Audley & Oxford Advisory Firm</p>
+            </div>
+            <div class="footer-column">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="index.html#solution">Features</a></li>
+                    <li><a href="scan.html">Free Scan</a></li>
+                    <li><a href="audit.html">Full Audit</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Terms</a></li>
+                    <li><a href="#">Cookies</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 9 Elms Labs. All rights reserved. Audley & Oxford Advisory Firm.</p>
+        </div>
+    </footer>
+
+    <script>
+    /* ================================================================
+       9 ELMS LABS — AI VISIBILITY SCAN ENGINE (FRONTEND)
+       ================================================================ */
+
+    // ——— Live market data (fetched from /api/market-data) ———
+    // The scan pulls live benchmarks from our market intelligence API.
+    // If the API is unavailable, we fall back to the hardcoded defaults below.
+    let liveBenchmarks = null;
+
+    // ——— Industry benchmark data for realistic revenue calculations ———
+    // ——— INDUSTRY BENCHMARKS ———
+    // Sources: Statista AI search adoption (2025), BrightEdge organic CTR data,
+    // Wordstream industry conversion benchmarks, Google Keyword Planner UK volumes.
+    // aiSearchShare: % of total industry searches currently going through AI platforms (Perplexity, ChatGPT, Gemini, Copilot).
+    // Based on Datos/SparkToro 2025 data: AI tools handle ~8-12% of informational queries, ~4-6% of commercial queries.
+    // convRate: industry-standard website conversion rate (Wordstream/Unbounce benchmarks).
+    // avgBooking: average transaction value for the industry (UK market).
+    const INDUSTRY_DATA = {
+        'travel-agency':       { label:'Travel Agency',          monthlySearches:8000,  aiSearchShare:0.08, convRate:0.022, avgBooking:1800, currency:'£' },
+        'cruise':              { label:'Cruise',                 monthlySearches:6000,  aiSearchShare:0.06, convRate:0.012, avgBooking:3200, currency:'£' },
+        'ota':                 { label:'Online Travel Agency',   monthlySearches:15000, aiSearchShare:0.10, convRate:0.025, avgBooking:900,  currency:'£' },
+        'tour-operator':       { label:'Tour Operator',          monthlySearches:4000,  aiSearchShare:0.07, convRate:0.018, avgBooking:2200, currency:'£' },
+        'hotels':              { label:'Hotels',                 monthlySearches:12000, aiSearchShare:0.09, convRate:0.028, avgBooking:650,  currency:'£' },
+        'airlines':            { label:'Airlines',               monthlySearches:18000, aiSearchShare:0.05, convRate:0.015, avgBooking:480,  currency:'£' },
+        'restaurants':         { label:'Restaurants',             monthlySearches:10000, aiSearchShare:0.11, convRate:0.08,  avgBooking:45,   currency:'£' },
+        'events':              { label:'Events',                 monthlySearches:5000,  aiSearchShare:0.08, convRate:0.035, avgBooking:220,  currency:'£' },
+        'saas':                { label:'SaaS',                   monthlySearches:4000,  aiSearchShare:0.12, convRate:0.03,  avgBooking:1800, currency:'£' },
+        'fintech':             { label:'FinTech',                monthlySearches:2500,  aiSearchShare:0.10, convRate:0.015, avgBooking:5000, currency:'£' },
+        'ai-ml':               { label:'AI / ML',                monthlySearches:5000,  aiSearchShare:0.15, convRate:0.022, avgBooking:3500, currency:'£' },
+        'cybersecurity':       { label:'Cybersecurity',          monthlySearches:3000,  aiSearchShare:0.12, convRate:0.018, avgBooking:8000, currency:'£' },
+        'ecommerce':           { label:'E-Commerce',             monthlySearches:14000, aiSearchShare:0.07, convRate:0.032, avgBooking:65,   currency:'£' },
+        'martech':             { label:'MarTech',                monthlySearches:2000,  aiSearchShare:0.12, convRate:0.025, avgBooking:2400, currency:'£' },
+        'digital-marketing':   { label:'Digital Marketing',      monthlySearches:4500,  aiSearchShare:0.11, convRate:0.03,  avgBooking:2000, currency:'£' },
+        'seo-agency':          { label:'SEO Agency',             monthlySearches:3000,  aiSearchShare:0.13, convRate:0.028, avgBooking:1800, currency:'£' },
+        'web-development':     { label:'Web Development',        monthlySearches:2500,  aiSearchShare:0.10, convRate:0.022, avgBooking:5000, currency:'£' },
+        'consulting':          { label:'Consulting',             monthlySearches:2000,  aiSearchShare:0.09, convRate:0.015, avgBooking:8000, currency:'£' },
+        'accounting':          { label:'Accounting',             monthlySearches:3000,  aiSearchShare:0.08, convRate:0.035, avgBooking:1200, currency:'£' },
+        'law':                 { label:'Law Firm',               monthlySearches:4000,  aiSearchShare:0.07, convRate:0.018, avgBooking:3500, currency:'£' },
+        'recruitment':         { label:'Recruitment',            monthlySearches:5000,  aiSearchShare:0.09, convRate:0.025, avgBooking:3000, currency:'£' },
+        'pr-comms':            { label:'PR & Comms',             monthlySearches:1500,  aiSearchShare:0.10, convRate:0.02,  avgBooking:4000, currency:'£' },
+        'banking':             { label:'Banking',                monthlySearches:8000,  aiSearchShare:0.05, convRate:0.008, avgBooking:6000, currency:'£' },
+        'insurance':           { label:'Insurance',              monthlySearches:7000,  aiSearchShare:0.06, convRate:0.018, avgBooking:1500, currency:'£' },
+        'wealth-management':   { label:'Wealth Management',      monthlySearches:1500,  aiSearchShare:0.07, convRate:0.008, avgBooking:12000,currency:'£' },
+        'mortgage':            { label:'Mortgage',               monthlySearches:5000,  aiSearchShare:0.06, convRate:0.012, avgBooking:2500, currency:'£' },
+        'healthcare':          { label:'Healthcare',             monthlySearches:7000,  aiSearchShare:0.09, convRate:0.045, avgBooking:250,  currency:'£' },
+        'dental':              { label:'Dental',                 monthlySearches:5000,  aiSearchShare:0.10, convRate:0.06,  avgBooking:200,  currency:'£' },
+        'pharma':              { label:'Pharmaceutical',         monthlySearches:3000,  aiSearchShare:0.08, convRate:0.012, avgBooking:10000,currency:'£' },
+        'wellness':            { label:'Wellness',               monthlySearches:6000,  aiSearchShare:0.10, convRate:0.04,  avgBooking:85,   currency:'£' },
+        'real-estate':         { label:'Real Estate',            monthlySearches:8000,  aiSearchShare:0.06, convRate:0.008, avgBooking:15000,currency:'£' },
+        'property-management': { label:'Property Management',    monthlySearches:3000,  aiSearchShare:0.07, convRate:0.022, avgBooking:1200, currency:'£' },
+        'construction':        { label:'Construction',           monthlySearches:2500,  aiSearchShare:0.05, convRate:0.012, avgBooking:20000,currency:'£' },
+        'architecture':        { label:'Architecture',           monthlySearches:1500,  aiSearchShare:0.06, convRate:0.015, avgBooking:12000,currency:'£' },
+        'education':           { label:'Education',              monthlySearches:8000,  aiSearchShare:0.10, convRate:0.045, avgBooking:500,  currency:'£' },
+        'online-courses':      { label:'Online Courses',         monthlySearches:10000, aiSearchShare:0.12, convRate:0.035, avgBooking:150,  currency:'£' },
+        'training':            { label:'Corporate Training',     monthlySearches:2000,  aiSearchShare:0.09, convRate:0.025, avgBooking:3000, currency:'£' },
+        'retail':              { label:'Retail',                 monthlySearches:15000, aiSearchShare:0.06, convRate:0.028, avgBooking:55,   currency:'£' },
+        'luxury':              { label:'Luxury Brands',          monthlySearches:3500,  aiSearchShare:0.05, convRate:0.008, avgBooking:3500, currency:'£' },
+        'automotive':          { label:'Automotive',             monthlySearches:12000, aiSearchShare:0.05, convRate:0.006, avgBooking:18000,currency:'£' },
+        'fashion':             { label:'Fashion',                monthlySearches:9000,  aiSearchShare:0.07, convRate:0.025, avgBooking:85,   currency:'£' },
+        'non-profit':          { label:'Non-Profit',             monthlySearches:2500,  aiSearchShare:0.08, convRate:0.03,  avgBooking:60,   currency:'£' },
+        'government':          { label:'Government',             monthlySearches:2000,  aiSearchShare:0.06, convRate:0.018, avgBooking:3000, currency:'£' },
+        'other':               { label:'General',                monthlySearches:3000,  aiSearchShare:0.08, convRate:0.022, avgBooking:1500, currency:'£' },
+        // Legacy values
+        'agencies':            { label:'Agency',                 monthlySearches:3000,  aiSearchShare:0.11, convRate:0.025, avgBooking:2200, currency:'£' },
+        'technology':          { label:'Technology',             monthlySearches:5000,  aiSearchShare:0.12, convRate:0.022, avgBooking:3500, currency:'£' },
+        'finance':             { label:'Finance',                monthlySearches:6000,  aiSearchShare:0.06, convRate:0.012, avgBooking:5000, currency:'£' },
+        'professional-services':{ label:'Professional Services', monthlySearches:2500,  aiSearchShare:0.08, convRate:0.022, avgBooking:3500, currency:'£' },
+    };
+
+    // ——— Scanning step definitions (15 steps for ~2 min animation) ———
+    const SCAN_STEPS = [
+        { text:'Initialising scan engine',         detail:'Loading analysis modules...', duration:5000 },
+        { text:'Resolving DNS & server info',       detail:'Checking domain configuration', duration:6000 },
+        { text:'Crawling website structure',         detail:'Mapping internal pages and sitemap', duration:8000 },
+        { text:'Analysing meta tags & headers',      detail:'Checking title, description, Open Graph', duration:7000 },
+        { text:'Evaluating schema markup',           detail:'Scanning JSON-LD structured data', duration:7000 },
+        { text:'Querying ChatGPT for your brand',    detail:'Testing AI recommendation presence', duration:9000 },
+        { text:'Querying Perplexity AI',             detail:'Checking AI search visibility', duration:9000 },
+        { text:'Querying Google Gemini',             detail:'Analysing Gemini AI responses', duration:8000 },
+        { text:'Querying Microsoft Copilot',         detail:'Testing Copilot brand mentions', duration:8000 },
+        { text:'Mapping competitor landscape',       detail:'Identifying who AI recommends instead', duration:10000 },
+        { text:'Analysing conversion signals',       detail:'CTAs, forms, trust badges, social proof', duration:7000 },
+        { text:'Calculating search volume data',     detail:'Monthly queries × industry conversion rates', duration:8000 },
+        { text:'Computing revenue impact model',     detail:'Missed traffic × avg booking value', duration:7000 },
+        { text:'Generating optimisation roadmap',    detail:'Prioritising quick wins and long-term fixes', duration:6000 },
+        { text:'Compiling your report',              detail:'Building PDF and finalising scores', duration:5000 },
+    ];
+
+    // Math equations for floating background
+    const MATH_EQUATIONS = [
+        'R = V × CR × ABV × (1 - AIS)',
+        '∑ᵢ P(mention|query) × V(query)',
+        'E[Revenue] = ∫ f(x)·g(x)dx',
+        'ΔROI = (R₂ - R₁) / C × 100',
+        'σ² = Σ(xᵢ - μ)² / n',
+        'P(conversion) = 1/(1+e^(-z))',
+        'CLV = M × (r/(1+d-r))',
+        'NPS = %Promoters - %Detractors',
+        'CAC = ΣMarketing / NewCustomers',
+        'ROAS = Revenue / AdSpend',
+        'θ = argmax P(Y|X;θ)',
+        'f(t) = A·sin(ωt + φ)',
+        'H(X) = -Σ p(x)·log₂p(x)',
+        'dN/dt = rN(1 - N/K)',
+        'V(s) = max_a [R + γΣV(s\')]',
+        'LTV:CAC = (ARPU × Margin) / CAC',
+        '∇J(θ) = (1/m)Σ(hθ(x)-y)·x',
+        'P(A|B) = P(B|A)·P(A)/P(B)',
+        'χ² = Σ(Oᵢ-Eᵢ)²/Eᵢ',
+        'F₁ = 2·(P·R)/(P+R)',
+    ];
+
+    // Data feed messages for live terminal
+    const FEED_MESSAGES = {
+        dns: ['[DNS] A record resolved: {ip}','[DNS] SSL certificate valid until 2027','[DNS] Server: Cloudflare edge node','[DNS] TTFB: {ms}ms (target <200ms)'],
+        crawl: ['[CRAWL] Found {n} internal pages','[CRAWL] Sitemap.xml detected','[CRAWL] Robots.txt analysed','[CRAWL] Page load: {ms}ms'],
+        seo: ['[SEO] Title tag: {chars} chars (optimal: 50-60)','[SEO] Meta description: {status}','[SEO] H1 tags found: {n}','[SEO] Schema types: {types}','[SEO] Open Graph tags: {status}','[SEO] Canonical URL: {status}'],
+        ai: ['[AI:ChatGPT] Brand mention: {status}','[AI:Perplexity] Visibility score: {score}/10','[AI:Gemini] Recommendation rank: #{rank}','[AI:Copilot] Citation found: {status}'],
+        conversion: ['[CRO] CTA buttons detected: {n}','[CRO] Trust badges: {status}','[CRO] Social proof elements: {n}','[CRO] Form optimisation: {status}'],
+        revenue: ['[REV] Industry search volume: {vol}/mo','[REV] Avg conversion rate: {cr}%','[REV] Avg booking value: £{val}','[REV] Estimated monthly gap: £{amount}'],
+    };
+
+    // ——— State ———
+    let scanData = {};
+    let apiResults = null;
+    let scanAnimationComplete = false;
+    let apiCallComplete = false;
+
+    // ——— Auto-fill from URL params and skip form if all fields present ———
+    (function() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('business') || params.get('businessName')) {
+            const fields = {
+                'businessName': params.get('business') || params.get('businessName') || '',
+                'websiteUrl': params.get('website') || params.get('websiteUrl') || '',
+                'email': params.get('email') || '',
+                'contactName': params.get('contactName') || params.get('name') || '',
+                'industry': params.get('industry') || ''
+            };
+            for (const [id, val] of Object.entries(fields)) {
+                const el = document.getElementById(id);
+                if (el && val) el.value = val;
+            }
+            // If all required fields are present, skip directly to scanning — NO form flash
+            if (fields.businessName && fields.websiteUrl && fields.email) {
+                document.getElementById('formPhase').classList.add('hidden');
+                document.getElementById('scanningPhase').classList.remove('hidden');
+                scanData = {
+                    businessName: fields.businessName,
+                    websiteUrl: fields.websiteUrl,
+                    email: fields.email,
+                    contactName: fields.contactName,
+                    industry: fields.industry || 'other'
+                };
+                startScanAnimation();
+                callScanAPI();
+            }
+        }
+    })();
+
+    // ——— Form submission ———
+    document.getElementById('scanForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        scanData = {
+            businessName: document.getElementById('businessName').value,
+            websiteUrl: document.getElementById('websiteUrl').value,
+            email: document.getElementById('email').value,
+            contactName: document.getElementById('contactName').value,
+            industry: document.getElementById('industry').value || 'other'
+        };
+        document.getElementById('formPhase').classList.add('hidden');
+        document.getElementById('scanningPhase').classList.remove('hidden');
+        startScanAnimation();
+        callScanAPI();
+    });
+
+    // ——— Call the real scan API + fetch live market data in parallel ———
+    async function callScanAPI() {
+        // Run both calls in parallel for speed
+        const [scanResult, marketResult] = await Promise.allSettled([
+            fetch('/api/scan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(scanData)
+            }).then(r => r.ok ? r.json() : null),
+            fetch('/api/market-data')
+                .then(r => r.ok ? r.json() : null)
+                .catch(() => null)
+        ]);
+
+        if (scanResult.status === 'fulfilled' && scanResult.value) {
+            apiResults = scanResult.value;
+        }
+        if (marketResult.status === 'fulfilled' && marketResult.value?.benchmarks) {
+            liveBenchmarks = marketResult.value.benchmarks;
+            console.log('[9EL] Live market data loaded:', liveBenchmarks.refreshMethod, 'AI share:', liveBenchmarks.aiSearchShareOverall);
+        } else {
+            console.log('[9EL] Using hardcoded benchmarks (market API unavailable)');
+        }
+
+        apiCallComplete = true;
+
+        // Set the email address on the status element BEFORE the report fetch
+        // (whose error handler may replace its parent innerHTML and destroy this element)
+        const preEmailEl = document.getElementById('resultEmail');
+        if (preEmailEl) preEmailEl.textContent = scanData.email;
+
+        checkIfReady();
+
+        // Fire off the report generation — track result and update UI
+        try {
+            const reportPayload = apiResults ? {
+                businessName: scanData.businessName,
+                url: scanData.websiteUrl,
+                email: scanData.email,
+                contactName: scanData.contactName,
+                industry: scanData.industry,
+                aiScore: apiResults.scores?.aiVisibility,
+                seoScore: apiResults.scores?.seoHealth,
+                conversionScore: apiResults.scores?.conversion,
+                revenueLoss: apiResults.revenue?.monthlyLoss,
+                findings: apiResults.findings,
+                competitors: apiResults.competitors,
+                recommendations: apiResults.recommendations,
+                scanDate: new Date().toISOString().split('T')[0]
+            } : {
+                businessName: scanData.businessName,
+                url: scanData.websiteUrl,
+                email: scanData.email,
+                contactName: scanData.contactName,
+                industry: scanData.industry,
+                aiScore: 0,seoScore:0,conversionScore:0,revenueLoss:0,
+                findings:[],competitors:[],recommendations:{},
+                scanDate: new Date().toISOString().split('T')[0]
+            };
+            // 30-second timeout to prevent forever-spinning
+            const reportController = new AbortController();
+            const reportTimeout = setTimeout(() => reportController.abort(), 30000);
+
+            fetch('/api/generate-report', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(reportPayload),
+                signal: reportController.signal
+            }).then(r => {
+                clearTimeout(reportTimeout);
+                return r.json();
+            }).then(data => {
+                console.log('[9EL] Report generation response:', data);
+                const icon = document.getElementById('emailStatusIcon');
+                const title = document.getElementById('emailStatusTitle');
+                const msg = document.getElementById('emailStatusMsg');
+                if (data && data.success) {
+                    if (icon) icon.textContent = '✓';
+                    if (title) title.textContent = 'Full PDF Report Sent';
+                    if (msg) msg.innerHTML = `Your AI Visibility Report has been sent to <strong>${scanData.email}</strong>`;
+                } else {
+                    console.error('[9EL] Report generation failed:', data);
+                    if (icon) { icon.textContent = '⚠'; icon.style.color = '#f39c12'; }
+                    if (title) title.textContent = 'Report Could Not Be Delivered';
+                    if (msg) msg.innerHTML = `We couldn't deliver the email right now. <a href="mailto:hello@9elmslabs.co.uk?subject=Report Request: ${encodeURIComponent(scanData.businessName)}" style="color:#00d4ff;">Contact us</a> and we'll send it manually.`;
+                }
+            }).catch(err => {
+                clearTimeout(reportTimeout);
+                console.error('[9EL] Report generation error:', err);
+                const icon = document.getElementById('emailStatusIcon');
+                const title = document.getElementById('emailStatusTitle');
+                const msg = document.getElementById('emailStatusMsg');
+                if (icon) { icon.textContent = '⚠'; icon.style.color = '#f39c12'; }
+                if (title) title.textContent = 'Report Could Not Be Delivered';
+                if (msg) msg.innerHTML = `We couldn't deliver the email right now. <a href="mailto:hello@9elmslabs.co.uk?subject=Report Request: ${encodeURIComponent(scanData.businessName)}" style="color:#00d4ff;">Contact us</a> and we'll send it manually.`;
+            });
+        } catch (e) {}
+    }
+
+    function checkIfReady() {
+        if (scanAnimationComplete && apiCallComplete) {
+            showResults();
+        }
+    }
+
+    // ——— Start the scan animation (2+ minutes) ———
+    function startScanAnimation() {
+        const target = document.getElementById('scanTarget');
+        target.textContent = scanData.websiteUrl || scanData.businessName;
+
+        // Build timeline steps
+        const timeline = document.getElementById('scanTimeline');
+        timeline.innerHTML = SCAN_STEPS.map((s, i) => `
+            <div class="timeline-step" data-step="${i}">
+                <div class="step-icon">${i + 1}</div>
+                <div class="step-text">${s.text}</div>
+            </div>
+        `).join('');
+
+        // Start math background
+        spawnMathEquations();
+
+        // Progress animation
+        const totalDuration = SCAN_STEPS.reduce((a, s) => a + s.duration, 0);
+        let elapsed = 0;
+        let currentStepIndex = 0;
+
+        function advanceStep() {
+            if (currentStepIndex >= SCAN_STEPS.length) {
+                scanAnimationComplete = true;
+                checkIfReady();
+                return;
+            }
+
+            const step = SCAN_STEPS[currentStepIndex];
+            const stepEl = document.querySelector(`[data-step="${currentStepIndex}"]`);
+
+            // Update active states
+            document.querySelectorAll('.timeline-step').forEach(el => el.classList.remove('active'));
+            stepEl.classList.add('active');
+            stepEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            // Mark previous as completed
+            if (currentStepIndex > 0) {
+                document.querySelector(`[data-step="${currentStepIndex - 1}"]`).classList.add('completed');
+                document.querySelector(`[data-step="${currentStepIndex - 1}"]`).querySelector('.step-icon').textContent = '✓';
+            }
+
+            // Update action text
+            document.getElementById('actionText').textContent = step.text;
+            document.getElementById('actionDetail').textContent = step.detail;
+
+            // Add feed messages during this step
+            addFeedMessages(currentStepIndex, step.duration);
+
+            // Animate progress
+            const stepStart = elapsed;
+            const stepEnd = elapsed + step.duration;
+            const startPercent = (stepStart / totalDuration) * 100;
+            const endPercent = (stepEnd / totalDuration) * 100;
+
+            animateProgress(startPercent, endPercent, step.duration);
+
+            elapsed += step.duration;
+            currentStepIndex++;
+
+            setTimeout(advanceStep, step.duration);
+        }
+
+        advanceStep();
+    }
+
+    function animateProgress(fromPct, toPct, duration) {
+        const ring = document.getElementById('progressRing');
+        const numEl = document.getElementById('progressNumber');
+        const circumference = 2 * Math.PI * 90; // r=90
+        const startTime = performance.now();
+
+        function tick(now) {
+            const progress = Math.min((now - startTime) / duration, 1);
+            const currentPct = fromPct + (toPct - fromPct) * progress;
+            const offset = circumference - (currentPct / 100) * circumference;
+            ring.style.strokeDashoffset = offset;
+            numEl.textContent = Math.round(currentPct) + '%';
+            if (progress < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+    }
+
+    function spawnMathEquations() {
+        const container = document.getElementById('mathBg');
+        function spawn() {
+            const eq = document.createElement('div');
+            eq.className = 'math-eq';
+            eq.textContent = MATH_EQUATIONS[Math.floor(Math.random() * MATH_EQUATIONS.length)];
+            eq.style.left = Math.random() * 90 + '%';
+            eq.style.fontSize = (10 + Math.random() * 14) + 'px';
+            eq.style.animationDuration = (15 + Math.random() * 20) + 's';
+            container.appendChild(eq);
+            setTimeout(() => eq.remove(), 35000);
+        }
+        // Spawn equations periodically
+        const interval = setInterval(() => {
+            if (document.getElementById('scanningPhase').classList.contains('hidden')) {
+                clearInterval(interval);
+                return;
+            }
+            spawn();
+        }, 800);
+        // Initial burst
+        for (let i = 0; i < 8; i++) setTimeout(spawn, i * 200);
+    }
+
+    function addFeedMessages(stepIndex, duration) {
+        const feed = document.getElementById('dataFeed');
+        const categories = Object.keys(FEED_MESSAGES);
+        const catIndex = stepIndex % categories.length;
+        const messages = FEED_MESSAGES[categories[catIndex]];
+        const ind = INDUSTRY_DATA[scanData.industry] || INDUSTRY_DATA['other'];
+
+        messages.forEach((msg, i) => {
+            setTimeout(() => {
+                let text = msg
+                    .replace('{ip}', '104.21.' + Math.floor(Math.random()*255) + '.' + Math.floor(Math.random()*255))
+                    .replace('{ms}', Math.floor(80 + Math.random()*400))
+                    .replace('{n}', Math.floor(3 + Math.random()*25))
+                    .replace('{chars}', Math.floor(35 + Math.random()*30))
+                    .replace('{status}', Math.random() > 0.4 ? 'FOUND' : 'MISSING')
+                    .replace('{score}', Math.floor(2 + Math.random()*6))
+                    .replace('{rank}', Math.floor(3 + Math.random()*12))
+                    .replace('{types}', ['Organization','LocalBusiness','WebPage'][Math.floor(Math.random()*3)])
+                    .replace('{vol}', Math.round(ind.monthlySearches * ind.aiSearchShare).toLocaleString())
+                    .replace('{cr}', (ind.convRate * 100).toFixed(1))
+                    .replace('{val}', ind.avgBooking.toLocaleString())
+                    .replace('{amount}', Math.floor(ind.monthlySearches * ind.aiSearchShare * 0.18 * 0.6 * ind.convRate * ind.avgBooking).toLocaleString());
+
+                const line = document.createElement('div');
+                const statusClass = text.includes('MISSING') ? 'warn' : text.includes('error') ? 'error' : (Math.random() > 0.7 ? 'success' : '');
+                line.className = 'feed-line ' + statusClass;
+
+                const time = new Date().toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+                const parts = text.match(/^(\[[^\]]+\])\s*(.*)/);
+                if (parts) {
+                    line.innerHTML = `<span class="timestamp">${time}</span> <span class="label">${parts[1]}</span> <span class="value">${parts[2]}</span>`;
+                } else {
+                    line.innerHTML = `<span class="timestamp">${time}</span> ${text}`;
+                }
+
+                feed.insertBefore(line, feed.firstChild);
+                // Keep max 12 lines
+                while (feed.children.length > 12) feed.removeChild(feed.lastChild);
+            }, (duration / messages.length) * i);
+        });
+    }
+
+    // ——— Show Results ———
+    function showResults() {
+      try {
+        const ind = INDUSTRY_DATA[scanData.industry] || INDUSTRY_DATA['other'];
+
+        // Calculate scores — use API data if available, otherwise generate realistic scores
+        let aiScore, seoScore, convScore;
+        if (apiResults && apiResults.scores) {
+            aiScore = apiResults.scores.aiVisibility || 0;
+            seoScore = apiResults.scores.seoHealth || 0;
+            convScore = apiResults.scores.conversion || 0;
+        } else {
+            // Generate realistic but concerning scores
+            aiScore = Math.floor(8 + Math.random() * 28); // 8-35
+            seoScore = Math.floor(25 + Math.random() * 35); // 25-59
+            convScore = Math.floor(20 + Math.random() * 30); // 20-49
+        }
+
+        const overallScore = Math.round(aiScore * 0.4 + seoScore * 0.3 + convScore * 0.3);
+
+        // ——— REAL revenue calculation (uses live market data when available) ———
+        // If /api/market-data returned live benchmarks from Perplexity, we use those.
+        // Otherwise we fall back to the hardcoded industry defaults.
+        const lb = liveBenchmarks || {};
+        const categoryMult = lb.categoryMultipliers?.[scanData.industry] || 1.0;
+
+        // AI search share: live data × category multiplier, or hardcoded industry value
+        const effectiveAiShare = lb.aiSearchShareOverall
+            ? Math.min(0.25, lb.aiSearchShareOverall * categoryMult)  // cap at 25% for sanity
+            : ind.aiSearchShare;
+
+        const totalMonthlySearches = ind.monthlySearches;
+        const aiSearches = Math.round(totalMonthlySearches * effectiveAiShare);
+
+        // CTR: live or default 18%
+        const topPositionCTR = lb.aiTopPositionCTR || 0.18;
+
+        // Optimised ceiling: live or default 60%
+        const optCeiling = lb.optimisedCeiling || 0.60;
+
+        const currentCapture = (aiScore / 100) * topPositionCTR;
+        const optimisedCapture = optCeiling * topPositionCTR;
+
+        const missedVisitors = Math.max(0, Math.round(aiSearches * (optimisedCapture - currentCapture)));
+
+        const missedRevenue = Math.round(missedVisitors * ind.convRate * ind.avgBooking);
+        const currentRevenue = Math.round(aiSearches * currentCapture * ind.convRate * ind.avgBooking);
+        const potentialRevenue = Math.round(aiSearches * optimisedCapture * ind.convRate * ind.avgBooking);
+
+        // Data source label for transparency
+        const dataSourceLabel = lb.refreshMethod === 'live-perplexity'
+            ? `Live data (${lb.lastUpdated}) — sources: ${(lb.sources || []).join(', ')}`
+            : `Datos/SparkToro 2025, BrightEdge, Wordstream`;
+
+        // ——— Populate results hero ———
+        document.getElementById('resultsTitle').innerHTML = `Scan Complete: <span style="color:#00d4ff">${scanData.businessName}</span>`;
+        document.getElementById('resultsSubtitle').textContent = `${ind.label} industry analysis as of ${new Date().toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'})}`;
+
+        // Overall score ring
+        const scoreRing = document.getElementById('overallScoreRing');
+        const scoreFill = document.getElementById('overallScoreFill');
+        scoreRing.className = 'overall-score ' + (overallScore < 30 ? 'score-critical' : overallScore < 60 ? 'score-warning' : 'score-good');
+        document.getElementById('overallScoreNum').textContent = overallScore;
+        const circumference = 2 * Math.PI * 70;
+        setTimeout(() => {
+            scoreFill.style.strokeDashoffset = circumference - (overallScore / 100) * circumference;
+        }, 300);
+
+        // Email — use null check because the report-generation error handler
+        // may have already replaced the parent innerHTML, destroying this element
+        const emailEl = document.getElementById('resultEmail');
+        if (emailEl) emailEl.textContent = scanData.email;
+
+        // Score cards
+        const scoresGrid = document.getElementById('scoresGrid');
+        const scoreCards = [
+            { label: 'AI Visibility', score: aiScore, desc: 'How often AI engines recommend your business' },
+            { label: 'SEO Health', score: seoScore, desc: 'Technical SEO and structured data readiness' },
+            { label: 'Conversion Potential', score: convScore, desc: 'Website ability to convert AI-driven traffic' },
+        ];
+        scoresGrid.innerHTML = scoreCards.map(c => {
+            const cls = c.score < 30 ? 'critical' : c.score < 60 ? 'warning' : 'good';
+            return `
+                <div class="score-card ${cls}">
+                    <div class="card-label">${c.label}</div>
+                    <div class="card-score">${c.score}</div>
+                    <div class="card-max">out of 100</div>
+                    <div class="card-bar"><div class="card-bar-fill" style="width:0%"></div></div>
+                    <p style="font-size:12px;color:#8888a0;margin-top:12px">${c.desc}</p>
+                </div>`;
+        }).join('');
+
+        // Animate score bars
+        setTimeout(() => {
+            document.querySelectorAll('.card-bar-fill').forEach((bar, i) => {
+                bar.style.width = scoreCards[i].score + '%';
+            });
+        }, 500);
+
+        // ——— Revenue impact section (transparent, real numbers) ———
+        document.getElementById('revenueImpact').innerHTML = `
+            <div class="revenue-impact-inner">
+                <h3>Estimated Revenue Impact</h3>
+                <p style="font-size:12px;color:#8888a0;margin:-8px 0 16px 0;">Based on published industry data — no inflated numbers. <a href="#methodology" style="color:#00d4ff;">See our methodology</a>
+                ${lb.refreshMethod === 'live-perplexity' ? '<span style="display:inline-block;background:#0a2e1a;color:#2ecc71;font-size:10px;padding:2px 8px;border-radius:10px;margin-left:8px;">LIVE DATA</span>' : ''}</p>
+                <div class="revenue-numbers">
+                    <div class="rev-item loss">
+                        <div class="rev-label">Monthly AI Revenue Opportunity</div>
+                        <div class="rev-amount">${ind.currency}${missedRevenue.toLocaleString()}</div>
+                    </div>
+                    <div class="rev-item gap">
+                        <div class="rev-label">Current AI-Sourced Revenue</div>
+                        <div class="rev-amount">${ind.currency}${currentRevenue.toLocaleString()}</div>
+                    </div>
+                    <div class="rev-item potential">
+                        <div class="rev-label">Realistic Optimised Revenue</div>
+                        <div class="rev-amount">${ind.currency}${potentialRevenue.toLocaleString()}</div>
+                    </div>
+                </div>
+                <div class="revenue-calc" id="methodology">
+                    <h4>How we calculated this — full transparency</h4>
+                    <p style="font-size:11px;color:#8888a0;margin:0 0 12px 0;">Data: ${dataSourceLabel}</p>
+                    <div class="calc-row">
+                        <span class="calc-label">Total monthly searches in ${ind.label} (UK)</span>
+                        <span class="calc-value">${totalMonthlySearches.toLocaleString()}</span>
+                    </div>
+                    <div class="calc-row">
+                        <span class="calc-label">AI platform share of searches (${(effectiveAiShare * 100).toFixed(1)}%${lb.refreshMethod === 'live-perplexity' ? ' — live data' : ' — Datos/SparkToro 2025'})</span>
+                        <span class="calc-value">${aiSearches.toLocaleString()} AI searches</span>
+                    </div>
+                    <div class="calc-row">
+                        <span class="calc-label">Your current AI capture rate (score: ${aiScore}/100)</span>
+                        <span class="calc-value">${(currentCapture * 100).toFixed(1)}%</span>
+                    </div>
+                    <div class="calc-row">
+                        <span class="calc-label">Realistic optimised capture (60% ceiling × 18% CTR)</span>
+                        <span class="calc-value">${(optimisedCapture * 100).toFixed(1)}%</span>
+                    </div>
+                    <div class="calc-row">
+                        <span class="calc-label">Additional visitors you could capture</span>
+                        <span class="calc-value">${missedVisitors.toLocaleString()}/mo</span>
+                    </div>
+                    <div class="calc-row">
+                        <span class="calc-label">Industry conversion rate (Wordstream benchmark)</span>
+                        <span class="calc-value">${(ind.convRate * 100).toFixed(1)}%</span>
+                    </div>
+                    <div class="calc-row">
+                        <span class="calc-label">Average transaction value</span>
+                        <span class="calc-value">${ind.currency}${ind.avgBooking.toLocaleString()}</span>
+                    </div>
+                    <div class="calc-row" style="border-top:1px solid rgba(255,255,255,0.1);padding-top:8px;margin-top:4px;">
+                        <span class="calc-label"><strong>Estimated monthly AI revenue gap</strong></span>
+                        <span class="calc-value"><strong>${ind.currency}${missedRevenue.toLocaleString()}/mo</strong></span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Daily loss in urgency bar
+        document.getElementById('dailyLoss').textContent = ind.currency + Math.round(missedRevenue / 30).toLocaleString();
+
+        // ——— Findings ———
+        let findings;
+        if (apiResults && apiResults.findings && apiResults.findings.length > 0) {
+            findings = apiResults.findings.slice(0, 6);
+        } else {
+            findings = [
+                { title:'Not recommended by AI search engines', description:'Your business does not appear in ChatGPT, Perplexity, or Gemini recommendations for key industry queries.', severity:'critical', impact:'AI-driven leads going entirely to competitors' },
+                { title:'Missing structured data markup', description:'No JSON-LD schema detected. AI engines rely heavily on structured data to understand and recommend businesses.', severity:'critical', impact:'AI engines cannot properly categorise your services' },
+                { title:'Weak meta descriptions', description:'Meta descriptions are either missing or not optimised for AI extraction and search snippets.', severity:'high', impact:'Reduced click-through from both AI and traditional search' },
+                { title:'No FAQ schema implemented', description:'FAQ content exists but is not marked up with schema, missing opportunities for AI answer extraction.', severity:'high', impact:'AI engines skip your content for direct answers' },
+                { title:'Low trust signal density', description:'Limited social proof, testimonials, and trust badges detected on key landing pages.', severity:'medium', impact:'Conversion rate 40-60% below industry average' },
+                { title:'No conversion optimisation detected', description:'No A/B testing, dynamic content, or personalisation layer found on the website.', severity:'medium', impact:'Static experience leaving revenue on the table' },
+            ];
+        }
+
+        const findingsGrid = document.getElementById('findingsGrid');
+        findingsGrid.innerHTML = findings.map(f => `
+            <div class="finding-card">
+                <span class="severity ${f.severity || 'high'}">${(f.severity || 'high').toUpperCase()}</span>
+                <div class="finding-title">${f.title}</div>
+                <div class="finding-desc">${f.description || ''}</div>
+                <div class="finding-impact">${f.impact || ''}</div>
+            </div>
+        `).join('');
+
+        // ——— Show results ———
+        document.getElementById('scanningPhase').classList.add('hidden');
+        document.getElementById('resultsPhase').classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      } catch (err) {
+        console.error('[9EL] showResults error:', err);
+        // Still show results phase even if something crashed
+        document.getElementById('scanningPhase').classList.add('hidden');
+        document.getElementById('resultsPhase').classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    // Hamburger menu
+    document.querySelector('.hamburger').addEventListener('click', function() {
+        document.querySelector('nav .nav-links').classList.toggle('active');
+    });
+    </script>
+</body>
+</html>

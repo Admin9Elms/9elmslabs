@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — 9 Elms Labs</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #0a0e27; color: #e0e0e0; }
+        .loading-screen { position: fixed; inset: 0; background: #0a0e27; display: flex; align-items: center; justify-content: center; z-index: 1000; flex-direction: column; gap: 16px; }
+        .loading-screen .spinner { width: 40px; height: 40px; border: 3px solid rgba(0,212,255,0.2); border-top-color: #00d4ff; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .app { display: flex; min-height: 100vh; }
+        .sidebar {
+            width: 240px; background: #0d1130; border-right: 1px solid rgba(255,255,255,0.06);
+            padding: 24px 0; display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 10;
+        }
+        .sidebar-logo { text-align: center; font-size: 24px; font-weight: 900; letter-spacing: 2px; padding-bottom: 8px; }
+        .sidebar-sub { text-align: center; font-size: 11px; color: #00d4ff; margin-bottom: 24px; }
+        .sidebar-plan { text-align: center; margin-bottom: 24px; }
+        .sidebar-plan .badge {
+            display: inline-block; background: linear-gradient(135deg,#00d4ff,#9d4edd); color: #0a0e27;
+            padding: 3px 14px; border-radius: 16px; font-size: 11px; font-weight: 700; text-transform: uppercase;
+        }
+        .nav-item {
+            display: flex; align-items: center; gap: 10px; padding: 11px 24px; font-size: 14px;
+            color: #8888a0; cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent;
+        }
+        .nav-item:hover { background: rgba(255,255,255,0.03); color: #fff; }
+        .nav-item.active { color: #00d4ff; border-left-color: #00d4ff; background: rgba(0,212,255,0.05); }
+        .nav-item.locked { opacity: 0.35; cursor: not-allowed; }
+        .nav-item .lock-icon { font-size: 10px; margin-left: auto; }
+        .sidebar-bottom { margin-top: auto; padding: 20px 24px; border-top: 1px solid rgba(255,255,255,0.06); }
+        .sidebar-bottom .user-name { font-size: 13px; font-weight: 600; }
+        .sidebar-bottom .user-email { font-size: 11px; color: #8888a0; margin-bottom: 12px; }
+        .logout-btn {
+            display: block; width: 100%; padding: 8px; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #8888a0;
+            font-size: 12px; cursor: pointer; text-align: center;
+        }
+        .logout-btn:hover { color: #e74c3c; border-color: #e74c3c; }
+
+        .main { flex: 1; margin-left: 240px; padding: 32px; }
+        .page-header { margin-bottom: 28px; }
+        .page-header h1 { font-size: 24px; color: white; }
+        .page-header .date { font-size: 13px; color: #8888a0; margin-top: 4px; }
+
+        .score-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+        .score-card {
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px; padding: 20px;
+        }
+        .score-card .label { font-size: 12px; color: #8888a0; text-transform: uppercase; letter-spacing: 0.5px; }
+        .score-card .value { font-size: 32px; font-weight: 700; margin: 8px 0 4px; }
+        .score-card .trend { font-size: 12px; }
+        .trend.up { color: #2ecc71; } .trend.down { color: #e74c3c; } .trend.flat { color: #8888a0; }
+
+        .section { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+        .section h3 { font-size: 16px; color: white; margin-bottom: 16px; }
+        .section .empty { color: #8888a0; font-size: 14px; font-style: italic; }
+
+        .chart-canvas { width: 100%; height: 200px; }
+
+        .findings-table { width: 100%; border-collapse: collapse; }
+        .findings-table th { text-align: left; font-size: 11px; color: #8888a0; text-transform: uppercase; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .findings-table td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 13px; }
+        .severity-badge { display: inline-block; padding: 2px 10px; border-radius: 10px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+        .severity-badge.critical { background: rgba(231,76,60,0.15); color: #e74c3c; }
+        .severity-badge.high { background: rgba(243,156,18,0.15); color: #f39c12; }
+        .severity-badge.medium { background: rgba(0,212,255,0.15); color: #00d4ff; }
+        .severity-badge.low { background: rgba(46,204,113,0.15); color: #2ecc71; }
+
+        .competitor-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .competitor-row:last-child { border: none; }
+        .competitor-name { font-size: 14px; } .competitor-score { font-size: 14px; font-weight: 600; color: #00d4ff; }
+
+        .content-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+        .content-item .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .content-item .content-title { font-size: 14px; font-weight: 600; color: white; }
+        .content-item .content-date { font-size: 11px; color: #8888a0; }
+        .content-item .content-type { font-size: 11px; color: #00d4ff; text-transform: uppercase; }
+        .content-item .copy-btn {
+            background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.3); color: #00d4ff;
+            padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; margin-top: 10px;
+        }
+        .content-item .copy-btn:hover { background: rgba(0,212,255,0.2); }
+
+        .snippet-box { background: #0d1130; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px; font-family: monospace; font-size: 13px; color: #00d4ff; word-break: break-all; position: relative; }
+        .snippet-copy { position: absolute; top: 8px; right: 8px; background: #00d4ff; color: #0a0e27; border: none; padding: 4px 12px; border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: 600; }
+
+        .tab-content { display: none; } .tab-content.active { display: block; }
+
+        @media (max-width: 900px) { .sidebar { display: none; } .main { margin-left: 0; } .score-cards { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="spinner"></div>
+        <div style="color:#8888a0;font-size:14px;">Loading your dashboard...</div>
+    </div>
+
+    <div class="app" id="app" style="display:none;">
+        <aside class="sidebar">
+            <div class="sidebar-logo">9EL</div>
+            <div class="sidebar-sub">9 Elms Labs</div>
+            <div class="sidebar-plan"><span class="badge" id="planBadge">Growth</span></div>
+
+            <div class="nav-item active" data-tab="overview">📊 Overview</div>
+            <div class="nav-item" data-tab="findings">🔍 Findings</div>
+            <div class="nav-item" data-tab="competitors">🏢 Competitors</div>
+            <div class="nav-item" data-tab="content" data-min-plan="scale">📝 Content</div>
+            <div class="nav-item" data-tab="snippet">⚡ Snippet</div>
+            <div class="nav-item" data-tab="settings">⚙ Settings</div>
+
+            <div class="sidebar-bottom">
+                <div class="user-name" id="userName">—</div>
+                <div class="user-email" id="userEmail">—</div>
+                <button class="logout-btn" id="logoutBtn">Sign Out</button>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="tab-content active" id="tab-overview">
+                <div class="page-header">
+                    <h1 id="headerTitle">Dashboard</h1>
+                    <div class="date" id="headerDate"></div>
+                </div>
+                <div class="score-cards">
+                    <div class="score-card"><div class="label">Overall Score</div><div class="value" id="overallScore" style="color:#00d4ff;">—</div><div class="trend flat" id="overallTrend">No data yet</div></div>
+                    <div class="score-card"><div class="label">AI Visibility</div><div class="value" id="aiScore">—</div><div class="trend flat">out of 100</div></div>
+                    <div class="score-card"><div class="label">SEO Health</div><div class="value" id="seoScore">—</div><div class="trend flat">out of 100</div></div>
+                    <div class="score-card"><div class="label">Conversion</div><div class="value" id="convScore">—</div><div class="trend flat">out of 100</div></div>
+                </div>
+                <div class="section"><h3>Revenue Impact</h3><div id="revenueSection" class="empty">Your first scan is still processing. Revenue data will appear here shortly.</div></div>
+                <div class="section"><h3>Score History</h3><canvas id="scoreChart" class="chart-canvas"></canvas><div id="chartEmpty" class="empty" style="display:none;">Score history will build up as monitoring runs.</div></div>
+            </div>
+
+            <div class="tab-content" id="tab-findings">
+                <div class="page-header"><h1>Findings & Issues</h1></div>
+                <div class="section">
+                    <table class="findings-table"><thead><tr><th>Severity</th><th>Issue</th><th>Impact</th></tr></thead><tbody id="findingsBody"></tbody></table>
+                    <div class="empty" id="findingsEmpty" style="display:none;">No findings yet.</div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="tab-competitors">
+                <div class="page-header"><h1>Competitor Landscape</h1></div>
+                <div class="section"><div id="competitorsList"></div><div class="empty" id="competitorsEmpty" style="display:none;">Competitor data builds over time.</div></div>
+            </div>
+
+            <div class="tab-content" id="tab-content">
+                <div class="page-header"><h1>Content Deliverables</h1><div class="date">AI-optimised content ready for your website</div></div>
+                <div id="contentList"></div>
+                <div class="empty" id="contentEmpty" style="display:none;">Your first content batch is being prepared.</div>
+            </div>
+
+            <div class="tab-content" id="tab-snippet">
+                <div class="page-header"><h1>Conversion Tracking Snippet</h1><div class="date">Add this to your website to enable conversion tracking and A/B testing</div></div>
+                <div class="section">
+                    <h3>Installation</h3>
+                    <p style="font-size:14px;color:#8888a0;margin-bottom:16px;">Copy this code and paste it before the closing &lt;/body&gt; tag on every page of your website.</p>
+                    <div class="snippet-box" id="snippetCode">Loading...</div>
+                </div>
+                <div class="section">
+                    <h3>What it does</h3>
+                    <p style="font-size:14px;color:#8888a0;line-height:1.7;">The snippet runs lightweight A/B tests on your headlines, CTAs, and forms. It also measures scroll depth, time on page, and bounce rate. All data feeds into your dashboard. GDPR-compliant — first-party only, no cross-site tracking.</p>
+                </div>
+            </div>
+
+            <div class="tab-content" id="tab-settings">
+                <div class="page-header"><h1>Account Settings</h1></div>
+                <div class="section">
+                    <h3>Business Details</h3>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;">
+                        <div><span style="font-size:12px;color:#8888a0;">Business Name</span><div id="settBiz" style="font-size:15px;margin-top:4px;">—</div></div>
+                        <div><span style="font-size:12px;color:#8888a0;">Website</span><div id="settUrl" style="font-size:15px;margin-top:4px;">—</div></div>
+                        <div><span style="font-size:12px;color:#8888a0;">Industry</span><div id="settIndustry" style="font-size:15px;margin-top:4px;">—</div></div>
+                        <div><span style="font-size:12px;color:#8888a0;">Plan</span><div id="settPlan" style="font-size:15px;margin-top:4px;">—</div></div>
+                        <div><span style="font-size:12px;color:#8888a0;">Email</span><div id="settEmail" style="font-size:15px;margin-top:4px;">—</div></div>
+                        <div><span style="font-size:12px;color:#8888a0;">Member Since</span><div id="settSince" style="font-size:15px;margin-top:4px;">—</div></div>
+                    </div>
+                </div>
+                <div class="section">
+                    <h3>Need Help?</h3>
+                    <p style="font-size:14px;color:#8888a0;line-height:1.7;">Email <a href="mailto:hello@9elmslabs.co.uk" style="color:#00d4ff;">hello@9elmslabs.co.uk</a> or <a href="https://calendly.com/9elmslabs/intro" target="_blank" style="color:#00d4ff;">book a call</a></p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+    (function() {
+        const PLAN_TIERS = { growth: 1, scale: 2, enterprise: 3 };
+        let clientData = null;
+
+        async function init() {
+            try {
+                const resp = await fetch('/api/auth-me', { credentials: 'same-origin' });
+                if (!resp.ok) { window.location.href = '/login.html'; return; }
+                const data = await resp.json();
+                if (!data.success) { window.location.href = '/login.html'; return; }
+                clientData = data;
+                renderDashboard(data);
+            } catch (err) {
+                console.error('Dashboard init error:', err);
+                window.location.href = '/login.html';
+            }
+        }
+
+        function renderDashboard(data) {
+            const c = data.client;
+            const planLevel = PLAN_TIERS[c.plan] || 1;
+
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('app').style.display = 'flex';
+
+            document.getElementById('headerTitle').textContent = c.businessName;
+            document.getElementById('headerDate').textContent = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            document.getElementById('planBadge').textContent = c.plan.charAt(0).toUpperCase() + c.plan.slice(1);
+            document.getElementById('userName').textContent = c.contactName || c.businessName;
+            document.getElementById('userEmail').textContent = c.email;
+
+            if (data.scores) {
+                document.getElementById('overallScore').textContent = data.scores.overall;
+                document.getElementById('aiScore').textContent = data.scores.aiVisibility;
+                document.getElementById('seoScore').textContent = data.scores.seoHealth;
+                document.getElementById('convScore').textContent = data.scores.conversion;
+                const trendEl = document.getElementById('overallTrend');
+                if (data.scoreTrend > 0) { trendEl.textContent = '+' + data.scoreTrend + ' pts from last week'; trendEl.className = 'trend up'; }
+                else if (data.scoreTrend < 0) { trendEl.textContent = data.scoreTrend + ' pts from last week'; trendEl.className = 'trend down'; }
+                else { trendEl.textContent = 'First scan — trend shows next week'; trendEl.className = 'trend flat'; }
+                colorScore('aiScore', data.scores.aiVisibility);
+                colorScore('seoScore', data.scores.seoHealth);
+                colorScore('convScore', data.scores.conversion);
+            }
+
+            if (data.revenueImpact) {
+                const r = data.revenueImpact;
+                document.getElementById('revenueSection').innerHTML =
+                    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">' +
+                    '<div><div style="font-size:12px;color:#8888a0;">Monthly Opportunity</div><div style="font-size:24px;font-weight:700;color:#e74c3c;margin-top:4px;">\u00a3' + (r.missed||0).toLocaleString() + '</div></div>' +
+                    '<div><div style="font-size:12px;color:#8888a0;">Current AI Revenue</div><div style="font-size:24px;font-weight:700;color:#f39c12;margin-top:4px;">\u00a3' + (r.current||0).toLocaleString() + '</div></div>' +
+                    '<div><div style="font-size:12px;color:#8888a0;">Optimised Potential</div><div style="font-size:24px;font-weight:700;color:#2ecc71;margin-top:4px;">\u00a3' + (r.potential||0).toLocaleString() + '</div></div>' +
+                    '</div>';
+            }
+
+            if (data.monitorHistory && data.monitorHistory.length > 1) { drawChart(data.monitorHistory); }
+            else { document.getElementById('scoreChart').style.display = 'none'; document.getElementById('chartEmpty').style.display = 'block'; }
+
+            if (data.findings && data.findings.length > 0) {
+                document.getElementById('findingsBody').innerHTML = data.findings.map(function(f) {
+                    return '<tr><td><span class="severity-badge ' + (f.severity||'medium') + '">' + (f.severity||'medium').toUpperCase() + '</span></td>' +
+                        '<td style="color:white;">' + (f.title||f.description||'') + '</td>' +
+                        '<td style="color:#8888a0;">' + (f.impact||'') + '</td></tr>';
+                }).join('');
+            } else { document.getElementById('findingsEmpty').style.display = 'block'; }
+
+            if (data.competitors && data.competitors.length > 0) {
+                document.getElementById('competitorsList').innerHTML = data.competitors.map(function(comp) {
+                    var name = typeof comp === 'string' ? comp : (comp.name || comp);
+                    var score = typeof comp === 'object' && comp.score ? comp.score + '/100' : 'Tracked';
+                    return '<div class="competitor-row"><div class="competitor-name">' + name + '</div><div class="competitor-score">' + score + '</div></div>';
+                }).join('');
+            } else { document.getElementById('competitorsEmpty').style.display = 'block'; }
+
+            if (data.content && data.content.length > 0) {
+                document.getElementById('contentList').innerHTML = data.content.map(function(item) {
+                    return '<div class="content-item"><div class="content-header"><div><div class="content-title">' + (item.title||'Untitled') + '</div><div class="content-type">' + (item.type||'Article') + '</div></div>' +
+                        '<div class="content-date">' + new Date(item.date).toLocaleDateString('en-GB') + '</div></div>' +
+                        '<button class="copy-btn" data-content-id="' + item.id + '">Copy HTML</button></div>';
+                }).join('');
+                document.querySelectorAll('.copy-btn[data-content-id]').forEach(function(btn) {
+                    btn.addEventListener('click', function() { copyContent(this); });
+                });
+            } else { document.getElementById('contentEmpty').style.display = 'block'; }
+
+            var snippetHtml = '&lt;script src="https://9elmslabs.co.uk/snippet.js" data-client-id="' + c.clientId + '"&gt;&lt;/script&gt;';
+            document.getElementById('snippetCode').innerHTML = snippetHtml + '<button class="snippet-copy" id="snippetCopyBtn">Copy</button>';
+            document.getElementById('snippetCopyBtn').addEventListener('click', copySnippet);
+
+            document.getElementById('settBiz').textContent = c.businessName;
+            document.getElementById('settUrl').textContent = c.url || '\u2014';
+            document.getElementById('settIndustry').textContent = c.industry;
+            document.getElementById('settPlan').textContent = c.plan.charAt(0).toUpperCase() + c.plan.slice(1) + ' Plan';
+            document.getElementById('settEmail').textContent = c.email;
+            document.getElementById('settSince').textContent = c.createdAt ? new Date(c.createdAt).toLocaleDateString('en-GB') : '\u2014';
+
+            document.querySelectorAll('.nav-item[data-min-plan]').forEach(function(item) {
+                var minLevel = PLAN_TIERS[item.getAttribute('data-min-plan')] || 1;
+                if (planLevel < minLevel) { item.classList.add('locked'); item.innerHTML += '<span class="lock-icon">🔒</span>'; }
+            });
+        }
+
+        function colorScore(id, score) {
+            var el = document.getElementById(id);
+            if (score < 30) el.style.color = '#e74c3c';
+            else if (score < 60) el.style.color = '#f39c12';
+            else el.style.color = '#2ecc71';
+        }
+
+        function drawChart(history) {
+            var canvas = document.getElementById('scoreChart');
+            var ctx = canvas.getContext('2d');
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = 200;
+            var w = canvas.width, h = canvas.height;
+            var pad = { top: 20, right: 20, bottom: 30, left: 40 };
+            var points = history.slice(0, 30).reverse();
+            if (points.length < 2) return;
+            var xStep = (w - pad.left - pad.right) / (points.length - 1);
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 1;
+            for (var y = 0; y <= 100; y += 25) {
+                var py = pad.top + (1 - y / 100) * (h - pad.top - pad.bottom);
+                ctx.beginPath(); ctx.moveTo(pad.left, py); ctx.lineTo(w - pad.right, py); ctx.stroke();
+                ctx.fillStyle = '#8888a0'; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
+                ctx.fillText(y, pad.left - 6, py + 3);
+            }
+            drawLine(ctx, points.map(function(p){return p.aiScore||0;}), '#00d4ff', pad, w, h, xStep);
+            drawLine(ctx, points.map(function(p){return p.seoScore||0;}), '#9d4edd', pad, w, h, xStep);
+            drawLine(ctx, points.map(function(p){return p.convScore||0;}), '#2ecc71', pad, w, h, xStep);
+            ctx.font = '11px sans-serif';
+            ctx.fillStyle = '#00d4ff'; ctx.fillText('\u2014 AI Visibility', pad.left, h - 8);
+            ctx.fillStyle = '#9d4edd'; ctx.fillText('\u2014 SEO Health', pad.left + 100, h - 8);
+            ctx.fillStyle = '#2ecc71'; ctx.fillText('\u2014 Conversion', pad.left + 190, h - 8);
+        }
+
+        function drawLine(ctx, values, color, pad, w, h, xStep) {
+            ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.beginPath();
+            values.forEach(function(v, i) {
+                var x = pad.left + i * xStep;
+                var y = pad.top + (1 - v / 100) * (h - pad.top - pad.bottom);
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+        }
+
+        document.querySelectorAll('.nav-item[data-tab]').forEach(function(item) {
+            item.addEventListener('click', function() {
+                if (this.classList.contains('locked')) return;
+                document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+                this.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+                var tab = document.getElementById('tab-' + this.dataset.tab);
+                if (tab) tab.classList.add('active');
+            });
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            document.cookie = '9el_session=; Path=/; Max-Age=0';
+            window.location.href = '/login.html';
+        });
+
+        function copySnippet() {
+            var raw = '<script src="https://9elmslabs.co.uk/snippet.js" data-client-id="' + (clientData && clientData.client ? clientData.client.clientId : '') + '"><\/script>';
+            navigator.clipboard.writeText(raw);
+            var btn = document.getElementById('snippetCopyBtn');
+            btn.textContent = 'Copied!'; setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+        }
+
+        function copyContent(btn) {
+            var id = btn.getAttribute('data-content-id');
+            if (clientData && clientData.content) {
+                var item = clientData.content.find(function(c) { return c.id === id; });
+                if (item && item.html) {
+                    navigator.clipboard.writeText(item.html);
+                    btn.textContent = 'Copied!'; setTimeout(function() { btn.textContent = 'Copy HTML'; }, 2000);
+                }
+            }
+        }
+
+        init();
+    })();
+    </script>
+</body>
+</html>

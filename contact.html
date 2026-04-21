@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - 9 Elms Labs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0f;
+            color: #f0f0f5;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Background effects */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(42, 42, 58, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(42, 42, 58, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            border-radius: 10px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #2a2a3a;
+            z-index: 1000;
+            padding: 0 clamp(20px, 5vw, 48px);
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        nav .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #f0f0f5;
+        }
+
+        nav .logo {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav .brand {
+            font-size: 14px;
+            color: #8888a0;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: clamp(20px, 3vw, 40px);
+            list-style: none;
+        }
+
+        nav a {
+            color: #f0f0f5;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            transition: width 0.3s;
+        }
+
+        nav a:hover {
+            color: #00d4ff;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: #f0f0f5;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* Main content */
+        main {
+            position: relative;
+            z-index: 1;
+            padding-top: 70px;
+        }
+
+        .section {
+            padding: clamp(40px, 8vw, 80px) clamp(20px, 5vw, 48px);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            margin-bottom: 80px;
+            padding: 60px 0;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #8888a0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Two column layout */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 80px;
+        }
+
+        /* Form styling */
+        .contact-form {
+            background: #16161f;
+            border: 1px solid #2a2a3a;
+            border-radius: 20px;
+            padding: 48px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #f0f0f5;
+            margin-bottom: 8px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            background: #0a0a0f;
+            border: 1px solid #2a2a3a;
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #f0f0f5;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.3s;
+            resize: vertical;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        textarea {
+            min-height: 120px;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238888a0' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            color: #0a0a0f;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Success/error messages */
+        .form-message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .form-message.success {
+            display: block;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, transparent 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #10b981;
+        }
+
+        .form-message.error {
+            display: block;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, transparent 100%);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+
+        /* Contact info */
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .info-card {
+            background: #16161f;
+            border: 1px solid #2a2a3a;
+            border-radius: 20px;
+            padding: 36px;
+        }
+
+        .info-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #f0f0f5;
+        }
+
+        .info-card-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .info-text {
+            flex: 1;
+        }
+
+        .info-text p {
+            color: #f0f0f5;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .info-text a {
+            color: #00d4ff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .info-text a:hover {
+            color: #8b5cf6;
+        }
+
+        .info-label {
+            color: #8888a0;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        /* Booking section */
+        .booking-section {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 20px;
+            padding: 36px;
+        }
+
+        .booking-section h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .booking-section p {
+            color: #8888a0;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .booking-btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background: transparent;
+            border: 1px solid #2a2a3a;
+            color: #f0f0f5;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .booking-btn:hover {
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+
+        /* Trust signals */
+        .trust-section {
+            background: #16161f;
+            border: 1px solid #2a2a3a;
+            border-radius: 20px;
+            padding: 36px;
+            margin-bottom: 80px;
+        }
+
+        .trust-section h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+        }
+
+        .trust-item {
+            text-align: center;
+        }
+
+        .trust-number {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .trust-label {
+            color: #8888a0;
+            font-size: 14px;
+        }
+
+        /* Footer */
+        footer {
+            background: #0a0a0f;
+            border-top: 1px solid #2a2a3a;
+            padding: 60px clamp(20px, 5vw, 48px) 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #f0f0f5;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column a {
+            color: #8888a0;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .footer-column a:hover {
+            color: #00d4ff;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            color: #5a5a70;
+            font-size: 12px;
+            border-top: 1px solid #2a2a3a;
+            padding-top: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            nav .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #0a0e27;
+                padding: 20px;
+                gap: 15px;
+            }
+
+            nav .nav-links.active {
+                display: flex;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .contact-form {
+                padding: 36px 24px;
+            }
+
+            .info-card {
+                padding: 24px;
+            }
+
+            .trust-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 40px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+
+    <nav>
+        <a href="index.html" class="logo-section">
+            <span class="logo">9EL</span>
+            <div class="brand">
+                <div style="font-size: 13px; font-weight: 600;">9 Elms Labs</div>
+                <div style="font-size: 11px; color: #5a5a70;">by Audley & Oxford</div>
+            </div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html#solution">Product</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="scan.html">Get Started</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero -->
+        <section class="section">
+            <div class="hero">
+                <h1>Get in Touch</h1>
+                <p>Have questions about 9 Elms Labs? Our team is here to help. Reach out and we'll get back to you within 24 hours.</p>
+            </div>
+        </section>
+
+        <!-- Contact Form & Info -->
+        <section class="section">
+            <div class="contact-container">
+                <!-- Left: Contact Form -->
+                <div class="contact-form">
+                    <h2 style="font-size: 24px; margin-bottom: 32px;">Send us a Message</h2>
+
+                    <div id="formMessage" class="form-message"></div>
+
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" placeholder="Your name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="company">Company</label>
+                            <input type="text" id="company" name="company" placeholder="Your company name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone (optional)</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+44 (0)20 xxxx xxxx">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="interest">Plan Interested In</label>
+                            <select id="interest" name="interest" required>
+                                <option value="">Select an option</option>
+                                <option value="free-scan">Free Scan</option>
+                                <option value="full-audit">Full Audit (£2,499)</option>
+                                <option value="growth">Growth Plan (£499/month)</option>
+                                <option value="scale">Scale Plan (£1,499/month)</option>
+                                <option value="enterprise">Enterprise (£2,999/month)</option>
+                                <option value="other">Other Inquiry</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" placeholder="Tell us more about your needs..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+
+                        <p style="color: #5a5a70; font-size: 12px; margin-top: 16px; text-align: center;">
+                            We'll respond within 24 hours. Your data is secure and never shared.
+                        </p>
+                    </form>
+                </div>
+
+                <!-- Right: Contact Info -->
+                <div class="contact-info">
+                    <!-- Email -->
+                    <div class="info-card">
+                        <h3>Email</h3>
+                        <div class="info-card-content">
+                            <div class="info-icon">✉️</div>
+                            <div class="info-text">
+                                <div class="info-label">Get in touch directly</div>
+                                <p><a href="mailto:hello@9elmslabs.co.uk">hello@9elmslabs.co.uk</a></p>
+                                <p style="margin-bottom: 0;">Typical response time: Within 24 hours</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="info-card">
+                        <h3>Location</h3>
+                        <div class="info-card-content">
+                            <div class="info-icon">📍</div>
+                            <div class="info-text">
+                                <div class="info-label">Where we're based</div>
+                                <p>London, United Kingdom</p>
+                                <p style="color: #8888a0; font-size: 13px; margin-bottom: 0;">Serving clients globally with remote partnerships</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Booking -->
+                    <div class="booking-section">
+                        <h3>Book a Call</h3>
+                        <p>Want to discuss your AI optimization strategy with our team? Schedule a call at a time that works for you.</p>
+                        <a href="https://calendly.com/9elmslabs/intro" target="_blank" class="booking-btn">Book Your Intro Call</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trust Signals -->
+        <section class="section">
+            <div class="trust-section">
+                <h2>Why Work With Us</h2>
+                <div class="trust-grid">
+                    <div class="trust-item">
+                        <div class="trust-number">50+</div>
+                        <div class="trust-label">Revenue-focused audits delivered</div>
+                    </div>
+                    <div class="trust-item">
+                        <div class="trust-number">£2M+</div>
+                        <div class="trust-label">Identified revenue opportunities</div>
+                    </div>
+                    <div class="trust-item">
+                        <div class="trust-number">24h</div>
+                        <div class="trust-label">Average response time</div>
+                    </div>
+                    <div class="trust-item">
+                        <div class="trust-number">100%</div>
+                        <div class="trust-label">Money-back guarantee</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Alternative -->
+        <section class="section" style="text-align: center; padding: 40px clamp(20px, 5vw, 48px);">
+            <h2 style="font-size: 24px; margin-bottom: 16px;">Not sure which option is right for you?</h2>
+            <p style="color: #8888a0; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Try our free visibility scan to get started, or dive straight into our full audit for comprehensive analysis.
+            </p>
+            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                <a href="scan.html" class="btn btn-primary" style="width: auto; padding: 12px 32px;">Start Free Scan</a>
+                <a href="audit.html" class="btn btn-primary" style="width: auto; padding: 12px 32px;">View Full Audit</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>9 Elms Labs</h4>
+                <p style="color: #8888a0; font-size: 14px;">AI-powered revenue optimization by Audley & Oxford Advisory Firm</p>
+            </div>
+            <div class="footer-column">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="index.html#solution">Features</a></li>
+                    <li><a href="scan.html">Free Scan</a></li>
+                    <li><a href="audit.html">Full Audit</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Terms</a></li>
+                    <li><a href="#">Cookies</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 9 Elms Labs. All rights reserved. Audley & Oxford Advisory Firm.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Contact form submission
+        document.getElementById('contactForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const messageDiv = document.getElementById('formMessage');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                company: document.getElementById('company').value,
+                phone: document.getElementById('phone').value,
+                interest: document.getElementById('interest').value,
+                message: document.getElementById('message').value
+            };
+
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+
+            try {
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    messageDiv.textContent = 'Thanks for reaching out! We\'ll get back to you within 24 hours.';
+                    messageDiv.className = 'form-message success';
+                    document.getElementById('contactForm').reset();
+                    submitBtn.textContent = 'Send Message';
+                    submitBtn.disabled = false;
+
+                    // Clear message after 5 seconds
+                    setTimeout(() => {
+                        messageDiv.className = 'form-message';
+                        messageDiv.textContent = '';
+                    }, 5000);
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                messageDiv.textContent = 'Something went wrong. Please try again or email us directly at hello@9elmslabs.co.uk';
+                messageDiv.className = 'form-message error';
+                submitBtn.textContent = 'Send Message';
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Hamburger menu
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('nav .nav-links').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

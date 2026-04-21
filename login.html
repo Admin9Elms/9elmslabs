@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — 9 Elms Labs</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0e27;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 48px 40px;
+            max-width: 440px;
+            width: 90%;
+            text-align: center;
+        }
+        .logo { font-size: 36px; font-weight: 900; letter-spacing: 2px; }
+        .logo-sub { font-size: 14px; color: #00d4ff; margin-bottom: 32px; }
+        h2 { font-size: 22px; margin-bottom: 8px; }
+        .subtitle { color: #8888a0; font-size: 14px; margin-bottom: 28px; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; font-size: 13px; color: #8888a0; margin-bottom: 6px; }
+        .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .input-group input:focus { border-color: #00d4ff; }
+        .btn-primary {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: #00d4ff;
+            color: #0a0e27;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .btn-primary:hover { opacity: 0.9; }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .status-msg {
+            margin-top: 16px;
+            font-size: 14px;
+            min-height: 20px;
+        }
+        .status-msg.success { color: #2ecc71; }
+        .status-msg.error { color: #e74c3c; }
+        .divider { margin: 28px 0; border-top: 1px solid rgba(255,255,255,0.1); }
+        .alt-links { font-size: 13px; color: #8888a0; }
+        .alt-links a { color: #00d4ff; text-decoration: none; }
+        .alt-links a:hover { text-decoration: underline; }
+        .check-sent {
+            display: none;
+            text-align: center;
+        }
+        .check-sent .icon { font-size: 48px; margin-bottom: 16px; }
+        .check-sent h3 { margin-bottom: 8px; }
+        .check-sent p { color: #8888a0; font-size: 14px; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="logo">9EL</div>
+        <div class="logo-sub">9 Elms Labs</div>
+
+        <div id="loginForm">
+            <h2>Sign in to your dashboard</h2>
+            <p class="subtitle">We'll send a secure login link to your email — no password needed.</p>
+
+            <form id="magicLinkForm">
+                <div class="input-group">
+                    <label for="email">Email address</label>
+                    <input type="email" id="email" placeholder="you@company.com" required>
+                </div>
+                <button type="submit" class="btn-primary" id="submitBtn">Send Login Link</button>
+            </form>
+            <div class="status-msg" id="statusMsg"></div>
+        </div>
+
+        <div class="check-sent" id="sentConfirmation">
+            <div class="icon">📧</div>
+            <h3>Check your inbox</h3>
+            <p>We've sent a login link to <strong id="sentEmail"></strong>. Click the link in the email to access your dashboard.</p>
+            <p style="margin-top: 16px;">Didn't get it? Check your spam folder or <a href="#" id="resendLink" style="color:#00d4ff;">send again</a>.</p>
+        </div>
+
+        <div class="divider"></div>
+        <div class="alt-links">
+            <p>Don't have an account? <a href="pricing.html">View plans</a></p>
+            <p style="margin-top: 8px;"><a href="scan.html">Try a free scan first</a></p>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        const form = document.getElementById('magicLinkForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const statusMsg = document.getElementById('statusMsg');
+        const loginFormDiv = document.getElementById('loginForm');
+        const sentDiv = document.getElementById('sentConfirmation');
+        let lastEmail = '';
+
+        // Check for error params
+        const params = new URLSearchParams(window.location.search);
+        const error = params.get('error');
+        if (error === 'expired') statusMsg.textContent = 'Login link expired. Please request a new one.';
+        else if (error === 'inactive') statusMsg.textContent = 'Account not found. Please contact support.';
+        else if (error === 'missing-token') statusMsg.textContent = 'Invalid login link. Please request a new one.';
+        else if (error === 'server') statusMsg.textContent = 'Server error. Please try again.';
+        if (error) statusMsg.className = 'status-msg error';
+
+        async function sendMagicLink(email) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            statusMsg.textContent = '';
+            statusMsg.className = 'status-msg';
+
+            try {
+                const resp = await fetch('/api/auth-send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email }),
+                });
+                const data = await resp.json();
+                if (resp.ok) {
+                    loginFormDiv.style.display = 'none';
+                    sentDiv.style.display = 'block';
+                    document.getElementById('sentEmail').textContent = email;
+                    lastEmail = email;
+                } else {
+                    statusMsg.textContent = data.error || 'Something went wrong.';
+                    statusMsg.className = 'status-msg error';
+                }
+            } catch (e) {
+                statusMsg.textContent = 'Network error. Please try again.';
+                statusMsg.className = 'status-msg error';
+            }
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send Login Link';
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            if (email) sendMagicLink(email);
+        });
+
+        document.getElementById('resendLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (lastEmail) {
+                sentDiv.style.display = 'none';
+                loginFormDiv.style.display = 'block';
+                document.getElementById('email').value = lastEmail;
+                sendMagicLink(lastEmail);
+            }
+        });
+    })();
+    </script>
+</body>
+</html>

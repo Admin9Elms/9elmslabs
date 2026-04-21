@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - 9 Elms Labs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #f0f0f5;
+            overflow-x: hidden;
+        }
+
+        /* Background effects */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 0%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(139, 92, 246, 0.03) 2px,
+                    rgba(139, 92, 246, 0.03) 4px
+                );
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Navbar */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #2a2a3a;
+            padding: 1rem 2rem;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: #f0f0f5;
+        }
+
+        .navbar-logo {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .navbar-brand-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .navbar-brand-text strong {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .navbar-brand-text small {
+            font-size: 11px;
+            color: #8888a0;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .navbar-links a {
+            text-decoration: none;
+            color: #8888a0;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-links a:hover {
+            color: #00d4ff;
+        }
+
+        .navbar-links a.active {
+            color: #00d4ff;
+        }
+
+        /* Main container */
+        main {
+            min-height: calc(100vh - 73px);
+            padding: 4rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            max-width: 800px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            color: #8888a0;
+            font-size: 1rem;
+        }
+
+        /* Plan selection grid (when no plan specified) */
+        .plan-selection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .plan-card {
+            background: #16161f;
+            border: 1px solid #2a2a3a;
+            border-radius: 16px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .plan-card:hover {
+            border-color: #00d4ff;
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.1);
+        }
+
+        .plan-card .plan-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-card .plan-price {
+            font-size: 1.75rem;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+        }
+
+        .plan-card .plan-description {
+            color: #8888a0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Checkout container */
+        .checkout-container {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .checkout-card {
+            background: #16161f;
+            border: 1px solid #2a2a3a;
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .plan-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #2a2a3a;
+        }
+
+        .plan-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .plan-badge.free {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border: 1px solid #10b981;
+        }
+
+        .plan-badge.paid {
+            background: rgba(0, 212, 255, 0.1);
+            color: #00d4ff;
+            border: 1px solid #00d4ff;
+        }
+
+        .plan-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-price {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-billing {
+            color: #8888a0;
+            font-size: 0.95rem;
+        }
+
+        .plan-description {
+            color: #8888a0;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-top: 1rem;
+        }
+
+        .plan-features {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #2a2a3a;
+        }
+
+        .plan-features-title {
+            font-size: 0.9rem;
+            color: #5a5a70;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .plan-features ul {
+            list-style: none;
+        }
+
+        .plan-features li {
+            padding: 0.75rem 0;
+            color: #8888a0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .plan-features li::before {
+            content: '✓';
+            color: #10b981;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* Form section */
+        .form-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #2a2a3a;
+        }
+
+        .form-section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: #f0f0f5;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #f0f0f5;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            background: #0a0a0f;
+            border: 1px solid #2a2a3a;
+            border-radius: 8px;
+            color: #f0f0f5;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #5a5a70;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 640px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-error {
+            display: none;
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        .form-group.error input,
+        .form-group.error select {
+            border-color: #ef4444;
+        }
+
+        .form-group.error .form-error {
+            display: block;
+        }
+
+        /* Buttons */
+        .button-group {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #2a2a3a;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .submit-btn.free {
+            background: #10b981;
+            color: #fff;
+        }
+
+        .submit-btn.free:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .submit-btn.paid {
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            color: #fff;
+        }
+
+        .submit-btn.paid:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .security-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: #8888a0;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .lock-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        /* Trust signals */
+        .trust-signals {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #2a2a3a;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .trust-signal {
+            text-align: center;
+        }
+
+        .trust-signal-icon {
+            font-size: 1.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .trust-signal-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .trust-signal-text {
+            color: #8888a0;
+            font-size: 0.85rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(10, 10, 15, 0.8);
+            border-top: 1px solid #2a2a3a;
+            padding: 2rem;
+            text-align: center;
+            color: #8888a0;
+            font-size: 0.85rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #8888a0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #00d4ff;
+        }
+
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 15, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading.active {
+            display: flex;
+        }
+
+        .spinner {
+            border: 3px solid #2a2a3a;
+            border-top: 3px solid #00d4ff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-links {
+                gap: 1rem;
+                font-size: 0.85rem;
+            }
+
+            main {
+                padding: 2rem 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.75rem;
+            }
+
+            .checkout-card {
+                padding: 1.5rem;
+            }
+
+            .plan-title {
+                font-size: 1.5rem;
+            }
+
+            .plan-price {
+                font-size: 2rem;
+            }
+
+            .trust-signals {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <div class="navbar-logo">9</div>
+                <div class="navbar-brand-text">
+                    <strong>9 Elms Labs</strong>
+                    <small>by Audley & Oxford Advisory Firm</small>
+                </div>
+            </a>
+            <div class="navbar-links">
+                <a href="index.html#solution">Product</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="contact.html">Contact</a>
+                <a href="scan.html" class="active">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Loading spinner -->
+    <div class="loading" id="loadingSpinner">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Main content -->
+    <main>
+        <div class="page-header" id="pageHeader">
+            <h1>Start Your AI Audit Today</h1>
+            <p>Choose the perfect plan for your business needs</p>
+        </div>
+
+        <!-- Plan selection grid (shown when no plan specified) -->
+        <div class="plan-selection-grid" id="planSelectionGrid" style="display: none;">
+            <a href="checkout.html?plan=free-scan" class="plan-card">
+                <div class="plan-name">Free Scan</div>
+                <div class="plan-price">£0</div>
+                <div class="plan-description">Get your AI visibility score and preview report in 30 seconds</div>
+            </a>
+            <a href="checkout.html?plan=full-audit" class="plan-card">
+                <div class="plan-name">Full Audit</div>
+                <div class="plan-price">£2,499</div>
+                <div class="plan-description">Complete AI revenue audit with competitor analysis and strategy call</div>
+            </a>
+            <a href="checkout.html?plan=growth" class="plan-card">
+                <div class="plan-name">Growth</div>
+                <div class="plan-price">£499<span style="font-size: 0.6em; color: #8888a0;">/mo</span></div>
+                <div class="plan-description">Monthly AI visibility monitoring and content optimization</div>
+            </a>
+            <a href="checkout.html?plan=scale" class="plan-card">
+                <div class="plan-name">Scale</div>
+                <div class="plan-price">£1,499<span style="font-size: 0.6em; color: #8888a0;">/mo</span></div>
+                <div class="plan-description">Full AI optimization with weekly reporting and support</div>
+            </a>
+            <a href="checkout.html?plan=enterprise" class="plan-card">
+                <div class="plan-name">Enterprise</div>
+                <div class="plan-price">£2,999<span style="font-size: 0.6em; color: #8888a0;">/mo</span></div>
+                <div class="plan-description">Maximum AI presence with dedicated account manager</div>
+            </a>
+        </div>
+
+        <!-- Checkout form (shown when plan is specified) -->
+        <div class="checkout-container" id="checkoutContainer" style="display: none;">
+            <div class="checkout-card">
+                <!-- Plan header -->
+                <div class="plan-header">
+                    <div class="plan-badge" id="planBadge"></div>
+                    <div class="plan-title" id="planTitle"></div>
+                    <div class="plan-price" id="planPrice"></div>
+                    <div class="plan-billing" id="planBilling"></div>
+                    <div class="plan-description" id="planDescription"></div>
+
+                    <!-- Plan features -->
+                    <div class="plan-features">
+                        <div class="plan-features-title">What's Included</div>
+                        <ul id="planFeatures"></ul>
+                    </div>
+                </div>
+
+                <!-- Registration form -->
+                <div class="form-section">
+                    <h3>Your Details</h3>
+                    <form id="checkoutForm">
+                        <div class="form-group full">
+                            <label for="businessName">Business / Agency Name *</label>
+                            <input type="text" id="businessName" name="businessName" required placeholder="Enter your business name">
+                            <div class="form-error">Business name is required</div>
+                        </div>
+
+                        <div class="form-group full">
+                            <label for="website">Website URL *</label>
+                            <input type="text" id="website" name="website" required placeholder="e.g. www.yourwebsite.com">
+                            <div class="form-error">Website URL is required</div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contactName">Contact Name *</label>
+                                <input type="text" id="contactName" name="contactName" required placeholder="Your name">
+                                <div class="form-error">Contact name is required</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" name="email" required placeholder="you@example.com">
+                                <div class="form-error">Valid email is required</div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Phone (optional)</label>
+                                <input type="tel" id="phone" name="phone" placeholder="+44 (0)123 456 7890">
+                                <div class="form-error">Invalid phone number</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="industry">Industry *</label>
+                                <select id="industry" name="industry" required>
+                                    <option value="">Select an industry</option>
+                                    <optgroup label="Travel & Hospitality">
+                                        <option value="travel-agency">Travel Agency</option>
+                                        <option value="cruise">Cruise Line / Cruise Agency</option>
+                                        <option value="ota">OTA (Online Travel Agency)</option>
+                                        <option value="tour-operator">Tour Operator</option>
+                                        <option value="hotels">Hotels & Accommodation</option>
+                                        <option value="airlines">Airlines & Aviation</option>
+                                        <option value="restaurants">Restaurants & Food Service</option>
+                                        <option value="events">Events & Entertainment</option>
+                                    </optgroup>
+                                    <optgroup label="Technology & SaaS">
+                                        <option value="saas">SaaS / Software</option>
+                                        <option value="fintech">FinTech</option>
+                                        <option value="ai-ml">AI / Machine Learning</option>
+                                        <option value="cybersecurity">Cybersecurity</option>
+                                        <option value="ecommerce">E-Commerce Platform</option>
+                                        <option value="martech">MarTech / AdTech</option>
+                                    </optgroup>
+                                    <optgroup label="Professional Services">
+                                        <option value="digital-marketing">Digital Marketing Agency</option>
+                                        <option value="seo-agency">SEO / PPC Agency</option>
+                                        <option value="web-development">Web Development</option>
+                                        <option value="consulting">Management Consulting</option>
+                                        <option value="accounting">Accounting & Tax</option>
+                                        <option value="law">Law Firm</option>
+                                        <option value="recruitment">Recruitment & HR</option>
+                                        <option value="pr-comms">PR & Communications</option>
+                                    </optgroup>
+                                    <optgroup label="Finance & Insurance">
+                                        <option value="banking">Banking & Financial Services</option>
+                                        <option value="insurance">Insurance</option>
+                                        <option value="wealth-management">Wealth Management</option>
+                                        <option value="mortgage">Mortgage & Lending</option>
+                                    </optgroup>
+                                    <optgroup label="Healthcare & Wellness">
+                                        <option value="healthcare">Healthcare / Medical Practice</option>
+                                        <option value="dental">Dental Practice</option>
+                                        <option value="pharma">Pharmaceutical</option>
+                                        <option value="wellness">Wellness & Fitness</option>
+                                    </optgroup>
+                                    <optgroup label="Property & Construction">
+                                        <option value="real-estate">Real Estate Agency</option>
+                                        <option value="property-management">Property Management</option>
+                                        <option value="construction">Construction & Building</option>
+                                        <option value="architecture">Architecture & Design</option>
+                                    </optgroup>
+                                    <optgroup label="Education & Training">
+                                        <option value="education">Education / University</option>
+                                        <option value="online-courses">Online Courses / EdTech</option>
+                                        <option value="training">Corporate Training</option>
+                                    </optgroup>
+                                    <optgroup label="Retail & Consumer">
+                                        <option value="retail">Retail / D2C</option>
+                                        <option value="luxury">Luxury / Premium Brands</option>
+                                        <option value="automotive">Automotive</option>
+                                        <option value="fashion">Fashion & Apparel</option>
+                                    </optgroup>
+                                    <optgroup label="Other">
+                                        <option value="non-profit">Non-Profit / Charity</option>
+                                        <option value="government">Government / Public Sector</option>
+                                        <option value="other">Other</option>
+                                    </optgroup>
+                                </select>
+                                <div class="form-error">Please select an industry</div>
+                            </div>
+                        </div>
+
+                        <!-- Button group -->
+                        <div class="button-group">
+                            <button type="submit" class="submit-btn" id="submitBtn">Complete Registration</button>
+                            <div class="security-note" id="securityNote" style="display: none;">
+                                <span class="lock-icon">🔒</span>
+                                <span>Secure payment via Revolut</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Trust signals -->
+            <div class="trust-signals">
+                <div class="trust-signal">
+                    <div class="trust-signal-icon">✓</div>
+                    <div class="trust-signal-title">30-Day Money Back</div>
+                    <div class="trust-signal-text">Fully refundable guarantee</div>
+                </div>
+                <div class="trust-signal">
+                    <div class="trust-signal-icon">🔒</div>
+                    <div class="trust-signal-title">Secure Payment</div>
+                    <div class="trust-signal-text">Powered by Revolut</div>
+                </div>
+                <div class="trust-signal">
+                    <div class="trust-signal-icon">⭐</div>
+                    <div class="trust-signal-title">50+ Audits</div>
+                    <div class="trust-signal-text">Successfully delivered</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="contact.html">Contact</a>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+            <div>&copy; 2026 9 Elms Labs. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script>
+        // Plan data
+        const plans = {
+            'free-scan': {
+                name: 'Free Scan',
+                price: '£0',
+                billing: '',
+                description: 'Get your AI visibility score and preview report in 30 seconds',
+                badge: 'FREE',
+                badgeClass: 'free',
+                features: [
+                    'AI visibility score assessment',
+                    'Preview of full audit report',
+                    'Competitor benchmark',
+                    'Next steps recommendations'
+                ],
+                type: 'free'
+            },
+            'full-audit': {
+                name: 'Full Audit',
+                price: '£2,499',
+                billing: 'one-off payment',
+                description: 'Deep-dive analysis delivered in 5 business days with strategy call and 90-day implementation roadmap',
+                badge: 'ONE-OFF',
+                badgeClass: 'paid',
+                features: [
+                    '50+ page competitive intelligence report',
+                    'Full AI platform audit (ChatGPT, Perplexity, Gemini, Copilot)',
+                    'Technical SEO & schema implementation guide',
+                    '90-minute strategy call with senior consultant',
+                    '90-day prioritised action roadmap'
+                ],
+                type: 'paid',
+                revolutUrl: 'https://checkout.revolut.com/pay/58e4504b-554c-4134-96a0-a46e01955586'
+            },
+            'growth': {
+                name: 'Growth',
+                price: '£499',
+                billing: 'per month',
+                description: 'Ongoing monitoring and optimisation for growing businesses',
+                badge: 'GROWTH PLAN',
+                badgeClass: 'paid',
+                features: [
+                    'Weekly: AI visibility tracking across 4 platforms',
+                    'Weekly: Keyword ranking monitoring (50 terms)',
+                    'Monthly: Content optimisation recommendations',
+                    'Monthly: Performance report with KPI dashboard',
+                    'Monthly: 1x strategy call (30 min)',
+                    'Ongoing: Basic conversion snippet installed',
+                    'Ongoing: Email support (48h response)'
+                ],
+                type: 'paid',
+                revolutUrl: 'https://checkout.revolut.com/pay/8d939af5-3f9b-4438-bbf2-d8c6c27b54e6'
+            },
+            'scale': {
+                name: 'Scale',
+                price: '£1,499',
+                billing: 'per month',
+                description: 'Full AI optimisation across visibility and conversion — our most popular plan',
+                badge: 'MOST POPULAR',
+                badgeClass: 'paid',
+                features: [
+                    'Daily: AI mention monitoring & alerts',
+                    'Daily: Conversion snippet A/B testing',
+                    'Weekly: Full AI visibility tracking (all platforms)',
+                    'Weekly: Competitor movement alerts & reports',
+                    'Monthly: 2x strategy calls (45 min each)',
+                    'Monthly: 4 optimised content articles',
+                    'Monthly: Schema markup updates',
+                    'Monthly: Conversion rate optimisation review',
+                    'Quarterly: Full re-audit & strategy refresh'
+                ],
+                type: 'paid',
+                revolutUrl: 'https://checkout.revolut.com/pay/17513ebf-12df-4167-bef9-63268195aae5'
+            },
+            'enterprise': {
+                name: 'Enterprise',
+                price: '£2,999',
+                billing: 'per month',
+                description: 'Maximum AI presence with dedicated account team and custom integrations',
+                badge: 'ENTERPRISE',
+                badgeClass: 'paid',
+                features: [
+                    'Daily: Real-time AI mention monitoring',
+                    'Daily: Automated conversion optimisation',
+                    'Daily: Priority issue escalation',
+                    'Weekly: Dedicated account manager check-in',
+                    'Weekly: Custom dashboard with live metrics',
+                    'Weekly: Competitor intelligence briefing',
+                    'Monthly: 4x strategy calls (60 min each)',
+                    'Monthly: 8 optimised content pieces',
+                    'Monthly: Custom integrations & API access',
+                    'Quarterly: Board-ready performance report',
+                    'Quarterly: On-site strategy workshop (optional)'
+                ],
+                type: 'paid',
+                revolutUrl: 'https://checkout.revolut.com/pay/1875ef11-aed5-45dc-aa4b-2288d9a72fe3'
+            }
+        };
+
+        // Get plan from URL parameter
+        function getPlanFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('plan');
+        }
+
+        // Initialize page
+        function init() {
+            const selectedPlan = getPlanFromUrl();
+
+            if (selectedPlan && plans[selectedPlan]) {
+                showCheckout(selectedPlan);
+            } else {
+                showPlanSelection();
+            }
+        }
+
+        // Show plan selection grid
+        function showPlanSelection() {
+            document.getElementById('planSelectionGrid').style.display = 'grid';
+            document.getElementById('checkoutContainer').style.display = 'none';
+        }
+
+        // Show checkout form
+        function showCheckout(planId) {
+            const plan = plans[planId];
+            document.getElementById('planSelectionGrid').style.display = 'none';
+            document.getElementById('checkoutContainer').style.display = 'block';
+
+            // Update plan header
+            document.getElementById('planBadge').textContent = plan.badge;
+            document.getElementById('planBadge').className = `plan-badge ${plan.badgeClass}`;
+            document.getElementById('planTitle').textContent = plan.name;
+            document.getElementById('planPrice').textContent = plan.price;
+            document.getElementById('planBilling').textContent = plan.billing;
+            document.getElementById('planDescription').textContent = plan.description;
+
+            // Update features
+            const featuresList = document.getElementById('planFeatures');
+            featuresList.innerHTML = '';
+            plan.features.forEach(feature => {
+                const li = document.createElement('li');
+                li.textContent = feature;
+                featuresList.appendChild(li);
+            });
+
+            // Update button
+            const submitBtn = document.getElementById('submitBtn');
+            if (plan.type === 'free') {
+                submitBtn.textContent = 'Start Free Scan';
+                submitBtn.className = 'submit-btn free';
+                document.getElementById('securityNote').style.display = 'none';
+            } else {
+                submitBtn.textContent = `Continue to Payment`;
+                submitBtn.className = 'submit-btn paid';
+                document.getElementById('securityNote').style.display = 'flex';
+            }
+
+            // Store current plan
+            sessionStorage.setItem('currentPlan', planId);
+
+            // Scroll to form
+            document.getElementById('checkoutForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Form validation
+        function validateForm() {
+            const form = document.getElementById('checkoutForm');
+            const inputs = form.querySelectorAll('[required]');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                const group = input.parentElement;
+                const hasError = !validateField(input);
+
+                if (hasError) {
+                    group.classList.add('error');
+                    isValid = false;
+                } else {
+                    group.classList.remove('error');
+                }
+            });
+
+            // Validate email format
+            const emailInput = document.getElementById('email');
+            if (emailInput.value && !isValidEmail(emailInput.value)) {
+                emailInput.parentElement.classList.add('error');
+                isValid = false;
+            }
+
+            // Validate URL format
+            const websiteInput = document.getElementById('website');
+            if (websiteInput.value && !isValidUrl(websiteInput.value)) {
+                websiteInput.parentElement.classList.add('error');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function validateField(input) {
+            if (input.type === 'email') {
+                return input.value.trim() !== '' && isValidEmail(input.value);
+            }
+            if (input.id === 'website') {
+                return input.value.trim() !== '' && isValidUrl(input.value);
+            }
+            return input.value.trim() !== '';
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function isValidUrl(url) {
+            // Accept any domain-like string
+            const urlPattern = /^(https?:\/\/)?[\w.-]+\.[a-z]{2,}/i;
+            return urlPattern.test(url.trim());
+        }
+
+        // Get form data
+        function getFormData() {
+            return {
+                businessName: document.getElementById('businessName').value,
+                websiteUrl: document.getElementById('website').value,
+                contactName: document.getElementById('contactName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                industry: document.getElementById('industry').value,
+                plan: sessionStorage.getItem('currentPlan')
+            };
+        }
+
+        // Save form data to localStorage
+        function saveFormData(data) {
+            localStorage.setItem('checkoutFormData', JSON.stringify(data));
+        }
+
+        // Handle form submission
+        document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!validateForm()) {
+                return;
+            }
+
+            const formData = getFormData();
+            const planId = formData.plan;
+            const plan = plans[planId];
+
+            // Show loading spinner
+            document.getElementById('loadingSpinner').classList.add('active');
+
+            // Save form data
+            saveFormData(formData);
+
+            // Handle different plan types
+            if (plan.type === 'free') {
+                // Redirect to scan page with form data as params
+                const params = new URLSearchParams(formData);
+                window.location.href = `scan.html?${params.toString()}`;
+                return;
+            }
+
+            // For paid plans:
+            // 1. Save form data so onboard page can pre-fill
+            try { localStorage.setItem('9el_checkout', JSON.stringify(formData)); } catch(e) {}
+
+            // 2. Notify team
+            try {
+                fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                }).catch(() => {});
+            } catch (e) {}
+
+            // 3. Open Revolut payment in new tab, redirect current tab to onboarding
+            window.open(plan.revolutUrl, '_blank');
+            window.location.href = `onboard.html?plan=${formData.plan}`;
+        });
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

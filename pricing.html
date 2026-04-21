@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Plans - 9 Elms Labs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0f;
+            color: #f0f0f5;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Background effects */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(42, 42, 58, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(42, 42, 58, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            border-radius: 10px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #2a2a3a;
+            z-index: 1000;
+            padding: 0 clamp(20px, 5vw, 48px);
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        nav .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #f0f0f5;
+        }
+
+        nav .logo {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav .brand {
+            font-size: 14px;
+            color: #8888a0;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: clamp(20px, 3vw, 40px);
+            list-style: none;
+        }
+
+        nav a {
+            color: #f0f0f5;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            transition: width 0.3s;
+        }
+
+        nav a:hover {
+            color: #00d4ff;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: #f0f0f5;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* Main content */
+        main {
+            position: relative;
+            z-index: 1;
+            padding-top: 70px;
+        }
+
+        .section {
+            padding: clamp(40px, 8vw, 80px) clamp(20px, 5vw, 48px);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            margin-bottom: 80px;
+            padding: 60px 0;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #8888a0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Pricing cards grid */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            margin-bottom: 80px;
+        }
+
+        .pricing-plan {
+            background: #16161f;
+            border: 1px solid #2a2a3a;
+            border-radius: 20px;
+            padding: 48px 36px;
+            position: relative;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pricing-plan:hover {
+            border-color: #00d4ff;
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.1);
+        }
+
+        .pricing-plan.featured {
+            border-color: #00d4ff;
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.15);
+        }
+
+        .pricing-plan.featured::before {
+            content: 'RECOMMENDED';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            color: #0a0a0f;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .plan-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .plan-description {
+            color: #8888a0;
+            font-size: 14px;
+            margin-bottom: 24px;
+            min-height: 40px;
+        }
+
+        .plan-price {
+            margin-bottom: 32px;
+        }
+
+        .price-amount {
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .price-period {
+            color: #8888a0;
+            font-size: 14px;
+        }
+
+        .plan-features {
+            margin-bottom: 32px;
+            flex: 1;
+        }
+
+        .plan-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: #f0f0f5;
+        }
+
+        .plan-feature::before {
+            content: '✓';
+            width: 20px;
+            height: 20px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: #0a0a0f;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            color: #0a0a0f;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid #2a2a3a;
+            color: #f0f0f5;
+        }
+
+        .btn-secondary:hover {
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+
+        /* Comparison table */
+        .comparison-section {
+            margin-bottom: 80px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(24px, 3vw, 36px);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .section-header p {
+            color: #8888a0;
+            font-size: 16px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #16161f;
+            border: 1px solid #2a2a3a;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #2a2a3a;
+            font-size: 14px;
+        }
+
+        .comparison-table th {
+            background: #0a0a0f;
+            font-weight: 600;
+            color: #8888a0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .comparison-table td {
+            color: #f0f0f5;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .feature-name {
+            font-weight: 500;
+            color: #f0f0f5;
+            min-width: 200px;
+        }
+
+        .feature-available {
+            color: #10b981;
+        }
+
+        .feature-unavailable {
+            color: #8888a0;
+        }
+
+        /* FAQ */
+        .faq-section {
+            margin-bottom: 80px;
+        }
+
+        .faq-item {
+            background: #16161f;
+            border: 1px solid #2a2a3a;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .faq-item:hover {
+            border-color: #00d4ff;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #f0f0f5;
+        }
+
+        .faq-toggle {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s;
+            color: #8888a0;
+            font-size: 14px;
+            margin-top: 0;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 200px;
+            margin-top: 16px;
+        }
+
+        .faq-item.open .faq-toggle {
+            transform: rotate(180deg);
+        }
+
+        /* Guarantee box */
+        .guarantee-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .guarantee-box h3 {
+            color: #10b981;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .guarantee-box p {
+            color: #8888a0;
+            font-size: 14px;
+        }
+
+        /* Final CTA */
+        .cta-section {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            color: #8888a0;
+            font-size: 16px;
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Footer */
+        footer {
+            background: #0a0a0f;
+            border-top: 1px solid #2a2a3a;
+            padding: 60px clamp(20px, 5vw, 48px) 40px;
+            position: relative;
+            z-index: 1;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #f0f0f5;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column a {
+            color: #8888a0;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .footer-column a:hover {
+            color: #00d4ff;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            color: #5a5a70;
+            font-size: 12px;
+            border-top: 1px solid #2a2a3a;
+            padding-top: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            nav .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #0a0e27;
+                padding: 20px;
+                gap: 15px;
+            }
+
+            nav .nav-links.active {
+                display: flex;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .pricing-plan {
+                padding: 36px 24px;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 12px;
+                font-size: 13px;
+            }
+
+            .feature-name {
+                min-width: 150px;
+            }
+
+            .cta-section {
+                padding: 40px 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .comparison-table {
+                font-size: 12px;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 10px;
+            }
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .pricing-plan {
+            animation: slideUp 0.6s ease forwards;
+        }
+
+        .pricing-plan:nth-child(1) { animation-delay: 0.1s; }
+        .pricing-plan:nth-child(2) { animation-delay: 0.2s; }
+        .pricing-plan:nth-child(3) { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+
+    <nav>
+        <a href="index.html" class="logo-section">
+            <span class="logo">9EL</span>
+            <div class="brand">
+                <div style="font-size: 13px; font-weight: 600;">9 Elms Labs</div>
+                <div style="font-size: 11px; color: #5a5a70;">by Audley & Oxford</div>
+            </div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html#solution">Product</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="scan.html">Get Started</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero -->
+        <section class="section">
+            <div class="hero">
+                <h1>Simple, Transparent Pricing</h1>
+                <p>Choose the plan that fits your business. Scale up anytime as your needs grow.</p>
+                <p style="font-size: 14px; color: #00d4ff; margin-top: 12px; font-weight: 600;">We only report real numbers. Every metric, score, and revenue estimate is calculated using published, verifiable industry benchmarks &mdash; never inflated.</p>
+            </div>
+        </section>
+
+        <!-- Pricing Plans -->
+        <section class="section">
+            <div class="pricing-grid">
+                <!-- Growth Plan -->
+                <div class="pricing-plan">
+                    <h3 class="plan-name">Growth</h3>
+                    <p class="plan-description">Perfect for getting started with AI optimization</p>
+
+                    <div class="plan-price">
+                        <div class="price-amount">£499</div>
+                        <div class="price-period">/month, billed annually</div>
+                    </div>
+
+                    <div class="plan-features">
+                        <div class="plan-feature"><strong>Weekly:</strong> AI visibility tracking (4 platforms)</div>
+                        <div class="plan-feature"><strong>Weekly:</strong> Keyword ranking monitoring (50 terms)</div>
+                        <div class="plan-feature"><strong>Monthly:</strong> Content optimisation recommendations</div>
+                        <div class="plan-feature"><strong>Monthly:</strong> Performance report + KPI dashboard</div>
+                        <div class="plan-feature"><strong>Monthly:</strong> 1x strategy call (30 min)</div>
+                        <div class="plan-feature"><strong>Ongoing:</strong> Basic conversion snippet installed</div>
+                        <div class="plan-feature"><strong>Ongoing:</strong> Email support (48h response)</div>
+                    </div>
+
+                    <a href="checkout.html?plan=growth" class="btn btn-primary">Get Started</a>
+                </div>
+
+                <!-- Scale Plan (Featured) -->
+                <div class="pricing-plan featured">
+                    <h3 class="plan-name">Scale</h3>
+                    <p class="plan-description">Most popular for growing agencies and brands</p>
+
+                    <div class="plan-price">
+                        <div class="price-amount">£1,499</div>
+                        <div class="price-period">/month, billed annually</div>
+                    </div>
+
+                    <div class="plan-features">
+                        <div class="plan-feature"><strong>Daily:</strong> AI mention monitoring & alerts</div>
+                        <div class="plan-feature"><strong>Daily:</strong> Conversion snippet A/B testing</div>
+                        <div class="plan-feature"><strong>Weekly:</strong> Full AI visibility tracking (all platforms)</div>
+                        <div class="plan-feature"><strong>Weekly:</strong> Competitor movement alerts & reports</div>
+                        <div class="plan-feature"><strong>Monthly:</strong> 2x strategy calls (45 min each)</div>
+                        <div class="plan-feature"><strong>Monthly:</strong> 4 optimised content articles</div>
+                        <div class="plan-feature"><strong>Monthly:</strong> Schema markup updates</div>
+                        <div class="plan-feature"><strong>Monthly:</strong> CRO review</div>
+                        <div class="plan-feature"><strong>Quarterly:</strong> Full re-audit & strategy refresh</div>
+                    </div>
+
+                    <a href="checkout.html?plan=scale" class="btn btn-primary">Get Started</a>
+                </div>
+
+                <!-- Enterprise Plan -->
+                <div class="pricing-plan">
+                    <h3 class="plan-name">Enterprise</h3>
+                    <p class="plan-description">For large teams and complex requirements</p>
+
+                    <div class="plan-price">
+                        <div class="price-amount">£2,999</div>
+                        <div class="price-period">/month, billed annually</div>
+                    </div>
+
+                    <div class="plan-features">
+                        <div class="plan-feature"><strong>Daily:</strong> Real-time AI mention monitoring</div>
+                        <div class="plan-feature"><strong>Daily:</strong> Automated conversion optimisation</div>
+                        <div class="plan-feature"><strong>Daily:</strong> Priority issue escalation</div>
+                        <div class="plan-feature"><strong>Weekly:</strong> Dedicated account manager check-in</div>
+                        <div class="plan-feature"><strong>Weekly:</strong> Custom dashboard + live metrics</div>
+                        <div class="plan-feature"><strong>Weekly:</strong> Competitor intelligence briefing</div>
+                        <div class="plan-feature"><strong>Monthly:</strong> 4x strategy calls (60 min each)</div>
+                        <div class="plan-feature"><strong>Monthly:</strong> 8 optimised content pieces</div>
+                        <div class="plan-feature"><strong>Monthly:</strong> Custom integrations & API access</div>
+                        <div class="plan-feature"><strong>Quarterly:</strong> Board-ready performance report</div>
+                        <div class="plan-feature"><strong>Quarterly:</strong> On-site strategy workshop</div>
+                    </div>
+
+                    <a href="checkout.html?plan=enterprise" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guarantee -->
+        <section class="section">
+            <div class="guarantee-box">
+                <h3>30-Day Money-Back Guarantee</h3>
+                <p>Not satisfied? Get a full refund within 30 days of purchase. We're that confident you'll love the results.</p>
+            </div>
+        </section>
+
+        <!-- Comparison Table -->
+        <section class="section comparison-section">
+            <div class="section-header">
+                <h2>Compare Features</h2>
+                <p>See exactly what's included in each plan</p>
+            </div>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Growth</th>
+                        <th>Scale</th>
+                        <th>Enterprise</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="feature-name">AI Visibility Monitoring</td>
+                        <td><span class="feature-available">Weekly</span></td>
+                        <td><span class="feature-available">Daily</span></td>
+                        <td><span class="feature-available">Real-time</span></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">AI Platforms Tracked</td>
+                        <td><span class="feature-available">4</span></td>
+                        <td><span class="feature-available">All</span></td>
+                        <td><span class="feature-available">All + Custom</span></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Optimised Content Articles</td>
+                        <td><span class="feature-unavailable">Recommendations only</span></td>
+                        <td><span class="feature-available">4/month</span></td>
+                        <td><span class="feature-available">8/month</span></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Strategy Calls</td>
+                        <td><span class="feature-available">1x/mo (30 min)</span></td>
+                        <td><span class="feature-available">2x/mo (45 min)</span></td>
+                        <td><span class="feature-available">4x/mo (60 min)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Conversion Optimisation</td>
+                        <td><span class="feature-available">Basic Snippet</span></td>
+                        <td><span class="feature-available">A/B Testing</span></td>
+                        <td><span class="feature-available">Automated</span></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Competitor Tracking</td>
+                        <td><span class="feature-unavailable">–</span></td>
+                        <td><span class="feature-available">Weekly Alerts</span></td>
+                        <td><span class="feature-available">Daily Briefing</span></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Performance Reports</td>
+                        <td><span class="feature-available">Monthly</span></td>
+                        <td><span class="feature-available">Weekly</span></td>
+                        <td><span class="feature-available">Custom Dashboard</span></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Dedicated Account Manager</td>
+                        <td><span class="feature-unavailable">–</span></td>
+                        <td><span class="feature-unavailable">–</span></td>
+                        <td><span class="feature-available">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Support</td>
+                        <td><span class="feature-available">Email (48h)</span></td>
+                        <td><span class="feature-available">Priority Email</span></td>
+                        <td><span class="feature-available">Dedicated + Phone</span></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Quarterly Re-Audit</td>
+                        <td><span class="feature-unavailable">–</span></td>
+                        <td><span class="feature-available">✓</span></td>
+                        <td><span class="feature-available">✓ + Workshop</span></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Slack Integration</td>
+                        <td><span class="feature-unavailable">–</span></td>
+                        <td><span class="feature-available">Dedicated Channel</span></td>
+                        <td><span class="feature-available">Dedicated Channel</span></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Custom Integrations</td>
+                        <td><span class="feature-unavailable">–</span></td>
+                        <td><span class="feature-unavailable">–</span></td>
+                        <td><span class="feature-available">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Dedicated Account Manager</td>
+                        <td><span class="feature-unavailable">–</span></td>
+                        <td><span class="feature-unavailable">–</span></td>
+                        <td><span class="feature-available">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Quarterly Strategy Reviews</td>
+                        <td><span class="feature-unavailable">–</span></td>
+                        <td><span class="feature-unavailable">–</span></td>
+                        <td><span class="feature-available">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Custom API Access</td>
+                        <td><span class="feature-unavailable">–</span></td>
+                        <td><span class="feature-unavailable">–</span></td>
+                        <td><span class="feature-available">✓</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- FAQ -->
+        <section class="section">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Have questions about our plans? We've got answers</p>
+            </div>
+
+            <div class="faq-section">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I change plans at any time?</span>
+                        <div class="faq-toggle">▼</div>
+                    </div>
+                    <div class="faq-answer">
+                        Absolutely. You can upgrade or downgrade your plan at any time. Changes take effect on your next billing cycle. If you upgrade mid-cycle, we'll prorate the charges fairly.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What happens if I cancel?</span>
+                        <div class="faq-toggle">▼</div>
+                    </div>
+                    <div class="faq-answer">
+                        You can cancel your subscription anytime with no penalty. Your access continues until the end of your current billing cycle. We'll never charge you again after cancellation.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Do you offer discounts for annual commitments?</span>
+                        <div class="faq-toggle">▼</div>
+                    </div>
+                    <div class="faq-answer">
+                        Yes! All our pricing is based on annual billing, which gives you a better rate than paying monthly. Contact our sales team to discuss quarterly or custom contract terms for Enterprise plans.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What payment methods do you accept?</span>
+                        <div class="faq-toggle">▼</div>
+                    </div>
+                    <div class="faq-answer">
+                        We accept all major credit cards, bank transfers, and Revolut Pay. Enterprise customers can arrange custom payment terms. Contact us for invoice-based billing options.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Is there a setup fee?</span>
+                        <div class="faq-toggle">▼</div>
+                    </div>
+                    <div class="faq-answer">
+                        No setup fees for Growth and Scale plans. You start paying your monthly subscription immediately. Enterprise plans include complimentary white-glove onboarding.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I use 9 Elms Labs for multiple websites?</span>
+                        <div class="faq-toggle">▼</div>
+                    </div>
+                    <div class="faq-answer">
+                        Growth and Scale plans are per-domain. Enterprise customers get access to multiple domains. Contact us if you need multi-domain setups on Growth or Scale plans—we may be able to work something out.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Do you offer refunds or credits?</span>
+                        <div class="faq-toggle">▼</div>
+                    </div>
+                    <div class="faq-answer">
+                        We offer a 30-day money-back guarantee on all plans. If you're not completely satisfied within 30 days of purchase, we'll refund 100% of your subscription fee. No questions asked.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What's included in the Scale plan's competitor tracking?</span>
+                        <div class="faq-toggle">▼</div>
+                    </div>
+                    <div class="faq-answer">
+                        Competitor tracking monitors up to 10 competitors' AI visibility scores, content changes, schema markup updates, and conversion optimization efforts. You get weekly alerts when competitors make significant changes.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="section">
+            <div class="cta-section">
+                <h2>Ready to Optimize Your AI Revenue?</h2>
+                <p>Join agencies and brands already using 9 Elms Labs to discover and capture hidden revenue opportunities.</p>
+                <a href="scan.html" class="btn btn-primary" style="width: auto; padding: 14px 48px;">Start Your Free Scan</a>
+            </div>
+        </section>
+
+        <!-- Alternative options -->
+        <section class="section" style="text-align: center; padding: 40px clamp(20px, 5vw, 48px);">
+            <p style="color: #8888a0; margin-bottom: 24px; font-size: 14px;">Still evaluating? Try our services first</p>
+            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                <a href="checkout.html?plan=free-scan" class="btn btn-secondary" style="width: auto; padding: 12px 32px;">Free Visibility Scan</a>
+                <a href="checkout.html?plan=full-audit" class="btn btn-secondary" style="width: auto; padding: 12px 32px;">Full Audit (£2,499)</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>9 Elms Labs</h4>
+                <p style="color: #8888a0; font-size: 14px;">AI-powered revenue optimization by Audley & Oxford Advisory Firm</p>
+            </div>
+            <div class="footer-column">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="index.html#solution">Features</a></li>
+                    <li><a href="scan.html">Free Scan</a></li>
+                    <li><a href="audit.html">Full Audit</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Terms</a></li>
+                    <li><a href="#">Cookies</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 9 Elms Labs. All rights reserved. Audley & Oxford Advisory Firm.</p>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ toggle
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('open');
+            });
+        });
+
+        // Hamburger menu
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('nav .nav-links').classList.toggle('active');
+        });
+
+        // Intersection observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.pricing-plan').forEach(plan => {
+            plan.style.opacity = '0.8';
+            observer.observe(plan);
+        });
+    </script>
+</body>
+</html>

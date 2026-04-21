@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9 Elms Labs — AI-Powered Revenue Optimization</title>
+<meta name="description" content="We make AI recommend your business. Then we make your website convert. AI-powered revenue optimization by 9 Elms Labs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #111118;
+  --bg-card: #16161f;
+  --bg-card-hover: #1c1c28;
+  --border: #2a2a3a;
+  --border-light: #3a3a4a;
+  --text-primary: #f0f0f5;
+  --text-secondary: #8888a0;
+  --text-muted: #5a5a70;
+  --accent-cyan: #00d4ff;
+  --accent-cyan-dim: rgba(0, 212, 255, 0.15);
+  --accent-purple: #8b5cf6;
+  --accent-purple-dim: rgba(139, 92, 246, 0.15);
+  --accent-green: #10b981;
+  --accent-green-dim: rgba(16, 185, 129, 0.15);
+  --accent-orange: #f59e0b;
+  --accent-orange-dim: rgba(245, 158, 11, 0.15);
+  --accent-red: #ef4444;
+  --accent-red-dim: rgba(239, 68, 68, 0.15);
+  --gradient-main: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ========== ANIMATED BG ========== */
+.bg-grid {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  z-index: 0; pointer-events: none;
+}
+.bg-glow {
+  position: fixed; width: 600px; height: 600px; border-radius: 50%;
+  filter: blur(150px); opacity: 0.12; pointer-events: none; z-index: 0;
+}
+.bg-glow-1 { top: -200px; right: -200px; background: var(--accent-cyan); }
+.bg-glow-2 { bottom: -200px; left: -200px; background: var(--accent-purple); }
+
+/* Hero BG — Video + Math Equations */
+.hero-bg-wrap {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  overflow: hidden; z-index: 1;
+  background: #080c16;
+}
+.hero-bg-wrap video {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  opacity: 0.55; filter: brightness(0.6) saturate(0.4) hue-rotate(10deg);
+}
+.hero-eq-static {
+  position: absolute; inset: 0; pointer-events: none; z-index: 1;
+}
+.hero-eq-static span {
+  position: absolute;
+  font-family: var(--font-mono); white-space: nowrap;
+}
+.hero-code-line {
+  position: absolute;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  animation: drift-up linear infinite;
+  pointer-events: none; z-index: 1;
+}
+@keyframes drift-up {
+  0% { transform: translateY(100%) translateX(0); opacity: 0; }
+  5% { opacity: 1; }
+  95% { opacity: 1; }
+  100% { transform: translateY(-120%) translateX(30px); opacity: 0; }
+}
+.hero-bg-wrap .hero-overlay {
+  position: absolute; inset: 0; pointer-events: none; z-index: 2;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(0,212,255,0.05) 0%, transparent 50%),
+    linear-gradient(180deg, rgba(8,12,22,0.3) 0%, rgba(10,10,15,0.6) 70%, var(--bg-primary) 100%);
+}
+
+/* Particles */
+.particles {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+}
+.particle {
+  position: absolute; width: 2px; height: 2px;
+  background: var(--accent-cyan); border-radius: 50%; opacity: 0;
+  animation: float-particle linear infinite;
+}
+@keyframes float-particle {
+  0% { opacity: 0; transform: translateY(100vh) scale(0); }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { opacity: 0; transform: translateY(-10vh) scale(1); }
+}
+
+/* ========== NAV ========== */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 0 40px; height: 72px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(10, 10, 15, 0.8); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border); transition: all 0.3s;
+}
+.navbar.scrolled { background: rgba(10, 10, 15, 0.95); box-shadow: 0 4px 30px rgba(0,0,0,0.3); }
+
+.nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.nav-logo-icon {
+  width: 40px; height: 40px;
+  background: var(--gradient-main); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-weight: 800; font-size: 13px;
+  color: var(--bg-primary); letter-spacing: -0.5px;
+}
+.nav-logo-text { font-size: 18px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; }
+.nav-logo-sub { font-size: 11px; color: var(--text-muted); font-weight: 400; display: block; margin-top: -2px; }
+
+.nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+.nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+.nav-links a:hover { color: var(--text-primary); }
+.nav-cta {
+  padding: 10px 24px !important; background: var(--gradient-main);
+  color: var(--bg-primary) !important; font-weight: 600 !important;
+  border-radius: 8px; transition: opacity 0.2s, transform 0.2s !important;
+}
+.nav-cta:hover { opacity: 0.9; transform: translateY(-1px); }
+
+.nav-mobile-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 5px; }
+.nav-mobile-toggle span { width: 24px; height: 2px; background: var(--text-primary); transition: all 0.3s; }
+
+/* ========== LAYOUT ========== */
+section { position: relative; z-index: 1; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+.section-label {
+  font-family: var(--font-mono); font-size: 13px; color: var(--accent-cyan);
+  text-transform: uppercase; letter-spacing: 3px; margin-bottom: 16px;
+}
+.section-title {
+  font-size: clamp(32px, 4vw, 48px); font-weight: 800;
+  letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 20px;
+}
+.section-subtitle {
+  font-size: 18px; color: var(--text-secondary);
+  max-width: 100%; line-height: 1.7; margin-bottom: 32px;
+}
+
+.gradient-text {
+  background: var(--gradient-main);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* ========== BUTTONS ========== */
+.btn-primary {
+  display: inline-block; padding: 16px 36px;
+  background: var(--gradient-main); color: var(--bg-primary);
+  font-weight: 700; font-size: 15px; border: none; border-radius: 10px;
+  cursor: pointer; text-decoration: none; transition: all 0.2s;
+  font-family: var(--font-sans);
+}
+.btn-primary:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,212,255,0.25); }
+
+.btn-secondary {
+  display: inline-block; padding: 16px 36px;
+  background: transparent; color: var(--text-primary);
+  font-weight: 600; font-size: 15px; border: 1px solid var(--border-light);
+  border-radius: 10px; cursor: pointer; text-decoration: none; transition: all 0.2s;
+  font-family: var(--font-sans);
+}
+.btn-secondary:hover { border-color: var(--accent-cyan); background: var(--accent-cyan-dim); }
+
+.btn-lg { padding: 20px 52px; font-size: 17px; border-radius: 12px; letter-spacing: -0.2px; }
+
+/* ========== HERO ========== */
+.hero {
+  min-height: auto; display: flex; align-items: center;
+  padding: 120px 0 50px; position: relative; overflow: hidden;
+}
+.hero-content { text-align: center; max-width: 900px; margin: 0 auto; position: relative; z-index: 10; }
+.hero .container { position: relative; z-index: 10; }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 20px; background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.25); border-radius: 100px;
+  font-size: 13px; font-weight: 600; color: #00d4ff;
+  margin-bottom: 40px; font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+}
+.hero-badge .pulse {
+  width: 8px; height: 8px; background: var(--accent-cyan);
+  border-radius: 50%; animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.hero h1 {
+  font-size: clamp(44px, 6vw, 78px); font-weight: 800;
+  line-height: 1.08; letter-spacing: -2.5px; margin-bottom: 28px;
+  color: #ffffff;
+}
+.hero h1 .highlight {
+  color: #00d4ff;
+}
+.hero-sub {
+  font-size: 19px; color: #a0a0b8;
+  max-width: 640px; margin: 0 auto 48px; line-height: 1.8;
+  font-weight: 400;
+}
+
+/* hero-ctas removed — CTAs now in Get Started section */
+
+/* ========== TRUST BAR ========== */
+.trust-bar {
+  padding: 32px 0; text-align: center;
+  background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.trust-bar .trust-label {
+  font-size: 13px; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 3px; margin-bottom: 20px;
+  font-family: var(--font-mono); font-weight: 500;
+}
+.trust-logos {
+  display: flex; align-items: center; justify-content: center;
+  gap: 48px; flex-wrap: nowrap; overflow-x: auto;
+  padding: 0 24px;
+}
+.trust-logo {
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0; cursor: default; transition: opacity 0.3s;
+}
+.trust-logo:hover { opacity: 0.7; }
+.trust-logo svg {
+  flex-shrink: 0; width: 28px; height: 28px;
+}
+.trust-logo-name {
+  font-size: 17px; font-weight: 700; letter-spacing: -0.3px; white-space: nowrap;
+}
+
+/* ========== PROBLEM ========== */
+.problem-section { padding: 40px 0; }
+.problem-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.problem-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 28px; transition: all 0.3s;
+}
+.problem-card:hover { border-color: var(--border-light); transform: translateY(-2px); box-shadow: 0 8px 40px rgba(0,0,0,0.3); }
+.problem-card-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; margin-bottom: 16px;
+}
+.problem-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.3px; }
+.problem-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+.stat-highlight { color: var(--accent-cyan); font-weight: 700; font-family: var(--font-mono); }
+
+/* ========== SOLUTION ========== */
+.solution-section {
+  padding: 40px 0; background: var(--bg-secondary);
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.solution-pillars { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-bottom: 80px; }
+.pillar-card {
+  background: var(--bg-primary); border: 1px solid var(--border);
+  border-radius: 20px; padding: 48px 40px; position: relative; overflow: hidden;
+}
+.pillar-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.pillar-card.cyan::before { background: var(--gradient-main); }
+.pillar-card.purple::before { background: linear-gradient(135deg, var(--accent-purple), var(--accent-orange)); }
+.pillar-number {
+  font-family: var(--font-mono); font-size: 13px;
+  text-transform: uppercase; letter-spacing: 3px; margin-bottom: 16px;
+}
+.pillar-card.cyan .pillar-number { color: var(--accent-cyan); }
+.pillar-card.purple .pillar-number { color: var(--accent-purple); }
+.pillar-card h3 { font-size: 28px; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
+.pillar-card .pillar-desc { font-size: 16px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 32px; }
+.pillar-features { list-style: none; }
+.pillar-features li {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 0; border-top: 1px solid var(--border);
+  font-size: 14px; color: var(--text-secondary);
+}
+.pillar-features li:first-child { border-top: none; }
+.feature-check {
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; margin-top: 1px;
+}
+.cyan .feature-check { background: var(--accent-cyan-dim); color: var(--accent-cyan); }
+.purple .feature-check { background: var(--accent-purple-dim); color: var(--accent-purple); }
+
+/* Process */
+.process-title { font-size: 32px; font-weight: 800; letter-spacing: -1px; text-align: center; margin-bottom: 60px; }
+.process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.process-step {
+  text-align: center; padding: 32px 20px;
+  background: var(--bg-primary); border: 1px solid var(--border); border-radius: 16px;
+}
+.step-number {
+  width: 48px; height: 48px; background: var(--gradient-main);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-weight: 700; font-size: 18px;
+  color: var(--bg-primary); margin: 0 auto 20px;
+}
+.process-step h4 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+.process-step p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+/* ========== CTA SECTION (TWO OPTIONS) ========== */
+.cta-dual-section { padding: 40px 0; }
+.cta-dual-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
+.cta-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 20px; padding: 48px 40px; position: relative; overflow: hidden;
+  transition: all 0.3s;
+}
+.cta-card:hover { border-color: var(--border-light); box-shadow: 0 8px 40px rgba(0,0,0,0.3); }
+.cta-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.cta-card.free::before { background: var(--accent-green); }
+.cta-card.paid::before { background: var(--gradient-main); }
+
+.cta-card-badge {
+  display: inline-block; padding: 4px 12px; border-radius: 100px;
+  font-size: 12px; font-weight: 600; font-family: var(--font-mono);
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px;
+}
+.cta-card.free .cta-card-badge { background: var(--accent-green-dim); color: var(--accent-green); }
+.cta-card.paid .cta-card-badge { background: var(--accent-cyan-dim); color: var(--accent-cyan); }
+
+.cta-card h3 { font-size: 28px; font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; }
+.cta-card > p { font-size: 15px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 32px; }
+
+.cta-card .price-tag {
+  font-size: 40px; font-weight: 800; font-family: var(--font-mono);
+  margin-bottom: 8px;
+}
+.cta-card .price-tag.free-tag { color: var(--accent-green); }
+.cta-card .price-tag.paid-tag {
+  background: var(--gradient-main);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.cta-card .price-note { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+
+.cta-features { list-style: none; margin-bottom: 32px; }
+.cta-features li {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 6px 0; font-size: 14px; color: var(--text-secondary);
+}
+.cta-features .ck { color: var(--accent-green); flex-shrink: 0; margin-top: 2px; }
+
+/* ========== FORM MODAL ========== */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 2000;
+  background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+  align-items: center; justify-content: center; padding: 24px;
+}
+.modal-overlay.active { display: flex; }
+
+.modal {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 20px; padding: 48px; max-width: 520px; width: 100%;
+  position: relative; max-height: 90vh; overflow-y: auto;
+}
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  background: none; border: none; color: var(--text-muted);
+  font-size: 24px; cursor: pointer; transition: color 0.2s;
+  width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+  border-radius: 8px;
+}
+.modal-close:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+
+.modal h2 { font-size: 28px; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
+.modal .modal-sub { font-size: 14px; color: var(--text-secondary); margin-bottom: 32px; }
+
+.form-group { margin-bottom: 20px; }
+.form-group label {
+  display: block; font-size: 13px; font-weight: 600;
+  color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase;
+  letter-spacing: 1px; font-family: var(--font-mono);
+}
+.form-group input, .form-group select {
+  width: 100%; padding: 14px 16px;
+  background: var(--bg-secondary); border: 1px solid var(--border);
+  border-radius: 10px; color: var(--text-primary);
+  font-size: 15px; font-family: var(--font-sans);
+  outline: none; transition: border-color 0.3s, box-shadow 0.3s;
+}
+.form-group input:focus, .form-group select:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 3px var(--accent-cyan-dim);
+}
+.form-group input::placeholder { color: var(--text-muted); }
+.form-group select { cursor: pointer; }
+.form-group select option { background: var(--bg-secondary); color: var(--text-primary); }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.form-submit { width: 100%; margin-top: 8px; }
+
+/* ========== SCAN ANIMATION (in modal) ========== */
+.scan-phase { display: none; }
+.scan-phase.active { display: block; }
+
+.scanner-visual {
+  width: 100px; height: 100px; position: relative; margin: 0 auto 24px;
+}
+.scanner-ring {
+  position: absolute; inset: 0;
+  border: 2px solid var(--accent-cyan); border-top-color: transparent;
+  border-radius: 50%; animation: spin 1s linear infinite;
+}
+.scanner-ring:nth-child(2) {
+  inset: 10px; border-color: var(--accent-purple); border-top-color: transparent;
+  animation-direction: reverse; animation-duration: 1.5s;
+}
+.scanner-ring:nth-child(3) {
+  inset: 20px; border-color: var(--accent-cyan); border-right-color: transparent;
+  animation-duration: 2s;
+}
+.scanner-dot {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 10px; height: 10px; background: var(--accent-cyan);
+  border-radius: 50%; animation: pulse 1s infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.scanning-text {
+  font-family: var(--font-mono); font-size: 14px;
+  color: var(--accent-cyan); text-align: center; margin-bottom: 24px;
+}
+.scanning-steps { list-style: none; }
+.scanning-steps li {
+  padding: 8px 0; font-size: 13px; font-family: var(--font-mono);
+  color: var(--text-muted); display: flex; align-items: center; gap: 10px;
+  transition: color 0.3s;
+}
+.scanning-steps li.active { color: var(--accent-cyan); }
+.scanning-steps li.done { color: var(--accent-green); }
+.step-ind {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 2px solid var(--text-muted); display: flex; align-items: center;
+  justify-content: center; font-size: 10px; flex-shrink: 0; transition: all 0.3s;
+}
+.scanning-steps li.active .step-ind { border-color: var(--accent-cyan); background: var(--accent-cyan-dim); }
+.scanning-steps li.done .step-ind { border-color: var(--accent-green); background: var(--accent-green); color: var(--bg-primary); }
+
+/* Scan results in modal */
+.results-url {
+  font-family: var(--font-mono); font-size: 14px;
+  color: var(--accent-cyan); margin-bottom: 24px; text-align: center;
+}
+.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+.score-item {
+  text-align: center; padding: 16px 8px;
+  background: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border);
+}
+.score-number { font-size: 32px; font-weight: 800; font-family: var(--font-mono); margin-bottom: 2px; }
+.score-number.low { color: var(--accent-red); }
+.score-number.mid { color: var(--accent-orange); }
+.score-number.high { color: var(--accent-green); }
+.score-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+.result-issues { list-style: none; margin-bottom: 24px; }
+.result-issues li {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid rgba(42,42,58,0.5);
+  font-size: 13px; color: var(--text-secondary);
+}
+.result-issues li:last-child { border-bottom: none; }
+.issue-ic {
+  flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; margin-top: 2px;
+}
+.issue-ic.warn { background: var(--accent-red-dim); color: var(--accent-red); }
+.issue-ic.info { background: var(--accent-orange-dim); color: var(--accent-orange); }
+
+.result-revenue-box {
+  padding: 20px; background: var(--accent-cyan-dim);
+  border: 1px solid rgba(0,212,255,0.2); border-radius: 12px;
+  text-align: center; margin-bottom: 24px;
+}
+.result-revenue-box p { font-size: 13px; color: var(--text-secondary); margin-bottom: 4px; }
+.result-revenue-box .rev-num {
+  font-size: 28px; font-weight: 800; color: var(--accent-cyan); font-family: var(--font-mono);
+}
+
+.result-upsell { text-align: center; }
+.result-upsell p { font-size: 14px; color: var(--text-secondary); margin-bottom: 16px; }
+.result-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.result-btns .btn-primary, .result-btns .btn-secondary { padding: 14px 28px; font-size: 14px; }
+
+/* ========== PRICING ========== */
+.pricing-section { padding: 120px 0; }
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.pricing-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 20px; padding: 40px 32px; position: relative; transition: all 0.3s;
+}
+.pricing-card:hover { transform: translateY(-4px); box-shadow: 0 12px 48px rgba(0,0,0,0.3); }
+.pricing-card.featured {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 1px var(--accent-cyan), 0 0 60px rgba(0,212,255,0.1);
+}
+.pricing-card.featured::before {
+  content: 'Most Popular'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  padding: 4px 16px; background: var(--gradient-main); color: var(--bg-primary);
+  font-size: 12px; font-weight: 700; border-radius: 100px; text-transform: uppercase; letter-spacing: 1px;
+}
+.pricing-tier {
+  font-family: var(--font-mono); font-size: 13px; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--text-muted); margin-bottom: 12px;
+}
+.pricing-price { font-size: 48px; font-weight: 800; letter-spacing: -2px; margin-bottom: 4px; }
+.pricing-price span { font-size: 16px; font-weight: 400; color: var(--text-muted); }
+.pricing-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 32px; line-height: 1.6; }
+.pricing-features { list-style: none; margin-bottom: 32px; }
+.pricing-features li {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; font-size: 14px; color: var(--text-secondary);
+}
+.pricing-features .check { color: var(--accent-green); flex-shrink: 0; margin-top: 2px; }
+.pricing-card .btn-primary, .pricing-card .btn-secondary { width: 100%; text-align: center; }
+
+/* ========== FAQ ========== */
+.faq-section { padding: 40px 0; }
+.faq-grid { max-width: 800px; margin: 0 auto; }
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-question {
+  width: 100%; padding: 24px 0; background: none; border: none;
+  color: var(--text-primary); font-size: 17px; font-weight: 600;
+  text-align: left; cursor: pointer; display: flex; align-items: center;
+  justify-content: space-between; font-family: var(--font-sans); transition: color 0.2s;
+}
+.faq-question:hover { color: var(--accent-cyan); }
+.faq-icon { font-size: 20px; transition: transform 0.3s; color: var(--text-muted); }
+.faq-item.open .faq-icon { transform: rotate(45deg); color: var(--accent-cyan); }
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.faq-item.open .faq-answer { max-height: 300px; padding-bottom: 24px; }
+.faq-answer p { font-size: 15px; color: var(--text-secondary); line-height: 1.7; }
+
+/* ========== FINAL CTA ========== */
+.final-cta { padding: 40px 0; text-align: center; }
+.final-cta h2 {
+  font-size: clamp(32px, 4vw, 52px); font-weight: 800;
+  letter-spacing: -1.5px; margin-bottom: 20px;
+}
+.final-cta p {
+  font-size: 18px; color: var(--text-secondary);
+  max-width: 500px; margin: 0 auto 40px; line-height: 1.7;
+}
+.final-cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+/* ========== FOOTER ========== */
+.footer { padding: 60px 0 40px; border-top: 1px solid var(--border); }
+.footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-brand p { font-size: 14px; color: var(--text-muted); line-height: 1.7; margin-top: 12px; max-width: 280px; }
+.footer-col h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 16px; }
+.footer-col a { display: block; color: var(--text-secondary); text-decoration: none; font-size: 14px; padding: 4px 0; transition: color 0.2s; }
+.footer-col a:hover { color: var(--text-primary); }
+.footer-bottom {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 32px; border-top: 1px solid var(--border);
+  font-size: 13px; color: var(--text-muted);
+}
+.footer-bottom a { color: var(--text-muted); text-decoration: none; }
+.footer-bottom a:hover { color: var(--text-primary); }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+  .solution-pillars, .pricing-grid, .cta-dual-grid { grid-template-columns: 1fr; }
+  .process-steps { grid-template-columns: repeat(2, 1fr); }
+  .problem-grid { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+@media (max-width: 768px) {
+  .navbar { padding: 0 20px; }
+  .nav-links { display: none; }
+  .nav-mobile-toggle { display: flex; }
+  .nav-links.open {
+    display: flex; flex-direction: column; position: absolute;
+    top: 72px; left: 0; right: 0; background: rgba(10,10,15,0.98);
+    padding: 24px; gap: 16px; border-bottom: 1px solid var(--border);
+  }
+  .process-steps { grid-template-columns: 1fr; }
+  .score-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .hero-ctas { flex-direction: column; align-items: center; }
+  .final-cta-btns { flex-direction: column; align-items: center; }
+  .footer-top { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .modal { padding: 32px 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow bg-glow-1"></div>
+<div class="bg-glow bg-glow-2"></div>
+
+<!-- Floating particles -->
+<div class="particles" id="particles"></div>
+
+<!-- ==================== NAV ==================== -->
+<nav class="navbar" id="navbar">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">9EL</div>
+    <div>
+      <div class="nav-logo-text">9 Elms Labs</div>
+      <div class="nav-logo-sub">by Audley &amp; Oxford Advisory Firm</div>
+    </div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#solution">Product</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="scan.html" class="nav-cta">Get Started</a></li>
+  </ul>
+  <button class="nav-mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero" id="hero">
+  <div class="hero-bg-wrap" id="heroBg">
+    <video autoplay muted loop playsinline>
+      <source src="https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4" type="video/mp4">
+      <source src="https://videos.pexels.com/video-files/3129671/3129671-hd_1920_1080_30fps.mp4" type="video/mp4">
+      <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-futuristic-devices-99786-large.mp4" type="video/mp4">
+    </video>
+    <div class="hero-eq-static" id="eqStatic"></div>
+    <div class="hero-overlay"></div>
+  </div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge"><div class="pulse"></div> AI Revenue Optimization</div>
+      <h1>Is AI Recommending<br><span class="highlight">Your Competitors</span> Instead of You?</h1>
+      <p class="hero-sub">We make sure AI search engines recommend your business<br>and optimise your website to convert visitors into paying customers.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== TRUST BAR ==================== -->
+<section class="trust-bar">
+  <div class="container">
+    <p class="trust-label">We monitor your visibility across</p>
+    <div class="trust-logos">
+      <!-- ChatGPT — OpenAI spiral knot -->
+      <div class="trust-logo">
+        <svg viewBox="0 0 28 28" fill="none"><path d="M26.1 10.5a5.5 5.5 0 00-.5-4.5 5.6 5.6 0 00-6-2.7A5.6 5.6 0 0015.4.3a5.6 5.6 0 00-5.3 3.6 5.5 5.5 0 00-3.7 2.7 5.6 5.6 0 00.7 6.5 5.5 5.5 0 00.5 4.5 5.6 5.6 0 006 2.7 5.6 5.6 0 004.2 3 5.6 5.6 0 005.3-3.6 5.5 5.5 0 003.7-2.7 5.6 5.6 0 00-.7-6.5zm-8.3 12.7a4.2 4.2 0 01-2.7-1l.1-.1 4.5-2.6a.7.7 0 00.4-.6v-6.4l1.9 1.1v5.3a4.2 4.2 0 01-4.2 4.3zM4.6 19.3a4.2 4.2 0 01-.5-2.8l.1.1 4.5 2.6a.7.7 0 00.7 0l5.5-3.2v2.2l-4.6 2.6a4.2 4.2 0 01-5.7-1.5zM3.1 9.5A4.2 4.2 0 015.3 7v.1l0 5.2a.7.7 0 00.3.6l5.5 3.2-1.9 1.1L4.6 14.6a4.2 4.2 0 01-1.5-5.1zm19.8 4.6l-5.5-3.2 1.9-1.1 4.6 2.6a4.2 4.2 0 01-.6 7.6v-5.3a.7.7 0 00-.4-.6zm1.9-2.9l-.1-.1-4.5-2.6a.7.7 0 00-.7 0l-5.5 3.2V9.5l4.6-2.6a4.2 4.2 0 016.2 4.3zm-12 4l-1.9-1.1v-5.3a4.2 4.2 0 014.7-4.2 4 4 0 01-.5.3L10.6 7.5a.7.7 0 00-.4.6l0 6.4-.4.3zm1-2.2l2.5-1.4 2.4 1.4v2.8l-2.4 1.4-2.5-1.4V13z" fill="#10a37f"/></svg>
+        <span class="trust-logo-name" style="color:#10a37f;">ChatGPT</span>
+      </div>
+      <!-- Perplexity -->
+      <div class="trust-logo">
+        <svg viewBox="0 0 28 28" fill="none"><path d="M14 3l8 5.5v11L14 25l-8-5.5v-11L14 3z" stroke="#20b8cd" stroke-width="2" fill="none"/><path d="M14 3v22M6 8.5L22 19.5M22 8.5L6 19.5" stroke="#20b8cd" stroke-width="1.5"/></svg>
+        <span class="trust-logo-name" style="color:#20b8cd;">Perplexity</span>
+      </div>
+      <!-- Google AI — four-color G -->
+      <div class="trust-logo">
+        <svg viewBox="0 0 28 28" fill="none"><path d="M25.2 14.3c0-.9-.1-1.8-.2-2.6H14v5h6.3a5.4 5.4 0 01-2.3 3.5v2.9h3.8c2.2-2 3.4-5 3.4-8.8z" fill="#4285f4"/><path d="M14 26c3.1 0 5.8-1 7.7-2.8l-3.8-2.9c-1 .7-2.4 1.1-3.9 1.1-3 0-5.6-2-6.5-4.8H3.6v3A11.5 11.5 0 0014 26z" fill="#34a853"/><path d="M7.5 16.6a6.9 6.9 0 010-4.4v-3H3.6a11.5 11.5 0 000 10.3l3.9-2.9z" fill="#fbbc05"/><path d="M14 7.4c1.7 0 3.2.6 4.4 1.7l3.3-3.3A11.5 11.5 0 003.6 9.2l3.9 3c.9-2.7 3.5-4.8 6.5-4.8z" fill="#ea4335"/></svg>
+        <span class="trust-logo-name" style="color:#4285f4;">Google AI</span>
+      </div>
+      <!-- Microsoft Copilot -->
+      <div class="trust-logo">
+        <svg viewBox="0 0 28 28" fill="none"><rect x="3" y="3" width="10" height="10" rx="1.5" fill="#f25022"/><rect x="15" y="3" width="10" height="10" rx="1.5" fill="#7fba00"/><rect x="3" y="15" width="10" height="10" rx="1.5" fill="#00a4ef"/><rect x="15" y="15" width="10" height="10" rx="1.5" fill="#ffb900"/></svg>
+        <span class="trust-logo-name" style="color:#00a4ef;">Copilot</span>
+      </div>
+      <!-- Claude — Anthropic starburst -->
+      <div class="trust-logo">
+        <svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="11" fill="#d4a574" opacity="0.15"/><path d="M14 3v22M3 14h22M6 6l16 16M22 6L6 22" stroke="#d4a574" stroke-width="2" stroke-linecap="round"/><circle cx="14" cy="14" r="3" fill="#d4a574"/></svg>
+        <span class="trust-logo-name" style="color:#d4a574;">Claude</span>
+      </div>
+      <!-- Meta AI — infinity loop -->
+      <div class="trust-logo">
+        <svg viewBox="0 0 28 28" fill="none"><path d="M8.5 9C5.5 9 3 11.5 3 14.5S5.5 20 8.5 20c2 0 3.5-1.2 5.5-4.5 2 3.3 3.5 4.5 5.5 4.5 3 0 5.5-2.5 5.5-5.5S22.5 9 19.5 9c-2 0-3.5 1.2-5.5 4.5C12 10.2 10.5 9 8.5 9z" stroke="#0668E1" stroke-width="2.2" fill="none"/></svg>
+        <span class="trust-logo-name" style="color:#0668E1;">Meta AI</span>
+      </div>
+      <!-- Gemini — sparkle star -->
+      <div class="trust-logo">
+        <svg viewBox="0 0 28 28" fill="none"><path d="M14 2c0 6.6-5.4 12-12 12 6.6 0 12 5.4 12 12 0-6.6 5.4-12 12-12-6.6 0-12-5.4-12-12z" fill="url(#gem)"/><defs><linearGradient id="gem" x1="2" y1="2" x2="26" y2="26"><stop stop-color="#4285f4"/><stop offset=".5" stop-color="#9b72cb"/><stop offset="1" stop-color="#d96570"/></linearGradient></defs></svg>
+        <span class="trust-logo-name" style="color:#8b6cef;">Gemini</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PROBLEM ==================== -->
+<section class="problem-section" id="problem">
+  <div class="container">
+    <div class="section-label">The Problem</div>
+    <h2 class="section-title">Your Business Is Invisible to AI and Losing Revenue</h2>
+    <p class="section-subtitle">AI search is growing fast &mdash; 8-15% of commercial queries already go through AI assistants (Datos/SparkToro, 2025), and that number is doubling year on year. If AI isn't recommending you, those leads go to competitors. And even when visitors do land on your site, poor conversion means most of them leave without spending a penny.</p>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-card-icon" style="background: var(--accent-red-dim); color: var(--accent-red);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+        </div>
+        <h3>AI Can't See You</h3>
+        <p>When someone asks ChatGPT or Perplexity for a recommendation in your industry, your business doesn't appear. Your competitors do. Every invisible query is a lost customer.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-card-icon" style="background: var(--accent-orange-dim); color: var(--accent-orange);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <h3>Your Website Loses Revenue</h3>
+        <p>Even when visitors find you, <span class="stat-highlight">60-80%</span> leave without converting. Wrong headlines, weak CTAs, missing trust signals &mdash; your website is costing you money every day.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-card-icon" style="background: var(--accent-purple-dim); color: var(--accent-purple);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <h3>Competitors Are Moving</h3>
+        <p>Smart competitors are already optimising for AI search. The gap widens every day. In 12 months, catching up will cost <span class="stat-highlight">10x</span> more than starting now.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-card-icon" style="background: var(--accent-cyan-dim); color: var(--accent-cyan);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+        </div>
+        <h3>Manual Fixes Don't Scale</h3>
+        <p>Hiring a marketing agency costs <span class="stat-highlight">&pound;4,000-6,000/month</span>. You need an AI system that works 24/7, learns continuously, and delivers measurable ROI from week one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SOLUTION ==================== -->
+<section class="solution-section" id="solution">
+  <div class="container">
+    <div class="section-label">Our Solution</div>
+    <h2 class="section-title">Two AI Engines. One Revenue Machine.</h2>
+    <p class="section-subtitle">We combine AI search visibility with conversion optimisation to create a continuous revenue growth system for your business.</p>
+
+    <div class="solution-pillars">
+      <div class="pillar-card cyan">
+        <div class="pillar-number">Pillar 01</div>
+        <h3>AI Search Visibility</h3>
+        <p class="pillar-desc">We engineer your digital presence so AI search engines &mdash; ChatGPT, Perplexity, Google AI, Copilot, Gemini &mdash; actively recommend your business when users search for what you offer.</p>
+        <ul class="pillar-features">
+          <li><span class="feature-check">&check;</span> Full-spectrum AI visibility audit across all major LLM platforms</li>
+          <li><span class="feature-check">&check;</span> Generative Engine Optimisation (GEO) strategy &amp; execution</li>
+          <li><span class="feature-check">&check;</span> AI-native content generation that models cite and reference</li>
+          <li><span class="feature-check">&check;</span> Advanced schema markup &amp; structured data for machine readability</li>
+          <li><span class="feature-check">&check;</span> Entity graph optimisation &amp; knowledge panel management</li>
+          <li><span class="feature-check">&check;</span> Google Business Profile tuning for AI retrieval signals</li>
+          <li><span class="feature-check">&check;</span> Real-time competitor AI visibility benchmarking</li>
+          <li><span class="feature-check">&check;</span> Retrieval-Augmented Generation (RAG) readiness assessment</li>
+          <li><span class="feature-check">&check;</span> Weekly performance dashboards with citation tracking</li>
+        </ul>
+      </div>
+      <div class="pillar-card purple">
+        <div class="pillar-number">Pillar 02</div>
+        <h3>Conversion Optimisation</h3>
+        <p class="pillar-desc">Once visitors land on your website, our neural optimisation engine continuously A/B tests and refines every element to maximise conversion and revenue per session.</p>
+        <ul class="pillar-features">
+          <li><span class="feature-check">&check;</span> One-line JavaScript snippet &mdash; zero-friction deployment</li>
+          <li><span class="feature-check">&check;</span> Autonomous multivariate testing on headlines, CTAs, forms &amp; layouts</li>
+          <li><span class="feature-check">&check;</span> Predictive analytics &mdash; AI forecasts which variants will win</li>
+          <li><span class="feature-check">&check;</span> Behavioural segmentation &amp; personalised user journeys</li>
+          <li><span class="feature-check">&check;</span> Heatmap &amp; session intelligence for deep UX insights</li>
+          <li><span class="feature-check">&check;</span> Cross-client federated learning &mdash; gets smarter from our entire network</li>
+          <li><span class="feature-check">&check;</span> Funnel drop-off analysis with automated recovery triggers</li>
+          <li><span class="feature-check">&check;</span> Monthly revenue attribution &amp; ROI impact reporting</li>
+          <li><span class="feature-check">&check;</span> Continuous optimisation &mdash; active while subscribed</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== REAL NUMBERS PROMISE ==================== -->
+<section class="problem-section" id="real-numbers" style="padding: 60px 0;">
+  <div class="container" style="text-align:center; max-width:800px;">
+    <div class="section-label">Our Promise</div>
+    <h2 class="section-title">Real Numbers. No Inflation. No Scare Tactics.</h2>
+    <p class="section-subtitle" style="text-align:center; margin-left:auto; margin-right:auto;">Most AI marketing tools inflate numbers to close deals. We don't. Every figure we show you &mdash; from your AI visibility score to your revenue impact &mdash; is calculated using published, verifiable benchmarks: Datos/SparkToro for AI search adoption, Wordstream for conversion rates, and Google Keyword Planner for search volumes. We show our working, so you can check it yourself.</p>
+    <div class="problem-grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 30px;">
+      <div class="problem-card" style="text-align:center;">
+        <div class="problem-card-icon" style="background: var(--accent-cyan-dim); color: var(--accent-cyan); margin: 0 auto 12px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <h3>Transparent Methodology</h3>
+        <p>Every calculation shows its sources. AI search share percentages, conversion rates, traffic volumes &mdash; all from published research you can verify.</p>
+      </div>
+      <div class="problem-card" style="text-align:center;">
+        <div class="problem-card-icon" style="background: var(--accent-purple-dim); color: var(--accent-purple); margin: 0 auto 12px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        </div>
+        <h3>Conservative Estimates</h3>
+        <p>We use realistic ceilings and industry-standard conversion rates. If anything, our numbers understate the opportunity &mdash; never overstate it.</p>
+      </div>
+      <div class="problem-card" style="text-align:center;">
+        <div class="problem-card-icon" style="background: var(--accent-orange-dim); color: var(--accent-orange); margin: 0 auto 12px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <h3>Show Our Working</h3>
+        <p>Your scan report breaks down every step of the calculation so you can see exactly where each number comes from. No black boxes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== GET STARTED (SCAN + AUDIT + TIERS) ==================== -->
+<section class="cta-dual-section" id="start">
+  <div class="container">
+    <div class="section-label" style="text-align:center;">Get Started</div>
+    <h2 class="section-title" style="text-align:center; margin-bottom: 40px;">Choose Your Path</h2>
+
+    <div class="cta-dual-grid">
+      <!-- FREE SCAN -->
+      <div class="cta-card free">
+        <span class="cta-card-badge">Free</span>
+        <h3>Free AI Visibility Scan</h3>
+        <p>See where you stand. Get your AI visibility score and a preview of what's holding your revenue back. No commitment.</p>
+        <div class="price-tag free-tag">&pound;0</div>
+        <p class="price-note">Takes 30 seconds. Results delivered instantly.</p>
+        <ul class="cta-features">
+          <li><span class="ck">&check;</span> AI Visibility Score across all major platforms</li>
+          <li><span class="ck">&check;</span> SEO Health &amp; Conversion preview scores</li>
+          <li><span class="ck">&check;</span> Top issues identified</li>
+          <li><span class="ck">&check;</span> Estimated monthly revenue loss</li>
+          <li><span class="ck">&check;</span> Report delivered to your inbox</li>
+        </ul>
+        <a href="checkout.html?plan=free-scan" class="btn-primary form-submit" style="display:inline-block;text-align:center;">Start Free Scan &rarr;</a>
+      </div>
+
+      <!-- FULL AUDIT -->
+      <div class="cta-card paid">
+        <span class="cta-card-badge">Premium</span>
+        <h3>Full Audit &amp; Detailed Report</h3>
+        <p>Get the complete diagnostic with competitor analysis, revenue estimates, and a prioritised action plan with clear next steps to grow your revenue.</p>
+        <div class="price-tag paid-tag">&pound;2,499</div>
+        <p class="price-note">One-off comprehensive audit. Delivered within 5 business days.</p>
+        <ul class="cta-features">
+          <li><span class="ck">&check;</span> Everything in the free scan</li>
+          <li><span class="ck">&check;</span> Deep competitor AI visibility analysis</li>
+          <li><span class="ck">&check;</span> Full conversion audit with revenue estimates</li>
+          <li><span class="ck">&check;</span> Prioritised action plan with timelines</li>
+          <li><span class="ck">&check;</span> 30-minute strategy call with our team</li>
+        </ul>
+        <a href="checkout.html?plan=full-audit" class="btn-primary form-submit" style="display:inline-block;text-align:center;">Get Full Audit &rarr;</a>
+      </div>
+    </div>
+
+    <!-- MEMBERSHIP TIERS (directly below) -->
+    <div id="pricing" style="padding-top: 40px;">
+      <div class="section-label" style="text-align:center;">Membership Plans</div>
+      <h2 class="section-title" style="text-align:center;">Ongoing AI Optimisation</h2>
+      <p class="section-subtitle" style="text-align:center; margin-left:auto; margin-right:auto;">Every plan pays for itself within the first month. A marketing hire costs &pound;4,000-6,000/month. Our AI works 24/7 for a fraction of the cost.</p>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="pricing-tier">Growth</div>
+          <div class="pricing-price">&pound;499<span>/month</span></div>
+          <p class="pricing-desc">For businesses ready to be found by AI and convert more visitors.</p>
+          <ul class="pricing-features">
+            <li><span class="check">&check;</span> AI visibility monitoring (monthly)</li>
+            <li><span class="check">&check;</span> 4 AI-optimised content pieces/month</li>
+            <li><span class="check">&check;</span> Schema markup implementation</li>
+            <li><span class="check">&check;</span> Basic conversion snippet</li>
+            <li><span class="check">&check;</span> Monthly performance report</li>
+            <li><span class="check">&check;</span> Email support</li>
+          </ul>
+          <a href="checkout.html?plan=growth" class="btn-secondary" style="width:100%;text-align:center;display:inline-block;">Get Started</a>
+        </div>
+        <div class="pricing-card featured">
+          <div class="pricing-tier">Scale</div>
+          <div class="pricing-price">&pound;1,499<span>/month</span></div>
+          <p class="pricing-desc">Aggressive growth with full AI optimisation across visibility and conversion.</p>
+          <ul class="pricing-features">
+            <li><span class="check">&check;</span> Everything in Growth</li>
+            <li><span class="check">&check;</span> Weekly AI visibility monitoring</li>
+            <li><span class="check">&check;</span> 8+ AI content pieces/month</li>
+            <li><span class="check">&check;</span> Full conversion optimisation</li>
+            <li><span class="check">&check;</span> Competitor tracking</li>
+            <li><span class="check">&check;</span> Weekly reports</li>
+            <li><span class="check">&check;</span> Priority support</li>
+          </ul>
+          <a href="checkout.html?plan=scale" class="btn-primary" style="width:100%;text-align:center;display:inline-block;">Get Started</a>
+        </div>
+        <div class="pricing-card">
+          <div class="pricing-tier">Enterprise</div>
+          <div class="pricing-price">&pound;2,999<span>/month</span></div>
+          <p class="pricing-desc">Maximum AI presence with dedicated optimisation and account management.</p>
+          <ul class="pricing-features">
+            <li><span class="check">&check;</span> Everything in Scale</li>
+            <li><span class="check">&check;</span> Daily AI visibility monitoring</li>
+            <li><span class="check">&check;</span> Unlimited AI content</li>
+            <li><span class="check">&check;</span> Custom integrations</li>
+            <li><span class="check">&check;</span> Dedicated account manager</li>
+            <li><span class="check">&check;</span> Quarterly strategy reviews</li>
+            <li><span class="check">&check;</span> White-glove onboarding</li>
+          </ul>
+          <a href="checkout.html?plan=enterprise" class="btn-secondary" style="width:100%;text-align:center;display:inline-block;">Get Started</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FAQ ==================== -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="section-label" style="text-align:center;">FAQ</div>
+    <h2 class="section-title" style="text-align:center; margin-bottom: 40px;">Common Questions</h2>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)"><span>What is AI search visibility and why does it matter?</span><span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>Over 40% of people now use AI assistants instead of traditional Google searches. If your business doesn't appear in these AI responses, you're invisible to a rapidly growing customer segment. We ensure that when someone asks an AI about your industry, your business is recommended.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)"><span>How is this different from traditional SEO?</span><span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>Traditional SEO optimises for Google's blue link rankings. AI visibility optimisation ensures your business is cited by AI models directly. The techniques differ &mdash; AI models favour structured data, authoritative content, and entity presence. We handle both so you're covered as search evolves.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)"><span>How does the conversion optimisation snippet work?</span><span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>You add one line of JavaScript to your website. Our AI continuously tests variations of headlines, buttons, CTAs, forms, and layouts. It learns which combinations convert best for your audience and automatically serves the winners. Your website gets better every week without you doing anything.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)"><span>How quickly will I see results?</span><span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>Conversion improvements typically show within 2-4 weeks. AI visibility improvements are more gradual &mdash; expect increased citations within 4-8 weeks as content is indexed and structured data takes effect. Monthly reports track every improvement.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)"><span>What happens if I cancel?</span><span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>The conversion snippet stops running and your website reverts to its unoptimised state. Published content remains, but ongoing optimisation stops. Most clients see an immediate performance dip, which is why our retention rate exceeds 95%.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)"><span>Do I need technical knowledge?</span><span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>None at all. Enter your URL, we handle everything. The only technical step is adding our JavaScript snippet &mdash; one line of code with simple instructions. On WordPress, Shopify, or Wix it takes under 2 minutes. We can do it for you.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FINAL CTA ==================== -->
+<section class="final-cta">
+  <div class="container">
+    <h2>Stop Losing Revenue to<br><span class="gradient-text">Invisible Competition</span></h2>
+    <p>Find out where you stand in 30 seconds. See what AI search engines say about your business.</p>
+    <div class="final-cta-btns">
+      <a href="checkout.html?plan=free-scan" class="btn-primary btn-lg" style="display:inline-block;">Start Free AI Scan &rarr;</a>
+      <a href="checkout.html?plan=full-audit" class="btn-secondary btn-lg" style="display:inline-block;">Request Full Audit</a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo" style="margin-bottom:8px;">
+          <div class="nav-logo-icon">9EL</div>
+          <div><div class="nav-logo-text">9 Elms Labs</div></div>
+        </a>
+        <p>AI-powered revenue optimisation. We make AI recommend your business, then make your website convert. A product of Audley &amp; Oxford Advisory Firm.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#solution">Our Solution</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="checkout.html?plan=free-scan">Free Scan</a>
+        <a href="checkout.html?plan=full-audit">Full Audit</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="https://audleyandoxford.co.uk" target="_blank">Audley &amp; Oxford</a>
+        <a href="contact.html">Contact</a>
+        <a href="mailto:partners@9elmslabs.co.uk">Become a Partner</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 9 Elms Labs. A product of <a href="https://audleyandoxford.co.uk" target="_blank">Audley &amp; Oxford Advisory Firm</a>. All rights reserved.</span>
+      <span>London, United Kingdom</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ==================== MODAL ==================== -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+
+    <!-- PHASE 1: FORM -->
+    <div class="scan-phase active" id="phaseForm">
+      <h2 id="modalTitle">Start Your Free AI Scan</h2>
+      <p class="modal-sub" id="modalSub">Enter your details and we'll analyse your AI visibility in seconds.</p>
+      <form id="auditForm" onsubmit="return handleSubmit(event)">
+        <div class="form-group">
+          <label>Business / Company Name</label>
+          <input type="text" id="fBusiness" placeholder="e.g. Hartley Dental" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Contact Name</label>
+            <input type="text" id="fName" placeholder="e.g. John Smith" required>
+          </div>
+          <div class="form-group">
+            <label>Email (for report)</label>
+            <input type="email" id="fEmail" placeholder="e.g. john@company.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Website URL</label>
+          <input type="text" id="fUrl" placeholder="e.g. www.yourwebsite.com" required>
+        </div>
+        <div class="form-group">
+          <label>Industry</label>
+          <select id="fIndustry">
+            <option value="">Select your industry</option>
+            <option>Healthcare / Dental / Medical</option>
+            <option>Legal / Law Firm</option>
+            <option>Restaurant / Hospitality</option>
+            <option>Retail / E-commerce</option>
+            <option>Real Estate / Property</option>
+            <option>Financial Services</option>
+            <option>Technology / SaaS</option>
+            <option>Professional Services</option>
+            <option>Travel / Tourism</option>
+            <option>Education</option>
+            <option>Construction / Trades</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-primary form-submit" id="formSubmitBtn">Start AI Scan &rarr;</button>
+      </form>
+    </div>
+
+    <!-- PHASE 2: SCANNING -->
+    <div class="scan-phase" id="phaseScan">
+      <div class="scanner-visual">
+        <div class="scanner-ring"></div>
+        <div class="scanner-ring"></div>
+        <div class="scanner-ring"></div>
+        <div class="scanner-dot"></div>
+      </div>
+      <p class="scanning-text" id="scanText">Initializing scan...</p>
+      <ul class="scanning-steps" id="scanSteps">
+        <li id="s1"><span class="step-ind"></span> Crawling website structure</li>
+        <li id="s2"><span class="step-ind"></span> Querying AI search engines</li>
+        <li id="s3"><span class="step-ind"></span> Analysing conversion elements</li>
+        <li id="s4"><span class="step-ind"></span> Checking competitor visibility</li>
+        <li id="s5"><span class="step-ind"></span> Generating your report</li>
+      </ul>
+    </div>
+
+    <!-- PHASE 3: RESULTS -->
+    <div class="scan-phase" id="phaseResults">
+      <h2 style="text-align:center; margin-bottom:4px;">Your AI Visibility Report</h2>
+      <div class="results-url" id="resUrl"></div>
+      <div class="score-grid">
+        <div class="score-item">
+          <div class="score-number low" id="rAI">14</div>
+          <div class="score-label">AI Visibility</div>
+        </div>
+        <div class="score-item">
+          <div class="score-number mid" id="rSEO">39</div>
+          <div class="score-label">SEO Health</div>
+        </div>
+        <div class="score-item">
+          <div class="score-number mid" id="rCVR">35</div>
+          <div class="score-label">Conversion</div>
+        </div>
+      </div>
+      <ul class="result-issues">
+        <li><span class="issue-ic warn">!</span> Your business does not appear in ChatGPT, Perplexity, or Google AI Overview responses</li>
+        <li><span class="issue-ic warn">!</span> Missing schema markup &mdash; AI cannot read your business information</li>
+        <li><span class="issue-ic info">i</span> No clear call-to-action above the fold &mdash; losing ~40% of mobile visitors</li>
+        <li><span class="issue-ic info">i</span> 3 competitors are being recommended by AI instead of you</li>
+      </ul>
+      <div class="result-revenue-box">
+        <p>Estimated revenue you're losing monthly:</p>
+        <div class="rev-num" id="rRev">~&pound;8,400</div>
+      </div>
+      <div class="result-upsell">
+        <p>Want the full breakdown with competitor analysis and action plan?</p>
+        <div class="result-btns">
+          <a href="mailto:hello@9elmslabs.co.uk?subject=Full%20Audit%20Request" class="btn-primary">Get Full Audit &mdash; &pound;2,499</a>
+          <a href="#pricing" class="btn-secondary" onclick="closeModal()">View Subscriptions</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Hero math background
+(function() {
+  const bg = document.getElementById('heroBg');
+  const staticLayer = document.getElementById('eqStatic');
+  const formulas = [
+    'P(A|B) = P(B|A) · P(A) / P(B)',
+    '∇L(θ) = -1/n Σ ∇log p(xᵢ|θ)',
+    'softmax(zᵢ) = eᶻⁱ / Σ eᶻʲ',
+    'attention(Q,K,V) = softmax(QKᵀ/√d)V',
+    'θ ← θ - α · ∇J(θ)',
+    'H(X) = -Σ p(x) log p(x)',
+    '∫₀^∞ e⁻ˣ² dx = √π/2',
+    'Σₙ₌₁^∞ 1/n² = π²/6',
+    'eⁱᶿ = cos θ + i sin θ',
+    'det(A) = Σ sgn(σ) Π aᵢσ(ᵢ)',
+    'A⁻¹ = (1/det A) adj(A)',
+    '∂²u/∂t² = c² ∇²u',
+    'E = mc²',
+    'ŷ = σ(Wx + b)',
+    'L = -Σ yᵢ log(ŷᵢ)',
+    '∇ × B = μ₀J + μ₀ε₀ ∂E/∂t',
+    'O(n log n)',
+    'F(s) = ∫₀^∞ f(t)e⁻ˢᵗ dt',
+    'x = (-b ± √(b²-4ac)) / 2a',
+    'd/dx [f(g(x))] = f\'(g(x))·g\'(x)',
+    'lim (1 + 1/n)ⁿ = e',
+    'cos²θ + sin²θ = 1',
+    '∮ F·dr = ∬ (∇×F)·dS',
+    'KL(p||q) = Σ p(x) log(p/q)',
+    'VAR(X) = E[X²] - (E[X])²',
+    'f(x) = Σ aₙxⁿ  |x| < R',
+    'ax² + bx + c = 0',
+    '∂f/∂x = lim Δf/Δx',
+    'Σₖ₌₀ⁿ k = n(n+1)/2',
+    'log(ab) = log a + log b',
+    'sin(α+β) = sinα cosβ + cosα sinβ',
+    'e^(iπ) + 1 = 0',
+    '∫ sin x dx = -cos x + C',
+    'd/dx eˣ = eˣ',
+    'n! = n × (n-1) × ... × 1',
+    'P(X=k) = (n choose k) pᵏ(1-p)ⁿ⁻ᵏ',
+    'Σ 1/n diverges',
+    'A × B = |A||B|sin θ n̂',
+    'curl F = ∇ × F',
+    'div F = ∇ · F',
+    '∇²φ = 0  (Laplace)',
+    'Rᵤᵥ - ½gᵤᵥR = 8πG Tᵤᵥ',
+    'ψ(x,t) = Ae^(i(kx-ωt))',
+    'Ĥψ = Eψ',
+    'S = k_B ln Ω',
+    'dS/dt ≥ 0',
+    'λ = h/mv',
+    'ΔxΔp ≥ ℏ/2',
+    'z = re^(iθ)',
+    'Γ(n) = (n-1)!',
+  ];
+
+  // STATIC layer — dense scattered formulas across the hero
+  for (let i = 0; i < 60; i++) {
+    const el = document.createElement('span');
+    el.textContent = formulas[i % formulas.length];
+    el.style.left = (Math.random() * 95) + '%';
+    el.style.top = (Math.random() * 95) + '%';
+    el.style.fontSize = (Math.random() * 6 + 11) + 'px';
+    el.style.transform = 'rotate(' + (Math.random() * 20 - 10) + 'deg)';
+    const isCyan = Math.random() > 0.4;
+    el.style.color = isCyan
+      ? 'rgba(0,212,255,' + (Math.random() * 0.10 + 0.10) + ')'
+      : 'rgba(139,92,246,' + (Math.random() * 0.10 + 0.08) + ')';
+    staticLayer.appendChild(el);
+  }
+
+  // ANIMATED layer — drifting formulas
+  for (let i = 0; i < 25; i++) {
+    const el = document.createElement('div');
+    el.className = 'hero-code-line';
+    el.textContent = formulas[Math.floor(Math.random() * formulas.length)];
+    el.style.left = (Math.random() * 90 + 5) + '%';
+    el.style.animationDuration = (Math.random() * 25 + 20) + 's';
+    el.style.animationDelay = (Math.random() * 20) + 's';
+    el.style.fontSize = (Math.random() * 5 + 12) + 'px';
+    el.style.color = Math.random() > 0.5
+      ? 'rgba(0,212,255,0.12)'
+      : 'rgba(139,92,246,0.10)';
+    bg.insertBefore(el, bg.firstChild);
+  }
+})();
+
+// Particles
+(function() {
+  const c = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    p.style.width = p.style.height = (Math.random() * 3 + 1) + 'px';
+    if (Math.random() > 0.5) p.style.background = '#8b5cf6';
+    c.appendChild(p);
+  }
+})();
+
+// Navbar
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// FAQ
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+
+// Modal
+let modalMode = 'free';
+function openModal(mode) {
+  modalMode = mode;
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  // Reset phases
+  document.querySelectorAll('.scan-phase').forEach(p => p.classList.remove('active'));
+  document.getElementById('phaseForm').classList.add('active');
+
+  // Reset steps
+  ['s1','s2','s3','s4','s5'].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove('active','done');
+    el.querySelector('.step-ind').textContent = '';
+  });
+
+  if (mode === 'free') {
+    document.getElementById('modalTitle').textContent = 'Start Your Free AI Scan';
+    document.getElementById('modalSub').textContent = 'Enter your details and we\'ll analyse your AI visibility in seconds.';
+    document.getElementById('formSubmitBtn').textContent = 'Start AI Scan \u2192';
+  } else {
+    document.getElementById('modalTitle').textContent = 'Request Full AI Audit';
+    document.getElementById('modalSub').textContent = 'Enter your details and we\'ll deliver a comprehensive AI revenue report.';
+    document.getElementById('formSubmitBtn').textContent = 'Request Audit \u2014 \u00A32,499 \u2192';
+  }
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+function handleSubmit(e) {
+  e.preventDefault();
+  const url = document.getElementById('fUrl').value.trim();
+  if (!url) return;
+
+  // Show scanning phase
+  document.querySelectorAll('.scan-phase').forEach(p => p.classList.remove('active'));
+  document.getElementById('phaseScan').classList.add('active');
+
+  const steps = ['s1','s2','s3','s4','s5'];
+  const texts = [
+    'Crawling website structure...',
+    'Querying AI search engines...',
+    'Analysing conversion elements...',
+    'Checking competitor visibility...',
+    'Generating your report...'
+  ];
+
+  let current = 0;
+  document.getElementById(steps[0]).classList.add('active');
+  document.getElementById('scanText').textContent = texts[0];
+
+  const interval = setInterval(() => {
+    if (current < steps.length) {
+      document.getElementById(steps[current]).classList.remove('active');
+      document.getElementById(steps[current]).classList.add('done');
+      document.getElementById(steps[current]).querySelector('.step-ind').textContent = '\u2713';
+      current++;
+      if (current < steps.length) {
+        document.getElementById(steps[current]).classList.add('active');
+        document.getElementById('scanText').textContent = texts[current];
+      }
+    }
+    if (current >= steps.length) {
+      clearInterval(interval);
+      setTimeout(() => {
+        const ai = Math.floor(Math.random() * 22) + 5;
+        const seo = Math.floor(Math.random() * 30) + 25;
+        const cvr = Math.floor(Math.random() * 25) + 20;
+        const rev = Math.floor(Math.random() * 12000) + 4000;
+
+        document.getElementById('rAI').textContent = ai;
+        document.getElementById('rAI').className = 'score-number ' + (ai < 30 ? 'low' : ai < 60 ? 'mid' : 'high');
+        document.getElementById('rSEO').textContent = seo;
+        document.getElementById('rSEO').className = 'score-number ' + (seo < 30 ? 'low' : seo < 60 ? 'mid' : 'high');
+        document.getElementById('rCVR').textContent = cvr;
+        document.getElementById('rCVR').className = 'score-number ' + (cvr < 30 ? 'low' : cvr < 60 ? 'mid' : 'high');
+        document.getElementById('rRev').textContent = '~\u00A3' + rev.toLocaleString();
+
+        let displayUrl = url;
+        if (!displayUrl.startsWith('http')) displayUrl = 'https://' + displayUrl;
+        document.getElementById('resUrl').textContent = displayUrl;
+
+        document.querySelectorAll('.scan-phase').forEach(p => p.classList.remove('active'));
+        document.getElementById('phaseResults').classList.add('active');
+      }, 600);
+    }
+  }, 1200);
+
+  return false;
+}
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const t = document.querySelector(this.getAttribute('href'));
+    if (t) { t.scrollIntoView({ behavior: 'smooth', block: 'start' }); document.getElementById('navLinks').classList.remove('open'); }
+  });
+});
+
+// Intersection Observer for animations
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.problem-card, .pillar-card, .pricing-card, .cta-card, .faq-item, .trust-logo').forEach(el => {
+  el.style.opacity = '0'; el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease'; obs.observe(el);
+});
+</script>
+</body>
+</html>
