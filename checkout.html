@@ -212,6 +212,26 @@
             line-height: 1.5;
         }
 
+        .plan-card.popular {
+            border-color: #00d4ff;
+            position: relative;
+        }
+
+        .plan-card.popular::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            color: #0a0a0f;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
         /* Checkout container */
         .checkout-container {
             width: 100%;
@@ -311,7 +331,7 @@
         }
 
         .plan-features li::before {
-            content: '✓';
+            content: '\2713';
             color: #10b981;
             font-weight: 700;
             flex-shrink: 0;
@@ -601,7 +621,7 @@
                 <div class="navbar-logo">9</div>
                 <div class="navbar-brand-text">
                     <strong>9 Elms Labs</strong>
-                    <small>by Audley & Oxford Advisory Firm</small>
+                    <small>by Audley &amp; Oxford Advisory Firm</small>
                 </div>
             </a>
             <div class="navbar-links">
@@ -621,36 +641,26 @@
     <!-- Main content -->
     <main>
         <div class="page-header" id="pageHeader">
-            <h1>Start Your AI Audit Today</h1>
+            <h1>Complete Your Subscription</h1>
             <p>Choose the perfect plan for your business needs</p>
         </div>
 
         <!-- Plan selection grid (shown when no plan specified) -->
         <div class="plan-selection-grid" id="planSelectionGrid" style="display: none;">
-            <a href="checkout.html?plan=free-scan" class="plan-card">
-                <div class="plan-name">Free Scan</div>
-                <div class="plan-price">£0</div>
-                <div class="plan-description">Get your AI visibility score and preview report in 30 seconds</div>
+            <a href="checkout.html?plan=starter" class="plan-card">
+                <div class="plan-name">Starter</div>
+                <div class="plan-price">&pound;199<span style="font-size: 0.6em; color: #8888a0;">/mo</span></div>
+                <div class="plan-description">Monthly AI visibility scans, reports, and content recommendations for small businesses</div>
             </a>
-            <a href="checkout.html?plan=full-audit" class="plan-card">
-                <div class="plan-name">Full Audit</div>
-                <div class="plan-price">£2,499</div>
-                <div class="plan-description">Complete AI revenue audit with competitor analysis and strategy call</div>
-            </a>
-            <a href="checkout.html?plan=growth" class="plan-card">
+            <a href="checkout.html?plan=growth" class="plan-card popular">
                 <div class="plan-name">Growth</div>
-                <div class="plan-price">£499<span style="font-size: 0.6em; color: #8888a0;">/mo</span></div>
-                <div class="plan-description">Monthly AI visibility monitoring and content optimization</div>
+                <div class="plan-price">&pound;499<span style="font-size: 0.6em; color: #8888a0;">/mo</span></div>
+                <div class="plan-description">Weekly scans, 4 AI-written articles, competitor tracking, and A/B testing for medium businesses</div>
             </a>
             <a href="checkout.html?plan=scale" class="plan-card">
                 <div class="plan-name">Scale</div>
-                <div class="plan-price">£1,499<span style="font-size: 0.6em; color: #8888a0;">/mo</span></div>
-                <div class="plan-description">Full AI optimization with weekly reporting and support</div>
-            </a>
-            <a href="checkout.html?plan=enterprise" class="plan-card">
-                <div class="plan-name">Enterprise</div>
-                <div class="plan-price">£2,999<span style="font-size: 0.6em; color: #8888a0;">/mo</span></div>
-                <div class="plan-description">Maximum AI presence with dedicated account manager</div>
+                <div class="plan-price">&pound;999<span style="font-size: 0.6em; color: #8888a0;">/mo</span></div>
+                <div class="plan-description">Daily monitoring, 8 articles, competitor intelligence, and priority support for large businesses</div>
             </a>
         </div>
 
@@ -711,17 +721,17 @@
                                 <label for="industry">Industry *</label>
                                 <select id="industry" name="industry" required>
                                     <option value="">Select an industry</option>
-                                    <optgroup label="Travel & Hospitality">
+                                    <optgroup label="Travel &amp; Hospitality">
                                         <option value="travel-agency">Travel Agency</option>
                                         <option value="cruise">Cruise Line / Cruise Agency</option>
                                         <option value="ota">OTA (Online Travel Agency)</option>
                                         <option value="tour-operator">Tour Operator</option>
-                                        <option value="hotels">Hotels & Accommodation</option>
-                                        <option value="airlines">Airlines & Aviation</option>
-                                        <option value="restaurants">Restaurants & Food Service</option>
-                                        <option value="events">Events & Entertainment</option>
+                                        <option value="hotels">Hotels &amp; Accommodation</option>
+                                        <option value="airlines">Airlines &amp; Aviation</option>
+                                        <option value="restaurants">Restaurants &amp; Food Service</option>
+                                        <option value="events">Events &amp; Entertainment</option>
                                     </optgroup>
-                                    <optgroup label="Technology & SaaS">
+                                    <optgroup label="Technology &amp; SaaS">
                                         <option value="saas">SaaS / Software</option>
                                         <option value="fintech">FinTech</option>
                                         <option value="ai-ml">AI / Machine Learning</option>
@@ -734,39 +744,39 @@
                                         <option value="seo-agency">SEO / PPC Agency</option>
                                         <option value="web-development">Web Development</option>
                                         <option value="consulting">Management Consulting</option>
-                                        <option value="accounting">Accounting & Tax</option>
+                                        <option value="accounting">Accounting &amp; Tax</option>
                                         <option value="law">Law Firm</option>
-                                        <option value="recruitment">Recruitment & HR</option>
-                                        <option value="pr-comms">PR & Communications</option>
+                                        <option value="recruitment">Recruitment &amp; HR</option>
+                                        <option value="pr-comms">PR &amp; Communications</option>
                                     </optgroup>
-                                    <optgroup label="Finance & Insurance">
-                                        <option value="banking">Banking & Financial Services</option>
+                                    <optgroup label="Finance &amp; Insurance">
+                                        <option value="banking">Banking &amp; Financial Services</option>
                                         <option value="insurance">Insurance</option>
                                         <option value="wealth-management">Wealth Management</option>
-                                        <option value="mortgage">Mortgage & Lending</option>
+                                        <option value="mortgage">Mortgage &amp; Lending</option>
                                     </optgroup>
-                                    <optgroup label="Healthcare & Wellness">
+                                    <optgroup label="Healthcare &amp; Wellness">
                                         <option value="healthcare">Healthcare / Medical Practice</option>
                                         <option value="dental">Dental Practice</option>
                                         <option value="pharma">Pharmaceutical</option>
-                                        <option value="wellness">Wellness & Fitness</option>
+                                        <option value="wellness">Wellness &amp; Fitness</option>
                                     </optgroup>
-                                    <optgroup label="Property & Construction">
+                                    <optgroup label="Property &amp; Construction">
                                         <option value="real-estate">Real Estate Agency</option>
                                         <option value="property-management">Property Management</option>
-                                        <option value="construction">Construction & Building</option>
-                                        <option value="architecture">Architecture & Design</option>
+                                        <option value="construction">Construction &amp; Building</option>
+                                        <option value="architecture">Architecture &amp; Design</option>
                                     </optgroup>
-                                    <optgroup label="Education & Training">
+                                    <optgroup label="Education &amp; Training">
                                         <option value="education">Education / University</option>
                                         <option value="online-courses">Online Courses / EdTech</option>
                                         <option value="training">Corporate Training</option>
                                     </optgroup>
-                                    <optgroup label="Retail & Consumer">
+                                    <optgroup label="Retail &amp; Consumer">
                                         <option value="retail">Retail / D2C</option>
                                         <option value="luxury">Luxury / Premium Brands</option>
                                         <option value="automotive">Automotive</option>
-                                        <option value="fashion">Fashion & Apparel</option>
+                                        <option value="fashion">Fashion &amp; Apparel</option>
                                     </optgroup>
                                     <optgroup label="Other">
                                         <option value="non-profit">Non-Profit / Charity</option>
@@ -780,9 +790,9 @@
 
                         <!-- Button group -->
                         <div class="button-group">
-                            <button type="submit" class="submit-btn" id="submitBtn">Complete Registration</button>
-                            <div class="security-note" id="securityNote" style="display: none;">
-                                <span class="lock-icon">🔒</span>
+                            <button type="submit" class="submit-btn" id="submitBtn">Continue to Payment</button>
+                            <div class="security-note" id="securityNote">
+                                <span class="lock-icon">&#128274;</span>
                                 <span>Secure payment via Revolut</span>
                             </div>
                         </div>
@@ -793,17 +803,17 @@
             <!-- Trust signals -->
             <div class="trust-signals">
                 <div class="trust-signal">
-                    <div class="trust-signal-icon">✓</div>
+                    <div class="trust-signal-icon">&#10003;</div>
                     <div class="trust-signal-title">30-Day Money Back</div>
                     <div class="trust-signal-text">Fully refundable guarantee</div>
                 </div>
                 <div class="trust-signal">
-                    <div class="trust-signal-icon">🔒</div>
+                    <div class="trust-signal-icon">&#128274;</div>
                     <div class="trust-signal-title">Secure Payment</div>
                     <div class="trust-signal-text">Powered by Revolut</div>
                 </div>
                 <div class="trust-signal">
-                    <div class="trust-signal-icon">⭐</div>
+                    <div class="trust-signal-icon">&#11088;</div>
                     <div class="trust-signal-title">50+ Audits</div>
                     <div class="trust-signal-text">Successfully delivered</div>
                 </div>
@@ -827,113 +837,76 @@
 
     <script>
         // Plan data
-        const plans = {
-            'free-scan': {
-                name: 'Free Scan',
-                price: '£0',
-                billing: '',
-                description: 'Get your AI visibility score and preview report in 30 seconds',
-                badge: 'FREE',
-                badgeClass: 'free',
-                features: [
-                    'AI visibility score assessment',
-                    'Preview of full audit report',
-                    'Competitor benchmark',
-                    'Next steps recommendations'
-                ],
-                type: 'free'
-            },
-            'full-audit': {
-                name: 'Full Audit',
-                price: '£2,499',
-                billing: 'one-off payment',
-                description: 'Deep-dive analysis delivered in 5 business days with strategy call and 90-day implementation roadmap',
-                badge: 'ONE-OFF',
+        var plans = {
+            'starter': {
+                name: 'Starter',
+                price: '\u00a3199/month',
+                billing: 'billed monthly',
+                description: 'Monthly AI visibility monitoring and reporting for small businesses',
+                badge: 'STARTER PLAN',
                 badgeClass: 'paid',
                 features: [
-                    '50+ page competitive intelligence report',
-                    'Full AI platform audit (ChatGPT, Perplexity, Gemini, Copilot)',
-                    'Technical SEO & schema implementation guide',
-                    '90-minute strategy call with senior consultant',
-                    '90-day prioritised action roadmap'
+                    'Monthly AI visibility scan across ChatGPT, Perplexity, Gemini & Copilot',
+                    'Monthly website health audit (SEO + conversion scoring)',
+                    'Monthly performance report via email',
+                    'Live dashboard with score history & trends',
+                    '2 AI-generated content recommendations per month',
+                    'Conversion tracking snippet for your website',
+                    'Revenue impact calculator updated monthly'
                 ],
                 type: 'paid',
-                revolutUrl: 'https://checkout.revolut.com/pay/58e4504b-554c-4134-96a0-a46e01955586'
+                revolutUrl: '#'
             },
             'growth': {
                 name: 'Growth',
-                price: '£499',
-                billing: 'per month',
-                description: 'Ongoing monitoring and optimisation for growing businesses',
-                badge: 'GROWTH PLAN',
+                price: '\u00a3499/month',
+                billing: 'billed monthly',
+                description: 'Weekly scans, AI-written articles, and competitor tracking for medium businesses',
+                badge: 'MOST POPULAR',
                 badgeClass: 'paid',
                 features: [
-                    'Weekly: AI visibility tracking across 4 platforms',
-                    'Weekly: Keyword ranking monitoring (50 terms)',
-                    'Monthly: Content optimisation recommendations',
-                    'Monthly: Performance report with KPI dashboard',
-                    'Monthly: 1x strategy call (30 min)',
-                    'Ongoing: Basic conversion snippet installed',
-                    'Ongoing: Email support (48h response)'
+                    'Everything in Starter, plus:',
+                    'Weekly AI visibility scans (not monthly)',
+                    'Weekly detailed performance reports',
+                    '4 full AI-written SEO articles per month (ready to publish)',
+                    'Schema markup included with every article',
+                    'Weekly competitor movement tracking',
+                    'Conversion snippet with A/B testing',
+                    'Alert emails on significant score changes'
                 ],
                 type: 'paid',
                 revolutUrl: 'https://checkout.revolut.com/pay/8d939af5-3f9b-4438-bbf2-d8c6c27b54e6'
             },
             'scale': {
                 name: 'Scale',
-                price: '£1,499',
-                billing: 'per month',
-                description: 'Full AI optimisation across visibility and conversion — our most popular plan',
-                badge: 'MOST POPULAR',
+                price: '\u00a3999/month',
+                billing: 'billed monthly',
+                description: 'Daily monitoring, 8 articles, competitor intelligence, and priority support for large businesses',
+                badge: 'SCALE PLAN',
                 badgeClass: 'paid',
                 features: [
-                    'Daily: AI mention monitoring & alerts',
-                    'Daily: Conversion snippet A/B testing',
-                    'Weekly: Full AI visibility tracking (all platforms)',
-                    'Weekly: Competitor movement alerts & reports',
-                    'Monthly: 2x strategy calls (45 min each)',
-                    'Monthly: 4 optimised content articles',
-                    'Monthly: Schema markup updates',
-                    'Monthly: Conversion rate optimisation review',
-                    'Quarterly: Full re-audit & strategy refresh'
+                    'Everything in Growth, plus:',
+                    'Daily AI visibility monitoring',
+                    '8 full AI-written articles per month',
+                    'Daily competitor intelligence updates',
+                    'Instant alert emails on any changes',
+                    'Weekly content calendar with scheduling',
+                    'Priority support'
                 ],
                 type: 'paid',
                 revolutUrl: 'https://checkout.revolut.com/pay/17513ebf-12df-4167-bef9-63268195aae5'
-            },
-            'enterprise': {
-                name: 'Enterprise',
-                price: '£2,999',
-                billing: 'per month',
-                description: 'Maximum AI presence with dedicated account team and custom integrations',
-                badge: 'ENTERPRISE',
-                badgeClass: 'paid',
-                features: [
-                    'Daily: Real-time AI mention monitoring',
-                    'Daily: Automated conversion optimisation',
-                    'Daily: Priority issue escalation',
-                    'Weekly: Dedicated account manager check-in',
-                    'Weekly: Custom dashboard with live metrics',
-                    'Weekly: Competitor intelligence briefing',
-                    'Monthly: 4x strategy calls (60 min each)',
-                    'Monthly: 8 optimised content pieces',
-                    'Monthly: Custom integrations & API access',
-                    'Quarterly: Board-ready performance report',
-                    'Quarterly: On-site strategy workshop (optional)'
-                ],
-                type: 'paid',
-                revolutUrl: 'https://checkout.revolut.com/pay/1875ef11-aed5-45dc-aa4b-2288d9a72fe3'
             }
         };
 
         // Get plan from URL parameter
         function getPlanFromUrl() {
-            const params = new URLSearchParams(window.location.search);
+            var params = new URLSearchParams(window.location.search);
             return params.get('plan');
         }
 
         // Initialize page
         function init() {
-            const selectedPlan = getPlanFromUrl();
+            var selectedPlan = getPlanFromUrl();
 
             if (selectedPlan && plans[selectedPlan]) {
                 showCheckout(selectedPlan);
@@ -950,38 +923,32 @@
 
         // Show checkout form
         function showCheckout(planId) {
-            const plan = plans[planId];
+            var plan = plans[planId];
             document.getElementById('planSelectionGrid').style.display = 'none';
             document.getElementById('checkoutContainer').style.display = 'block';
 
             // Update plan header
             document.getElementById('planBadge').textContent = plan.badge;
-            document.getElementById('planBadge').className = `plan-badge ${plan.badgeClass}`;
+            document.getElementById('planBadge').className = 'plan-badge ' + plan.badgeClass;
             document.getElementById('planTitle').textContent = plan.name;
             document.getElementById('planPrice').textContent = plan.price;
             document.getElementById('planBilling').textContent = plan.billing;
             document.getElementById('planDescription').textContent = plan.description;
 
             // Update features
-            const featuresList = document.getElementById('planFeatures');
+            var featuresList = document.getElementById('planFeatures');
             featuresList.innerHTML = '';
-            plan.features.forEach(feature => {
-                const li = document.createElement('li');
+            plan.features.forEach(function(feature) {
+                var li = document.createElement('li');
                 li.textContent = feature;
                 featuresList.appendChild(li);
             });
 
             // Update button
-            const submitBtn = document.getElementById('submitBtn');
-            if (plan.type === 'free') {
-                submitBtn.textContent = 'Start Free Scan';
-                submitBtn.className = 'submit-btn free';
-                document.getElementById('securityNote').style.display = 'none';
-            } else {
-                submitBtn.textContent = `Continue to Payment`;
-                submitBtn.className = 'submit-btn paid';
-                document.getElementById('securityNote').style.display = 'flex';
-            }
+            var submitBtn = document.getElementById('submitBtn');
+            submitBtn.textContent = 'Continue to Payment';
+            submitBtn.className = 'submit-btn paid';
+            document.getElementById('securityNote').style.display = 'flex';
 
             // Store current plan
             sessionStorage.setItem('currentPlan', planId);
@@ -992,13 +959,13 @@
 
         // Form validation
         function validateForm() {
-            const form = document.getElementById('checkoutForm');
-            const inputs = form.querySelectorAll('[required]');
-            let isValid = true;
+            var form = document.getElementById('checkoutForm');
+            var inputs = form.querySelectorAll('[required]');
+            var isValid = true;
 
-            inputs.forEach(input => {
-                const group = input.parentElement;
-                const hasError = !validateField(input);
+            inputs.forEach(function(input) {
+                var group = input.parentElement;
+                var hasError = !validateField(input);
 
                 if (hasError) {
                     group.classList.add('error');
@@ -1009,14 +976,14 @@
             });
 
             // Validate email format
-            const emailInput = document.getElementById('email');
+            var emailInput = document.getElementById('email');
             if (emailInput.value && !isValidEmail(emailInput.value)) {
                 emailInput.parentElement.classList.add('error');
                 isValid = false;
             }
 
             // Validate URL format
-            const websiteInput = document.getElementById('website');
+            var websiteInput = document.getElementById('website');
             if (websiteInput.value && !isValidUrl(websiteInput.value)) {
                 websiteInput.parentElement.classList.add('error');
                 isValid = false;
@@ -1036,13 +1003,12 @@
         }
 
         function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailRegex.test(email);
         }
 
         function isValidUrl(url) {
-            // Accept any domain-like string
-            const urlPattern = /^(https?:\/\/)?[\w.-]+\.[a-z]{2,}/i;
+            var urlPattern = /^(https?:\/\/)?[\w.-]+\.[a-z]{2,}/i;
             return urlPattern.test(url.trim());
         }
 
@@ -1065,16 +1031,16 @@
         }
 
         // Handle form submission
-        document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
             if (!validateForm()) {
                 return;
             }
 
-            const formData = getFormData();
-            const planId = formData.plan;
-            const plan = plans[planId];
+            var formData = getFormData();
+            var planId = formData.plan;
+            var plan = plans[planId];
 
             // Show loading spinner
             document.getElementById('loadingSpinner').classList.add('active');
@@ -1082,30 +1048,21 @@
             // Save form data
             saveFormData(formData);
 
-            // Handle different plan types
-            if (plan.type === 'free') {
-                // Redirect to scan page with form data as params
-                const params = new URLSearchParams(formData);
-                window.location.href = `scan.html?${params.toString()}`;
-                return;
-            }
+            // Save form data so onboard page can pre-fill
+            try { localStorage.setItem('9el_checkout', JSON.stringify(formData)); } catch(err) {}
 
-            // For paid plans:
-            // 1. Save form data so onboard page can pre-fill
-            try { localStorage.setItem('9el_checkout', JSON.stringify(formData)); } catch(e) {}
-
-            // 2. Notify team
+            // Notify team
             try {
                 fetch('/api/contact', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
-                }).catch(() => {});
-            } catch (e) {}
+                }).catch(function() {});
+            } catch (err) {}
 
-            // 3. Open Revolut payment in new tab, redirect current tab to onboarding
+            // Open Revolut payment in new tab, redirect current tab to onboarding
             window.open(plan.revolutUrl, '_blank');
-            window.location.href = `onboard.html?plan=${formData.plan}`;
+            window.location.href = 'onboard.html?plan=' + formData.plan;
         });
 
         // Initialize on load

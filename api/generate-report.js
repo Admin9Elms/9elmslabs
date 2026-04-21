@@ -45,7 +45,10 @@ export default async function handler(req, res) {
   const aiScore = req.body.aiScore || 0;
   const seoScore = req.body.seoScore || 0;
   const conversionScore = req.body.conversionScore || 0;
-  const revenueLoss = req.body.revenueLoss || 0;
+  const growthPotential = req.body.growthPotential || {};
+  const visibilityUplift = growthPotential.visibilityUpliftPct || 15;
+  const trafficIncrease = growthPotential.trafficIncreasePct || 8;
+  const additionalInquiries = growthPotential.additionalInquiries || 10;
   const findings = req.body.findings || [];
   const competitors = req.body.competitors || [];
   const recommendations = req.body.recommendations || {};
@@ -65,7 +68,10 @@ export default async function handler(req, res) {
       aiScore,
       seoScore,
       conversionScore,
-      revenueLoss,
+      visibilityUplift,
+      trafficIncrease,
+      additionalInquiries,
+      growthPotential,
       findings,
       competitors,
       recommendations,
@@ -81,7 +87,7 @@ export default async function handler(req, res) {
       replyTo: 'hello@9elmslabs.co.uk',
       to: email,
       subject: `Your AI Visibility & Revenue Report — ${businessName}`,
-      html: getClientEmailHTML(contactName, businessName, aiScore, seoScore, conversionScore, revenueLoss),
+      html: getClientEmailHTML(contactName, businessName, aiScore, seoScore, conversionScore, visibilityUplift, trafficIncrease, additionalInquiries),
       attachments: [
         {
           filename: `AI_Visibility_Report_${sanitizeFilename(businessName)}.pdf`,
@@ -110,7 +116,7 @@ export default async function handler(req, res) {
         from: '9 Elms Labs <reports@9elmslabs.co.uk>',
         to: 'hello@9elmslabs.co.uk',
         subject: `New Report Generated: ${businessName}`,
-        html: getNotificationEmailHTML(contactName, businessName, email, industry, aiScore, seoScore, conversionScore, revenueLoss),
+        html: getNotificationEmailHTML(contactName, businessName, email, industry, aiScore, seoScore, conversionScore, visibilityUplift, additionalInquiries),
       });
     } catch (notifError) {
       console.warn('Failed to send notification email:', notifError);
@@ -301,12 +307,12 @@ function addExecutiveSummary(doc, data) {
   doc.y = metricY + 110;
   doc.moveDown(0.5);
 
-  // Revenue loss highlight
+  // Growth potential highlight
   doc.rect(60, doc.y, 492, 70).fill(COLORS.lightGrey);
   doc.fillColor(COLORS.text);
-  doc.fontSize(11).font('Helvetica-Bold').text('Estimated Monthly AI Revenue Opportunity', 70, doc.y + 15);
-  doc.fontSize(24).font('Helvetica-Bold').fillColor(COLORS.danger).text(`£${formatNumber(data.revenueLoss)}`, 70, doc.y + 15);
-  doc.fontSize(9).fillColor(COLORS.lightText).text(`Annual Opportunity: £${formatNumber(data.revenueLoss * 12)} (based on published industry benchmarks)`, 70, doc.y + 35);
+  doc.fontSize(11).font('Helvetica-Bold').text('Your Growth Potential', 70, doc.y + 15);
+  doc.fontSize(16).font('Helvetica-Bold').fillColor(COLORS.cyan).text(`+${data.visibilityUplift}% visibility  →  +${data.trafficIncrease}% traffic  →  +${data.additionalInquiries} inquiries/mo`, 70, doc.y + 15);
+  doc.fontSize(9).fillColor(COLORS.lightText).text(`Based on AI platform analysis and ${data.industry} industry benchmarks`, 70, doc.y + 35);
 
   doc.moveDown(5.5);
 
@@ -588,48 +594,47 @@ function addCompetitorAnalysis(doc, data) {
 }
 
 function addRevenueImpact(doc, data) {
-  addPageHeader(doc, 'Revenue Impact Analysis');
+  addPageHeader(doc, 'Growth Potential Analysis');
 
   doc.moveDown(0.5);
 
-  // Monthly breakdown
-  doc.fontSize(12).font('Helvetica-Bold').fillColor(COLORS.text).text('Current Revenue Loss');
+  // Growth metrics
+  doc.fontSize(12).font('Helvetica-Bold').fillColor(COLORS.text).text('Your Growth Opportunity');
   doc.moveDown(0.5);
 
   const impactBoxX = 60;
   const impactBoxY = doc.y;
 
-  // Monthly box
+  // Visibility box
   doc.rect(impactBoxX, impactBoxY, 150, 100).fill(COLORS.lightGrey);
-  doc.fontSize(10).fillColor(COLORS.lightText).text('Monthly Loss', impactBoxX + 10, impactBoxY + 15);
-  doc.fontSize(28).font('Helvetica-Bold').fillColor(COLORS.danger).text(`£${formatNumber(data.revenueLoss)}`, impactBoxX + 10, impactBoxY + 30);
+  doc.fontSize(10).fillColor(COLORS.lightText).text('Visibility Increase', impactBoxX + 10, impactBoxY + 15);
+  doc.fontSize(28).font('Helvetica-Bold').fillColor(COLORS.cyan).text(`+${data.visibilityUplift}%`, impactBoxX + 10, impactBoxY + 30);
+  doc.fontSize(9).fillColor(COLORS.lightText).text('AI platform visibility', impactBoxX + 10, impactBoxY + 70);
 
-  // Annual box
+  // Traffic box
   doc.rect(impactBoxX + 170, impactBoxY, 150, 100).fill(COLORS.lightGrey);
-  doc.fontSize(10).fillColor(COLORS.lightText).text('Annual Impact', impactBoxX + 180, impactBoxY + 15);
-  doc.fontSize(28).font('Helvetica-Bold').fillColor(COLORS.danger).text(`£${formatNumber(data.revenueLoss * 12)}`, impactBoxX + 180, impactBoxY + 30);
+  doc.fontSize(10).fillColor(COLORS.lightText).text('Traffic Increase', impactBoxX + 180, impactBoxY + 15);
+  doc.fontSize(28).font('Helvetica-Bold').fillColor(COLORS.purple).text(`+${data.trafficIncrease}%`, impactBoxX + 180, impactBoxY + 30);
+  doc.fontSize(9).fillColor(COLORS.lightText).text('Website visitors from AI', impactBoxX + 180, impactBoxY + 70);
 
-  // 3-Year box
+  // Inquiries box
   doc.rect(impactBoxX + 340, impactBoxY, 150, 100).fill(COLORS.lightGrey);
-  doc.fontSize(10).fillColor(COLORS.lightText).text('3-Year Loss', impactBoxX + 350, impactBoxY + 15);
-  doc.fontSize(28).font('Helvetica-Bold').fillColor(COLORS.danger).text(`£${formatNumber(data.revenueLoss * 36)}`, impactBoxX + 350, impactBoxY + 30);
+  doc.fontSize(10).fillColor(COLORS.lightText).text('Extra Inquiries/Month', impactBoxX + 350, impactBoxY + 15);
+  doc.fontSize(28).font('Helvetica-Bold').fillColor(COLORS.success).text(`+${data.additionalInquiries}`, impactBoxX + 350, impactBoxY + 30);
+  doc.fontSize(9).fillColor(COLORS.lightText).text('Additional monthly leads', impactBoxX + 350, impactBoxY + 70);
 
   doc.moveDown(6.5);
 
-  // ROI Calculation
-  doc.fontSize(12).font('Helvetica-Bold').fillColor(COLORS.text).text('Potential ROI of Optimization');
+  // How it works
+  doc.fontSize(12).font('Helvetica-Bold').fillColor(COLORS.text).text('How This Translates to Growth');
   doc.moveDown(0.5);
-
-  // Conservative: 35-45% recovery is realistic for well-executed optimization
-  const projectedRecovery = data.revenueLoss * 0.4; // 40% recovery — conservative estimate
-  const investmentCost = 2499; // Full audit cost
 
   doc.fontSize(10).font('Helvetica').fillColor(COLORS.text);
-  doc.text(`With targeted optimization over 3-6 months, a realistic recovery is 35-45% of the identified opportunity:`, 60, doc.y, { width: 492 });
+  doc.text(`By improving your AI visibility by ${data.visibilityUplift}%, your business becomes discoverable on platforms like ChatGPT, Perplexity, and Gemini. In your industry, this translates to approximately ${data.trafficIncrease}% more website traffic, which at your industry's conversion rate means ${data.additionalInquiries}+ additional inquiries every month.`, 60, doc.y, { width: 492 });
   doc.moveDown(0.5);
 
-  doc.fontSize(11).font('Helvetica-Bold').fillColor(COLORS.success).text(`Estimated Monthly Recovery: £${formatNumber(projectedRecovery)}`);
-  doc.fontSize(11).font('Helvetica-Bold').fillColor(COLORS.success).text(`Estimated Annual Recovery: £${formatNumber(projectedRecovery * 12)}`);
+  doc.fontSize(11).font('Helvetica-Bold').fillColor(COLORS.success).text(`Potential Visibility Uplift: +${data.visibilityUplift}%`);
+  doc.fontSize(11).font('Helvetica-Bold').fillColor(COLORS.success).text(`Additional Monthly Inquiries: +${data.additionalInquiries}`);
   doc.moveDown(0.3);
   doc.fontSize(8).font('Helvetica').fillColor(COLORS.lightText).text('Based on published industry benchmarks. Actual results depend on execution quality and market conditions.');
   doc.moveDown(0.5);
@@ -1367,32 +1372,36 @@ function addCompetitiveIntelligenceDetail(doc, data) {
 }
 
 function addRevenueProjections(doc, data) {
-  addPageHeader(doc, 'Revenue Projection Scenarios');
+  addPageHeader(doc, 'Growth Projection Scenarios');
   doc.moveDown(0.5);
 
-  doc.fontSize(11).font('Helvetica-Bold').fillColor(COLORS.text).text('12-Month Revenue Recovery Scenarios');
+  doc.fontSize(11).font('Helvetica-Bold').fillColor(COLORS.text).text('12-Month Visibility & Traffic Growth Scenarios');
   doc.moveDown(0.5);
 
-  const monthly = data.revenueLoss || 5000;
+  const baseVis = data.visibilityUplift || 15;
+  const baseInq = data.additionalInquiries || 10;
 
   const scenarios = [
     {
       name: 'No Action',
       color: COLORS.danger,
-      months: Array.from({ length: 12 }, (_, i) => Math.round(monthly * (1 + i * 0.015))),
-      desc: 'Opportunity gap grows ~1-2% per month as competitor AI adoption rises',
+      vis3: '0%', vis6: '0%', vis12: '-5%',
+      inq: '0',
+      desc: 'Competitors gain ground as AI adoption accelerates',
     },
     {
-      name: 'Growth Plan',
+      name: 'Growth Plan (£499/mo)',
       color: COLORS.warning,
-      months: Array.from({ length: 12 }, (_, i) => Math.round(monthly * Math.max(0.65, 1 - i * 0.03))),
-      desc: 'Steady improvement with weekly monitoring — realistic 35% reduction over 12 months',
+      vis3: `+${Math.round(baseVis * 0.3)}%`, vis6: `+${Math.round(baseVis * 0.6)}%`, vis12: `+${baseVis}%`,
+      inq: `+${baseInq}`,
+      desc: 'Steady improvement with weekly monitoring and content optimisation',
     },
     {
-      name: 'Scale Plan',
+      name: 'Scale Plan (£999/mo)',
       color: COLORS.success,
-      months: Array.from({ length: 12 }, (_, i) => Math.round(monthly * Math.max(0.55, 1 - i * 0.04))),
-      desc: 'Active optimization with daily monitoring — realistic 45% reduction over 12 months',
+      vis3: `+${Math.round(baseVis * 0.5)}%`, vis6: `+${Math.round(baseVis * 0.85)}%`, vis12: `+${Math.round(baseVis * 1.2)}%`,
+      inq: `+${Math.round(baseInq * 1.4)}`,
+      desc: 'Active daily optimization across all AI platforms',
     },
   ];
 
@@ -1406,7 +1415,7 @@ function addRevenueProjections(doc, data) {
   doc.text('Month 3', tableX + 180, tableY + 5);
   doc.text('Month 6', tableX + 250, tableY + 5);
   doc.text('Month 12', tableX + 320, tableY + 5);
-  doc.text('12-Mo Total Loss', tableX + 395, tableY + 5);
+  doc.text('Extra Inq/mo', tableX + 400, tableY + 5);
   tableY += 20;
 
   scenarios.forEach((s, idx) => {
@@ -1415,35 +1424,29 @@ function addRevenueProjections(doc, data) {
     doc.fontSize(8).font('Helvetica-Bold').fillColor(s.color).text(s.name, tableX + 8, tableY + 5);
     doc.fontSize(7).font('Helvetica').fillColor(COLORS.lightText).text(s.desc, tableX + 8, tableY + 16, { width: 165 });
     doc.fontSize(8).font('Helvetica').fillColor(COLORS.text);
-    doc.text(`£${formatNumber(s.months[2])}`, tableX + 180, tableY + 8);
-    doc.text(`£${formatNumber(s.months[5])}`, tableX + 250, tableY + 8);
-    doc.text(`£${formatNumber(s.months[11])}`, tableX + 320, tableY + 8);
-    const totalLoss = s.months.reduce((a, b) => a + b, 0);
-    doc.fontSize(8).font('Helvetica-Bold').fillColor(s.color).text(`£${formatNumber(totalLoss)}`, tableX + 395, tableY + 8);
+    doc.text(s.vis3, tableX + 180, tableY + 8);
+    doc.text(s.vis6, tableX + 250, tableY + 8);
+    doc.text(s.vis12, tableX + 320, tableY + 8);
+    doc.fontSize(8).font('Helvetica-Bold').fillColor(s.color).text(s.inq, tableX + 400, tableY + 8);
     tableY += 28;
   });
 
   doc.y = tableY + 15;
 
-  // ROI calculation
-  doc.fontSize(11).font('Helvetica-Bold').fillColor(COLORS.text).text('Return on Investment');
+  // Plan comparison
+  doc.fontSize(11).font('Helvetica-Bold').fillColor(COLORS.text).text('Plan Comparison');
   doc.moveDown(0.5);
 
   const plans = [
-    { name: 'Full Audit (One-off)', cost: 2499, recovery: monthly * 0.2 * 12 },
-    { name: 'Growth Plan (Annual)', cost: 499 * 12, recovery: monthly * 0.35 * 12 },
-    { name: 'Scale Plan (Annual)', cost: 1497 * 12, recovery: monthly * 0.45 * 12 },
+    { name: 'Starter Plan (£199/mo)', inq: Math.round(baseInq * 0.5), vis: Math.round(baseVis * 0.6) },
+    { name: 'Growth Plan (£499/mo)', inq: baseInq, vis: baseVis },
+    { name: 'Scale Plan (£999/mo)', inq: Math.round(baseInq * 1.4), vis: Math.round(baseVis * 1.2) },
   ];
 
   plans.forEach((p) => {
-    const roi = Math.round(((p.recovery - p.cost) / p.cost) * 100);
-    const roiColor = roi > 100 ? COLORS.success : roi > 0 ? COLORS.warning : COLORS.danger;
-
     doc.fontSize(9).font('Helvetica-Bold').fillColor(COLORS.text).text(p.name, 70, doc.y);
-    doc.fontSize(9).fillColor(COLORS.lightText).text(`Investment: £${formatNumber(p.cost)}`, 250, doc.y);
-    doc.fontSize(9).fillColor(roiColor).font('Helvetica-Bold').text(`ROI: ${roi}%`, 420, doc.y);
-    doc.moveDown(0.5);
-    doc.fontSize(8).fillColor(COLORS.lightText).text(`Est. recovery: £${formatNumber(p.recovery)} over 12 months`, 85, doc.y);
+    doc.fontSize(9).fillColor(COLORS.lightText).text(`+${p.vis}% visibility`, 250, doc.y);
+    doc.fontSize(9).fillColor(COLORS.success).font('Helvetica-Bold').text(`+${p.inq} inquiries/mo`, 380, doc.y);
     doc.moveDown(0.8);
   });
 }
@@ -1623,7 +1626,7 @@ function addStrategicRoadmap(doc, data) {
   doc.rect(60, doc.y, 492, 50).fill(COLORS.lightGrey);
   doc.fontSize(10).font('Helvetica-Bold').fillColor(COLORS.text).text('Expected Outcome After 90 Days', 75, doc.y + 8);
   doc.fontSize(9).font('Helvetica').fillColor(COLORS.text).text(
-    `With consistent execution, ${data.businessName} can expect a 20-40 point improvement in AI visibility scores, a 15-25% increase in organic traffic, and capture of £${formatNumber(data.revenueLoss * 0.35)}-${formatNumber(data.revenueLoss * 0.45)}/month of the identified AI revenue opportunity.`,
+    `With consistent execution, ${data.businessName} can expect a 20-40 point improvement in AI visibility scores, a ${data.trafficIncrease}%+ increase in organic traffic, and ${data.additionalInquiries}+ additional inquiries per month from AI-driven channels.`,
     75, doc.y + 10, { width: 462 }
   );
 }
@@ -1722,7 +1725,7 @@ function addMeasurementKPIs(doc, data) {
     { kpi: 'AI Visibility Score', current: `${data.aiScore}/100`, target: `${Math.min(100, data.aiScore + 30)}/100`, frequency: 'Weekly' },
     { kpi: 'Monthly Organic Traffic', current: 'Baseline TBD', target: '+30% in 90 days', frequency: 'Weekly' },
     { kpi: 'Conversion Rate', current: `${(data.conversionScore * 0.05).toFixed(1)}%`, target: `${(data.conversionScore * 0.05 + 1.5).toFixed(1)}%`, frequency: 'Weekly' },
-    { kpi: 'Revenue from AI-referred Traffic', current: 'Baseline TBD', target: `£${formatNumber(data.revenueLoss * 0.35)}/mo`, frequency: 'Monthly' },
+    { kpi: 'AI-referred Inquiries', current: 'Baseline TBD', target: `+${data.additionalInquiries}/mo`, frequency: 'Monthly' },
     { kpi: 'AI Platform Citations', current: `~${Math.round(data.aiScore * 0.3)}`, target: `${Math.round(data.aiScore * 0.3 + 25)}+`, frequency: 'Monthly' },
   ];
 
@@ -1798,7 +1801,7 @@ function generateSummaryParagraph(data) {
   const seo = data.seoScore > 60 ? 'well-optimized' : 'needs improvement';
   const conversion = data.conversionScore > 60 ? 'effective' : 'could be stronger';
 
-  return `Your business currently has ${visibility} visibility in AI search results. Your SEO foundation is ${seo}, and your conversion mechanisms are ${conversion}. By implementing the recommended optimizations, you can expect to recover a significant portion of your estimated monthly revenue loss of £${formatNumber(data.revenueLoss)}.`;
+  return `Your business currently has ${visibility} visibility in AI search results. Your SEO foundation is ${seo}, and your conversion mechanisms are ${conversion}. By implementing the recommended optimizations, you could increase your AI visibility by ${data.visibilityUplift}%, drive ${data.trafficIncrease}% more traffic, and gain approximately ${data.additionalInquiries}+ additional inquiries per month.`;
 }
 
 function formatNumber(num) {
@@ -1815,7 +1818,7 @@ function sanitizeFilename(name) {
   return name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
 }
 
-function getClientEmailHTML(contactName, businessName, aiScore, seoScore, conversionScore, revenueLoss) {
+function getClientEmailHTML(contactName, businessName, aiScore, seoScore, conversionScore, visibilityUplift, trafficIncrease, additionalInquiries) {
   return `
     <!DOCTYPE html>
     <html>
@@ -1836,8 +1839,8 @@ function getClientEmailHTML(contactName, businessName, aiScore, seoScore, conver
         .metric-label { font-size: 12px; color: #666; text-transform: uppercase; }
         .metric-value { font-size: 24px; font-weight: bold; color: #00d4ff; margin: 10px 0; }
         .footer { text-align: center; font-size: 12px; color: #999; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; }
-        .revenue-alert { background: #fff3cd; border-left: 4px solid #ffc107; padding: 20px; margin: 20px 0; border-radius: 4px; }
-        .revenue-amount { font-size: 28px; font-weight: bold; color: #e74c3c; }
+        .growth-alert { background: #e8f5e9; border-left: 4px solid #00d4ff; padding: 20px; margin: 20px 0; border-radius: 4px; }
+        .growth-highlight { font-size: 22px; font-weight: bold; color: #00d4ff; }
       </style>
     </head>
     <body>
@@ -1852,11 +1855,10 @@ function getClientEmailHTML(contactName, businessName, aiScore, seoScore, conver
           <h2>Hi ${contactName || 'there'},</h2>
           <p>Thank you for using 9 Elms Labs AI Visibility Scanner. Your comprehensive report for <strong>${businessName}</strong> is ready!</p>
 
-          <div class="revenue-alert">
-            <p style="margin: 0 0 10px 0; font-weight: bold;">⚠️ Revenue Impact</p>
-            <p style="margin: 0;">Your estimated monthly revenue loss due to AI visibility gaps:</p>
-            <div class="revenue-amount">£${formatNumber(revenueLoss)}</div>
-            <p style="margin: 10px 0 0 0; font-size: 13px;">Annual impact: £${formatNumber(revenueLoss * 12)}</p>
+          <div class="growth-alert">
+            <p style="margin: 0 0 10px 0; font-weight: bold;">📈 Your Growth Potential</p>
+            <div class="growth-highlight">+${visibilityUplift}% visibility → +${trafficIncrease}% traffic → +${additionalInquiries} inquiries/mo</div>
+            <p style="margin: 10px 0 0 0; font-size: 13px;">Based on AI platform analysis and your industry benchmarks</p>
           </div>
 
           <h3>Your Performance Scores</h3>
@@ -1910,7 +1912,7 @@ function getClientEmailHTML(contactName, businessName, aiScore, seoScore, conver
   `;
 }
 
-function getNotificationEmailHTML(contactName, businessName, email, industry, aiScore, seoScore, conversionScore, revenueLoss) {
+function getNotificationEmailHTML(contactName, businessName, email, industry, aiScore, seoScore, conversionScore, visibilityUplift, additionalInquiries) {
   return `
     <!DOCTYPE html>
     <html>
@@ -1940,9 +1942,9 @@ function getNotificationEmailHTML(contactName, businessName, email, industry, ai
           <div class="detail">AI Visibility: ${aiScore}/100</div>
           <div class="detail">SEO Health: ${seoScore}/100</div>
           <div class="detail">Conversion: ${conversionScore}/100</div>
-          <div class="detail">Est. Monthly Loss: £${formatNumber(revenueLoss)}</div>
+          <div class="detail">Growth Potential: +${visibilityUplift}% visibility, +${additionalInquiries} inquiries/mo</div>
 
-          <p>PDF report has been sent to ${email}. Follow up with an audit proposal if interested.</p>
+          <p>PDF report has been sent to ${email}. Follow up with a plan proposal if interested.</p>
         </div>
       </div>
     </body>

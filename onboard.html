@@ -140,7 +140,7 @@
                         <input type="tel" id="phone" placeholder="+44 7xxx xxx xxx">
                     </div>
                 </div>
-                <input type="hidden" id="plan" value="growth">
+                <input type="hidden" id="plan" value="starter">
                 <button type="submit" class="btn-primary" id="submitBtn">Activate My Account</button>
             </form>
             <div class="status-msg" id="statusMsg"></div>
@@ -166,14 +166,13 @@
     <script>
     (function() {
         const params = new URLSearchParams(window.location.search);
-        const plan = params.get('plan') || 'growth';
+        const plan = params.get('plan') || 'starter';
         document.getElementById('plan').value = plan;
 
         const planNames = {
-            'growth': 'Growth Plan — £499/mo',
-            'scale': 'Scale Plan — £1,499/mo',
-            'enterprise': 'Enterprise Plan — £2,999/mo',
-            'full-audit': 'Full Audit — £2,499',
+            'starter': 'Starter — £199/mo',
+            'growth': 'Growth — £499/mo',
+            'scale': 'Scale — £999/mo',
         };
         document.getElementById('planBadge').textContent = planNames[plan] || plan;
 
@@ -190,40 +189,33 @@
 
         // Plan-specific next steps
         const nextSteps = {
-            'full-audit': [
-                'Your deep-dive AI audit is now in progress',
+            starter: [
+                'Your first scan results will be ready in ~2 minutes',
                 'Check your email — we\'ve sent your dashboard login link',
-                'Full report delivered within 5-7 business days',
-                'We\'ll email you to schedule your 90-minute strategy call',
-                'Your 90-day implementation roadmap will be included in the report',
+                'Monthly AI visibility reports arrive on the 1st of each month',
+                '2 content recommendations delivered monthly',
+                'Your conversion tracking snippet is ready in the dashboard',
             ],
             growth: [
                 'Your first scan results will be ready in ~2 minutes',
                 'Check your email — we\'ve sent your dashboard login link',
                 'Weekly AI visibility reports start next Monday',
-                'Your conversion tracking snippet is ready in the dashboard',
-                'Monthly content recommendations arrive on the 1st',
+                '4 AI-optimised articles delivered on the 1st of each month',
+                'Competitor tracking and A/B testing are now active',
+                'Performance alerts are enabled',
             ],
             scale: [
                 'Your first scan results will be ready in ~2 minutes',
                 'Check your email — we\'ve sent your dashboard login link',
                 'Daily AI monitoring starts tomorrow morning',
-                'Your first batch of 4 optimised content articles arrives within 48 hours',
-                'Competitor movement alerts are now active',
-                'Your conversion snippet with A/B testing is ready in the dashboard',
-            ],
-            enterprise: [
-                'Your first scan results will be ready in ~2 minutes',
-                'Check your email — we\'ve sent your dashboard login link',
-                'Real-time AI monitoring is now active',
-                'Your dedicated account manager will reach out within 24 hours',
-                'First batch of 8 content pieces arrives within 48 hours',
-                'Competitor intelligence briefing starts this week',
-                'API access credentials are in your dashboard',
+                'Weekly reports arrive every Monday',
+                '8 AI-optimised articles delivered on the 1st of each month',
+                'Daily competitor intelligence and instant alerts are active',
+                'Priority support is available',
             ],
         };
         const list = document.getElementById('nextStepsList');
-        const steps = nextSteps[plan] || nextSteps.growth;
+        const steps = nextSteps[plan] || nextSteps.starter;
         list.innerHTML = steps.map(s => `<li>${s}</li>`).join('');
 
         // Form submit

@@ -1,10 +1,11 @@
 /**
  * POST /api/content-generate
- * Generates AI-optimised content articles for Scale/Enterprise clients.
+ * Generates AI-optimised content for all tiers.
  * Called by cron on 1st of month, or manually from dashboard.
  *
- * Body: { clientId, businessName, industry, count }
- * Generates `count` articles, stores in KV via _db.js, emails notification.
+ * Body: { clientId, businessName, industry, count, type }
+ *   type: "recommendations" (starter — short topic briefs) or "articles" (growth/scale — full 600-800 word pieces)
+ * Generates `count` items, stores in KV via _db.js, emails notification.
  */
 import { Resend } from 'resend';
 import { getClient, addContent } from './_db.js';
@@ -63,6 +64,30 @@ const TOPIC_BANK = {
     { topic: 'Expert Tips and Best Practices', type: 'blog-post' },
   ],
 };
+
+function generateRecommendation(businessName, industry, topicInfo) {
+  const { topic, type } = topicInfo;
+  const html = `<div class="recommendation">
+<h3>${topic}</h3>
+<p><strong>Why:</strong> This topic is highly relevant for ${industry} businesses and frequently surfaces in AI-generated answers. Writing about it positions ${businessName} as an authority.</p>
+<p><strong>Key points to include:</strong></p>
+<ul>
+  <li>Address the most common questions your audience asks about ${topic.toLowerCase()}</li>
+  <li>Include specific facts, figures, or examples from your experience</li>
+  <li>Add structured data markup (${type === 'faq' ? 'FAQPage schema' : 'Article schema'})</li>
+  <li>Write in an authoritative but approachable tone, 600-800 words</li>
+</ul>
+<p><strong>Format:</strong> ${type}</p>
+</div>`;
+
+  return {
+    title: topic,
+    type: 'recommendation',
+    html,
+    schema: '',
+    wordCount: html.split(/\s+/).length,
+  };
+}
 
 async function generateArticle(businessName, industry, topicInfo, perplexityKey) {
   const { topic, type } = topicInfo;
@@ -172,9 +197,10 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { clientId, businessName, industry, count } = req.body || {};
+  const { clientId, businessName, industry, count, type } = req.body || {};
   if (!clientId || !businessName) return res.status(400).json({ error: 'clientId and businessName required' });
 
+  const contentType = type || 'articles'; // "recommendations" for starter, "articles" for growth/scale
   const articleCount = Math.min(count || 4, 8);
   const perplexityKey = process.env.PERPLEXITY_API_KEY;
   const topics = (TOPIC_BANK[industry] || TOPIC_BANK.default).slice(0, articleCount);
@@ -183,11 +209,13 @@ export default async function handler(req, res) {
 
   for (const topicInfo of topics) {
     try {
-      const article = await generateArticle(businessName, industry || 'other', topicInfo, perplexityKey);
-      await addContent(clientId, article);
-      results.push({ title: article.title, type: article.type, wordCount: article.wordCount });
+      const item = contentType === 'recommendations'
+        ? generateRecommendation(businessName, industry || 'other', topicInfo)
+        : await generateArticle(businessName, industry || 'other', topicInfo, perplexityKey);
+      await addContent(clientId, item);
+      results.push({ title: item.title, type: item.type, wordCount: item.wordCount });
     } catch (e) {
-      console.error('Article generation failed:', topicInfo.topic, e.message);
+      console.error('Content generation failed:', topicInfo.topic, e.message);
     }
   }
 
@@ -198,7 +226,7 @@ export default async function handler(req, res) {
       await resend.emails.send({
         from: '9 Elms Labs <reports@9elmslabs.co.uk>',
         to: client.email,
-        subject: `${results.length} New Content Pieces Ready — ${businessName}`,
+        subject: `${results.length} New ${contentType === 'recommendations' ? 'Content Recommendations' : 'Content Pieces'} Ready — ${businessName}`,
         html: `<!DOCTYPE html><html><body style="font-family:'Segoe UI',sans-serif;color:#333;max-width:600px;margin:0 auto;">
           <div style="background:#0a0e27;color:white;padding:30px;text-align:center;border-radius:8px 8px 0 0;">
             <div style="font-size:28px;font-weight:bold;">9EL</div>
@@ -206,7 +234,7 @@ export default async function handler(req, res) {
           </div>
           <div style="background:#f9f9f9;padding:30px;border-radius:0 0 8px 8px;">
             <h2>New content is ready for ${businessName}</h2>
-            <p>${results.length} AI-optimised articles have been prepared and are waiting in your dashboard:</p>
+            <p>${results.length} ${contentType === 'recommendations' ? 'content recommendations have' : 'AI-optimised articles have'} been prepared and are waiting in your dashboard:</p>
             ${results.map(r => `<div style="background:white;padding:12px;margin:8px 0;border-radius:6px;border-left:3px solid #00d4ff;"><strong>${r.title}</strong><br><span style="font-size:12px;color:#666;">${r.type} — ${r.wordCount} words</span></div>`).join('')}
             <div style="text-align:center;margin:24px 0;">
               <a href="https://9elmslabs.co.uk/login.html" style="display:inline-block;background:#00d4ff;color:#0a0e27;padding:14px 36px;text-decoration:none;border-radius:6px;font-weight:bold;">View in Dashboard</a>

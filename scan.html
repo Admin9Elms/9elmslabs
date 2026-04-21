@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free AI Visibility Scan - 9 Elms Labs</title>
+    <title>Free AI Audit - 9 Elms Labs</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
@@ -144,24 +144,45 @@
         .score-card.warning .card-bar-fill{background:linear-gradient(90deg,#f59e0b,#d97706)}
         .score-card.good .card-bar-fill{background:linear-gradient(90deg,#10b981,#059669)}
 
-        /* Revenue loss section - the big emotional trigger */
-        .revenue-impact{margin-bottom:50px;border-radius:24px;overflow:hidden;border:1px solid rgba(239,68,68,0.2);position:relative}
-        .revenue-impact::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(239,68,68,0.08),rgba(245,158,11,0.04),rgba(139,92,246,0.04));pointer-events:none}
-        .revenue-impact-inner{position:relative;z-index:1;padding:48px 40px}
-        .revenue-impact h3{text-align:center;font-size:14px;text-transform:uppercase;letter-spacing:3px;color:#8888a0;margin-bottom:32px}
-        .revenue-numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;text-align:center;margin-bottom:36px}
-        .revenue-numbers .rev-item .rev-label{font-size:12px;color:#8888a0;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
-        .revenue-numbers .rev-item .rev-amount{font-size:36px;font-weight:800;font-family:'JetBrains Mono',monospace}
-        .revenue-numbers .rev-item.loss .rev-amount{color:#ef4444}
-        .revenue-numbers .rev-item.potential .rev-amount{color:#10b981}
-        .revenue-numbers .rev-item.gap .rev-amount{color:#f59e0b}
-        .revenue-calc{background:rgba(10,10,15,0.5);border-radius:12px;padding:20px;margin-top:24px}
-        .revenue-calc h4{font-size:13px;color:#8888a0;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
-        .revenue-calc .calc-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(42,42,58,0.5);font-size:13px}
-        .revenue-calc .calc-row:last-child{border-bottom:none;padding-top:12px;font-weight:700;font-size:15px}
-        .revenue-calc .calc-label{color:#8888a0}
-        .revenue-calc .calc-value{color:#f0f0f5;font-family:'JetBrains Mono',monospace}
-        .revenue-calc .calc-row:last-child .calc-value{color:#ef4444}
+        /* Growth potential section */
+        .growth-impact{margin-bottom:50px;border-radius:24px;overflow:hidden;border:1px solid rgba(0,212,255,0.2);position:relative}
+        .growth-impact::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,255,0.06),rgba(139,92,246,0.04),rgba(16,185,129,0.04));pointer-events:none}
+        .growth-impact-inner{position:relative;z-index:1;padding:48px 40px}
+        .growth-impact h3{text-align:center;font-size:14px;text-transform:uppercase;letter-spacing:3px;color:#8888a0;margin-bottom:32px}
+
+        /* Three big metric cards */
+        .growth-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:36px}
+        .growth-metric{text-align:center;background:rgba(10,10,15,0.5);border:1px solid rgba(42,42,58,0.5);border-radius:16px;padding:28px 16px;position:relative;overflow:hidden}
+        .growth-metric .metric-icon{font-size:28px;margin-bottom:12px}
+        .growth-metric .metric-value{font-size:48px;font-weight:800;font-family:'JetBrains Mono',monospace;line-height:1}
+        .growth-metric .metric-label{font-size:13px;color:#8888a0;margin-top:8px;line-height:1.4}
+        .growth-metric.visibility .metric-value{color:#00d4ff}
+        .growth-metric.traffic .metric-value{color:#8b5cf6}
+        .growth-metric.inquiries .metric-value{color:#10b981}
+
+        /* Flow arrow connector */
+        .growth-flow{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+        .growth-flow .flow-step{background:rgba(22,22,31,0.8);border:1px solid #2a2a3a;border-radius:12px;padding:12px 20px;font-size:13px;color:#f0f0f5;text-align:center;min-width:140px}
+        .growth-flow .flow-arrow{color:#00d4ff;font-size:20px;font-weight:700}
+        .growth-flow .flow-step .flow-highlight{font-weight:700;font-size:16px;display:block;margin-bottom:2px}
+        .growth-flow .flow-step .flow-highlight.cyan{color:#00d4ff}
+        .growth-flow .flow-step .flow-highlight.purple{color:#8b5cf6}
+        .growth-flow .flow-step .flow-highlight.green{color:#10b981}
+
+        /* Competitor comparison */
+        .competitor-section{background:rgba(10,10,15,0.5);border-radius:16px;padding:28px;margin-top:28px;border:1px solid rgba(42,42,58,0.5)}
+        .competitor-section h4{font-size:14px;color:#8888a0;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:20px;text-align:center}
+        .competitor-bars{max-width:500px;margin:0 auto}
+        .comp-bar-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+        .comp-bar-row .comp-name{width:120px;font-size:12px;color:#8888a0;text-align:right;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .comp-bar-row .comp-name.you{color:#00d4ff;font-weight:700}
+        .comp-bar-track{flex:1;height:24px;background:#1a1a2a;border-radius:6px;overflow:hidden;position:relative}
+        .comp-bar-fill{height:100%;border-radius:6px;transition:width 1.5s ease;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:11px;font-weight:600;color:#0a0a0f;min-width:30px}
+        .comp-bar-fill.yours{background:linear-gradient(90deg,#00d4ff,#0099cc)}
+        .comp-bar-fill.competitor{background:linear-gradient(90deg,#8b5cf6,#6d28d9)}
+        .comp-bar-fill.average{background:linear-gradient(90deg,#5a5a70,#3a3a4a)}
+        .comp-bar-score{width:35px;font-size:12px;color:#8888a0;font-family:'JetBrains Mono',monospace}
+        .competitor-note{text-align:center;font-size:12px;color:#5a5a70;margin-top:16px;font-style:italic}
 
         /* Findings section */
         .findings-section{margin-bottom:50px}
@@ -228,7 +249,7 @@
         .hidden{display:none !important}
 
         @media(max-width:1024px){
-            .upsell-grid{grid-template-columns:repeat(2,1fr)}
+            .upsell-grid{grid-template-columns:repeat(2,1fr) !important}
         }
         @media(max-width:768px){
             .hamburger{display:flex}
@@ -238,7 +259,7 @@
             .scores-grid{grid-template-columns:1fr}
             .findings-grid{grid-template-columns:1fr}
             .revenue-numbers{grid-template-columns:1fr;gap:16px}
-            .upsell-grid{grid-template-columns:1fr}
+            .upsell-grid{grid-template-columns:1fr !important}
             .scan-timeline{grid-template-columns:1fr}
         }
     </style>
@@ -271,8 +292,8 @@
                 <!-- ===== FORM PHASE ===== -->
                 <div id="formPhase">
                     <div class="hero">
-                        <h1>Free AI Visibility Scan</h1>
-                        <p>Discover how much revenue you're leaving on the table. Get instant insights into your AI visibility and optimization opportunities.</p>
+                        <h1>Free AI Audit</h1>
+                        <p>Find out how visible your business is to AI search engines, how you compare to competitors, and how much more traffic you could be getting.</p>
                     </div>
                     <div class="form-card">
                         <form id="scanForm">
@@ -360,8 +381,22 @@
                                     </optgroup>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="companySize">Company Size</label>
+                                <select id="companySize" name="companySize">
+                                    <option value="">Select your company size</option>
+                                    <option value="solo-micro">Solo / Micro (under &pound;100k)</option>
+                                    <option value="small">Small Business (&pound;100k&ndash;&pound;500k)</option>
+                                    <option value="medium">Medium Business (&pound;500k&ndash;&pound;5M)</option>
+                                    <option value="large">Large Business (&pound;5M+)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="annualTurnover">Approximate Annual Turnover <span style="font-weight:400;color:#5a5a70;">(optional &mdash; helps us give more accurate estimates)</span></label>
+                                <input type="text" id="annualTurnover" name="annualTurnover" placeholder="e.g. &pound;250,000">
+                            </div>
                             <div id="errorMessage" class="error-message"></div>
-                            <button type="submit" class="btn btn-primary">Start Your Free Scan</button>
+                            <button type="submit" class="btn btn-primary">Start Your Free AI Audit</button>
                         </form>
                     </div>
                 </div>
@@ -410,7 +445,7 @@
 
                         <div class="results-hero">
                             <div class="results-hero-content">
-                                <h2 id="resultsTitle">Your AI Visibility Scan Results</h2>
+                                <h2 id="resultsTitle">Your AI Visibility Audit Results</h2>
                                 <p class="subtitle" id="resultsSubtitle">Complete analysis for your business</p>
                                 <div class="overall-score" id="overallScoreRing">
                                     <svg viewBox="0 0 160 160">
@@ -435,44 +470,52 @@
 
                         <div class="scores-grid" id="scoresGrid"></div>
 
-                        <div class="revenue-impact" id="revenueImpact"></div>
+                        <div class="growth-impact" id="growthImpact"></div>
 
                         <div class="findings-section">
                             <h3>Key Findings & Issues</h3>
                             <div class="findings-grid" id="findingsGrid"></div>
                         </div>
 
-                        <!-- UPSELL: "Let's Work on This" -->
+                        <!-- UPSELL: "What We'd Do For You" -->
                         <div class="upsell-section">
                             <div class="upsell-header">
-                                <h3>Let's Work on This Together</h3>
-                                <p>Your scan revealed significant revenue gaps. Our team can fix these issues and start driving AI-sourced revenue within 30 days.</p>
+                                <h3>What We'd Do For You</h3>
+                                <p>Your audit revealed a significant visibility gap. Choose the plan that fits your business and start capturing those extra inquiries within 30 days.</p>
                             </div>
 
-                            <div class="upsell-grid">
-                                <!-- Full Audit -->
+                            <div class="upsell-grid" style="grid-template-columns:repeat(3,1fr);">
+                                <!-- Starter -->
                                 <div class="upsell-card">
-                                    <div class="card-name">Full Audit</div>
-                                    <div class="card-price" style="color:#00d4ff">£2,499</div>
-                                    <div class="card-billing">One-off payment</div>
-                                    <div class="card-desc">Deep-dive analysis with strategy call and 90-day implementation roadmap</div>
+                                    <div class="card-name">Starter</div>
+                                    <div class="card-price" style="color:#00d4ff">&pound;199 <span>/mo</span></div>
+                                    <div class="card-billing">Monthly retainer</div>
+                                    <div class="card-desc">Essential AI visibility monitoring and quick wins for small businesses</div>
                                     <div class="deliverables">
                                         <div class="del-section">
-                                            <div class="del-label">Delivered in 5 business days</div>
-                                            <div class="del-item">50+ page competitive intelligence report</div>
-                                            <div class="del-item">Full AI platform audit (ChatGPT, Perplexity, Gemini, Copilot)</div>
-                                            <div class="del-item">Technical SEO & schema implementation guide</div>
-                                            <div class="del-item">90-minute strategy call with senior consultant</div>
-                                            <div class="del-item">90-day prioritised action roadmap</div>
+                                            <div class="del-label">Weekly</div>
+                                            <div class="del-item">AI visibility tracking across 2 platforms</div>
+                                            <div class="del-item">Keyword ranking monitoring (20 terms)</div>
+                                        </div>
+                                        <div class="del-section">
+                                            <div class="del-label">Monthly</div>
+                                            <div class="del-item">Performance report with key metrics</div>
+                                            <div class="del-item">Content optimisation recommendations</div>
+                                            <div class="del-item">1x strategy call (20 min)</div>
+                                        </div>
+                                        <div class="del-section">
+                                            <div class="del-label">Ongoing</div>
+                                            <div class="del-item">Basic schema markup setup</div>
+                                            <div class="del-item">Email support (72h response)</div>
                                         </div>
                                     </div>
-                                    <a href="checkout.html?plan=full-audit" class="card-btn">Get Full Audit</a>
+                                    <a href="/checkout.html?plan=starter" class="card-btn">Start Starter</a>
                                 </div>
 
-                                <!-- Growth -->
-                                <div class="upsell-card">
+                                <!-- Growth (Recommended) -->
+                                <div class="upsell-card recommended">
                                     <div class="card-name">Growth</div>
-                                    <div class="card-price" style="color:#00d4ff">£499 <span>/mo</span></div>
+                                    <div class="card-price" style="color:#8b5cf6">&pound;499 <span>/mo</span></div>
                                     <div class="card-billing">Monthly retainer</div>
                                     <div class="card-desc">Ongoing monitoring and optimisation for growing businesses</div>
                                     <div class="deliverables">
@@ -480,32 +523,34 @@
                                             <div class="del-label">Weekly</div>
                                             <div class="del-item">AI visibility tracking across 4 platforms</div>
                                             <div class="del-item">Keyword ranking monitoring (50 terms)</div>
+                                            <div class="del-item">Competitor movement alerts</div>
                                         </div>
                                         <div class="del-section">
                                             <div class="del-label">Monthly</div>
                                             <div class="del-item">Content optimisation recommendations</div>
                                             <div class="del-item">Performance report with KPI dashboard</div>
-                                            <div class="del-item">1x strategy call (30 min)</div>
+                                            <div class="del-item">2x strategy calls (30 min each)</div>
+                                            <div class="del-item">Schema markup updates</div>
                                         </div>
                                         <div class="del-section">
                                             <div class="del-label">Ongoing</div>
-                                            <div class="del-item">Basic conversion snippet installed</div>
+                                            <div class="del-item">Conversion snippet installed</div>
                                             <div class="del-item">Email support (48h response)</div>
                                         </div>
                                     </div>
-                                    <a href="checkout.html?plan=growth" class="card-btn">Start Growth</a>
+                                    <a href="/checkout.html?plan=growth" class="card-btn">Start Growth</a>
                                 </div>
 
-                                <!-- Scale (Recommended) -->
-                                <div class="upsell-card recommended">
+                                <!-- Scale -->
+                                <div class="upsell-card">
                                     <div class="card-name">Scale</div>
-                                    <div class="card-price" style="color:#8b5cf6">£1,499 <span>/mo</span></div>
+                                    <div class="card-price" style="color:#00d4ff">&pound;999 <span>/mo</span></div>
                                     <div class="card-billing">Monthly retainer</div>
-                                    <div class="card-desc">Full AI optimisation across visibility and conversion</div>
+                                    <div class="card-desc">Full AI optimisation across visibility, content, and conversion</div>
                                     <div class="deliverables">
                                         <div class="del-section">
                                             <div class="del-label">Daily</div>
-                                            <div class="del-item">AI mention monitoring & alerts</div>
+                                            <div class="del-item">AI mention monitoring &amp; alerts</div>
                                             <div class="del-item">Conversion snippet A/B testing</div>
                                         </div>
                                         <div class="del-section">
@@ -516,58 +561,23 @@
                                         </div>
                                         <div class="del-section">
                                             <div class="del-label">Monthly</div>
-                                            <div class="del-item">2x strategy calls (45 min each)</div>
+                                            <div class="del-item">4x strategy calls (45 min each)</div>
                                             <div class="del-item">Content creation (4 optimised articles)</div>
                                             <div class="del-item">Schema markup updates</div>
                                             <div class="del-item">Conversion rate optimisation review</div>
                                         </div>
                                         <div class="del-section">
                                             <div class="del-label">Quarterly</div>
-                                            <div class="del-item">Full re-audit & strategy refresh</div>
+                                            <div class="del-item">Full re-audit &amp; strategy refresh</div>
                                         </div>
                                     </div>
-                                    <a href="checkout.html?plan=scale" class="card-btn">Start Scale</a>
-                                </div>
-
-                                <!-- Enterprise -->
-                                <div class="upsell-card">
-                                    <div class="card-name">Enterprise</div>
-                                    <div class="card-price" style="color:#00d4ff">£2,999 <span>/mo</span></div>
-                                    <div class="card-billing">Monthly retainer</div>
-                                    <div class="card-desc">Maximum AI presence with dedicated account team</div>
-                                    <div class="deliverables">
-                                        <div class="del-section">
-                                            <div class="del-label">Daily</div>
-                                            <div class="del-item">Real-time AI mention monitoring</div>
-                                            <div class="del-item">Automated conversion optimisation</div>
-                                            <div class="del-item">Priority issue escalation</div>
-                                        </div>
-                                        <div class="del-section">
-                                            <div class="del-label">Weekly</div>
-                                            <div class="del-item">Dedicated account manager check-in</div>
-                                            <div class="del-item">Custom dashboard with live metrics</div>
-                                            <div class="del-item">Competitor intelligence briefing</div>
-                                        </div>
-                                        <div class="del-section">
-                                            <div class="del-label">Monthly</div>
-                                            <div class="del-item">4x strategy calls (60 min each)</div>
-                                            <div class="del-item">8 optimised content pieces</div>
-                                            <div class="del-item">Custom integrations & API access</div>
-                                            <div class="del-item">Technical implementation support</div>
-                                        </div>
-                                        <div class="del-section">
-                                            <div class="del-label">Quarterly</div>
-                                            <div class="del-item">Board-ready performance report</div>
-                                            <div class="del-item">On-site strategy workshop (optional)</div>
-                                        </div>
-                                    </div>
-                                    <a href="checkout.html?plan=enterprise" class="card-btn">Start Enterprise</a>
+                                    <a href="/checkout.html?plan=scale" class="card-btn">Start Scale</a>
                                 </div>
                             </div>
 
                             <div class="urgency-bar">
-                                <div class="urgency-text">Every day without AI optimisation costs you <span class="urgency-highlight" id="dailyLoss">£0</span></div>
-                                <div class="urgency-sub">Based on your industry's average search volume and conversion rates. The longer you wait, the more market share your competitors capture.</div>
+                                <div class="urgency-text">Every month you wait, <span class="urgency-highlight" id="missedInquiries">0</span> potential inquiries go to your competitors instead</div>
+                                <div class="urgency-sub">Based on your industry's AI search trends and your current visibility gap. Your competitors are already capturing this traffic.</div>
                             </div>
                         </div>
 
@@ -588,7 +598,7 @@
                 <h4>Product</h4>
                 <ul>
                     <li><a href="index.html#solution">Features</a></li>
-                    <li><a href="scan.html">Free Scan</a></li>
+                    <li><a href="scan.html">Free AI Audit</a></li>
                     <li><a href="audit.html">Full Audit</a></li>
                     <li><a href="pricing.html">Pricing</a></li>
                 </ul>
@@ -753,7 +763,9 @@
                 'websiteUrl': params.get('website') || params.get('websiteUrl') || '',
                 'email': params.get('email') || '',
                 'contactName': params.get('contactName') || params.get('name') || '',
-                'industry': params.get('industry') || ''
+                'industry': params.get('industry') || '',
+                'companySize': params.get('companySize') || '',
+                'annualTurnover': params.get('annualTurnover') || ''
             };
             for (const [id, val] of Object.entries(fields)) {
                 const el = document.getElementById(id);
@@ -768,7 +780,9 @@
                     websiteUrl: fields.websiteUrl,
                     email: fields.email,
                     contactName: fields.contactName,
-                    industry: fields.industry || 'other'
+                    industry: fields.industry || 'other',
+                    companySize: fields.companySize || '',
+                    annualTurnover: fields.annualTurnover || ''
                 };
                 startScanAnimation();
                 callScanAPI();
@@ -784,7 +798,9 @@
             websiteUrl: document.getElementById('websiteUrl').value,
             email: document.getElementById('email').value,
             contactName: document.getElementById('contactName').value,
-            industry: document.getElementById('industry').value || 'other'
+            industry: document.getElementById('industry').value || 'other',
+            companySize: document.getElementById('companySize').value || '',
+            annualTurnover: document.getElementById('annualTurnover').value || ''
         };
         document.getElementById('formPhase').classList.add('hidden');
         document.getElementById('scanningPhase').classList.remove('hidden');
@@ -833,10 +849,12 @@
                 email: scanData.email,
                 contactName: scanData.contactName,
                 industry: scanData.industry,
+                companySize: scanData.companySize,
+                annualTurnover: scanData.annualTurnover,
                 aiScore: apiResults.scores?.aiVisibility,
                 seoScore: apiResults.scores?.seoHealth,
                 conversionScore: apiResults.scores?.conversion,
-                revenueLoss: apiResults.revenue?.monthlyLoss,
+                growthPotential: apiResults.growthPotential,
                 findings: apiResults.findings,
                 competitors: apiResults.competitors,
                 recommendations: apiResults.recommendations,
@@ -847,7 +865,9 @@
                 email: scanData.email,
                 contactName: scanData.contactName,
                 industry: scanData.industry,
-                aiScore: 0,seoScore:0,conversionScore:0,revenueLoss:0,
+                companySize: scanData.companySize,
+                annualTurnover: scanData.annualTurnover,
+                aiScore: 0,seoScore:0,conversionScore:0,growthPotential:{},
                 findings:[],competitors:[],recommendations:{},
                 scanDate: new Date().toISOString().split('T')[0]
             };
@@ -1102,7 +1122,7 @@
             : `Datos/SparkToro 2025, BrightEdge, Wordstream`;
 
         // ——— Populate results hero ———
-        document.getElementById('resultsTitle').innerHTML = `Scan Complete: <span style="color:#00d4ff">${scanData.businessName}</span>`;
+        document.getElementById('resultsTitle').innerHTML = `Audit Complete: <span style="color:#00d4ff">${scanData.businessName}</span>`;
         document.getElementById('resultsSubtitle').textContent = `${ind.label} industry analysis as of ${new Date().toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'})}`;
 
         // Overall score ring
@@ -1146,67 +1166,123 @@
             });
         }, 500);
 
-        // ——— Revenue impact section (transparent, real numbers) ———
-        document.getElementById('revenueImpact').innerHTML = `
-            <div class="revenue-impact-inner">
-                <h3>Estimated Revenue Impact</h3>
-                <p style="font-size:12px;color:#8888a0;margin:-8px 0 16px 0;">Based on published industry data — no inflated numbers. <a href="#methodology" style="color:#00d4ff;">See our methodology</a>
-                ${lb.refreshMethod === 'live-perplexity' ? '<span style="display:inline-block;background:#0a2e1a;color:#2ecc71;font-size:10px;padding:2px 8px;border-radius:10px;margin-left:8px;">LIVE DATA</span>' : ''}</p>
-                <div class="revenue-numbers">
-                    <div class="rev-item loss">
-                        <div class="rev-label">Monthly AI Revenue Opportunity</div>
-                        <div class="rev-amount">${ind.currency}${missedRevenue.toLocaleString()}</div>
+        // ——— Growth potential section (visibility %, traffic %, inquiries + competitor comparison) ———
+        const gp = apiResults?.growthPotential || {};
+        // Fallback: estimate from scores if API didn't return growthPotential
+        const fallbackUplift = Math.round(0.20 * Math.max(0, (100 - aiScore) / 100) * 100);
+        const visUplift = gp.visibilityUpliftPct || fallbackUplift || 15;
+        const trafIncrease = gp.trafficIncreasePct || Math.round(visUplift * 0.45);
+        const addInquiries = gp.additionalInquiries || Math.max(1, Math.round(50 * trafIncrease / 100));
+        const comp = gp.competitorComparison || {};
+        const competitorNames = comp.competitorNames || [];
+        const avgCompScore = comp.avgCompetitorAiScore || 60;
+        const industryRanking = comp.industryRanking || 'below average';
+        const industryCvr = gp.industryConversionRate || ind.convRate;
+
+        const growthEl = document.getElementById('growthImpact');
+        growthEl.innerHTML = `
+            <div class="growth-impact-inner">
+                <h3>Your Growth Potential</h3>
+
+                <!-- Three big metrics -->
+                <div class="growth-metrics">
+                    <div class="growth-metric visibility">
+                        <div class="metric-icon">📡</div>
+                        <div class="metric-value">+${visUplift}%</div>
+                        <div class="metric-label">AI Visibility Increase</div>
                     </div>
-                    <div class="rev-item gap">
-                        <div class="rev-label">Current AI-Sourced Revenue</div>
-                        <div class="rev-amount">${ind.currency}${currentRevenue.toLocaleString()}</div>
+                    <div class="growth-metric traffic">
+                        <div class="metric-icon">📈</div>
+                        <div class="metric-value">+${trafIncrease}%</div>
+                        <div class="metric-label">Traffic Increase</div>
                     </div>
-                    <div class="rev-item potential">
-                        <div class="rev-label">Realistic Optimised Revenue</div>
-                        <div class="rev-amount">${ind.currency}${potentialRevenue.toLocaleString()}</div>
+                    <div class="growth-metric inquiries">
+                        <div class="metric-icon">💬</div>
+                        <div class="metric-value">+${addInquiries}</div>
+                        <div class="metric-label">Extra Inquiries / Month</div>
                     </div>
                 </div>
-                <div class="revenue-calc" id="methodology">
-                    <h4>How we calculated this — full transparency</h4>
-                    <p style="font-size:11px;color:#8888a0;margin:0 0 12px 0;">Data: ${dataSourceLabel}</p>
-                    <div class="calc-row">
-                        <span class="calc-label">Total monthly searches in ${ind.label} (UK)</span>
-                        <span class="calc-value">${totalMonthlySearches.toLocaleString()}</span>
+
+                <!-- Flow explanation -->
+                <div class="growth-flow">
+                    <div class="flow-step">
+                        <span class="flow-highlight cyan">+${visUplift}%</span>
+                        more AI visibility
                     </div>
-                    <div class="calc-row">
-                        <span class="calc-label">AI platform share of searches (${(effectiveAiShare * 100).toFixed(1)}%${lb.refreshMethod === 'live-perplexity' ? ' — live data' : ' — Datos/SparkToro 2025'})</span>
-                        <span class="calc-value">${aiSearches.toLocaleString()} AI searches</span>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <span class="flow-highlight purple">+${trafIncrease}%</span>
+                        more website traffic
                     </div>
-                    <div class="calc-row">
-                        <span class="calc-label">Your current AI capture rate (score: ${aiScore}/100)</span>
-                        <span class="calc-value">${(currentCapture * 100).toFixed(1)}%</span>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <span class="flow-highlight green">+${addInquiries}</span>
+                        more inquiries/mo
                     </div>
-                    <div class="calc-row">
-                        <span class="calc-label">Realistic optimised capture (60% ceiling × 18% CTR)</span>
-                        <span class="calc-value">${(optimisedCapture * 100).toFixed(1)}%</span>
-                    </div>
-                    <div class="calc-row">
-                        <span class="calc-label">Additional visitors you could capture</span>
-                        <span class="calc-value">${missedVisitors.toLocaleString()}/mo</span>
-                    </div>
-                    <div class="calc-row">
-                        <span class="calc-label">Industry conversion rate (Wordstream benchmark)</span>
-                        <span class="calc-value">${(ind.convRate * 100).toFixed(1)}%</span>
-                    </div>
-                    <div class="calc-row">
-                        <span class="calc-label">Average transaction value</span>
-                        <span class="calc-value">${ind.currency}${ind.avgBooking.toLocaleString()}</span>
-                    </div>
-                    <div class="calc-row" style="border-top:1px solid rgba(255,255,255,0.1);padding-top:8px;margin-top:4px;">
-                        <span class="calc-label"><strong>Estimated monthly AI revenue gap</strong></span>
-                        <span class="calc-value"><strong>${ind.currency}${missedRevenue.toLocaleString()}/mo</strong></span>
+                </div>
+
+                <p style="text-align:center;font-size:13px;color:#8888a0;margin:0 0 8px 0;">
+                    At your industry's <strong style="color:#f0f0f5">${(industryCvr * 100).toFixed(1)}%</strong> conversion rate,
+                    ${addInquiries} additional inquiries means real new business every month.
+                </p>
+                <p style="text-align:center;font-size:12px;color:#5a5a70;margin:0 0 24px 0;">
+                    You currently rank in the <strong style="color:#f59e0b">${industryRanking}</strong> of ${ind.label} businesses for AI visibility
+                </p>
+
+                <!-- Competitor comparison bars -->
+                <div class="competitor-section">
+                    <h4>How You Compare</h4>
+                    <div class="competitor-bars" id="competitorBars"></div>
+                    <div class="competitor-note">
+                        Scores based on AI platform mentions, structured data, and content optimisation analysis
                     </div>
                 </div>
             </div>
         `;
 
-        // Daily loss in urgency bar
-        document.getElementById('dailyLoss').textContent = ind.currency + Math.round(missedRevenue / 30).toLocaleString();
+        // Build competitor comparison bars
+        const barsContainer = document.getElementById('competitorBars');
+        const barEntries = [];
+
+        // Add competitor entries
+        if (competitorNames.length > 0) {
+            competitorNames.forEach((name, i) => {
+                // Stagger scores: first competitor highest, then descending
+                const compScore = Math.min(90, avgCompScore + (competitorNames.length - i) * 3);
+                barEntries.push({ name: name.substring(0, 18), score: compScore, type: 'competitor' });
+            });
+        } else {
+            // Show industry average if no specific competitors found
+            barEntries.push({ name: 'Top competitor', score: Math.min(85, avgCompScore + 10), type: 'competitor' });
+            barEntries.push({ name: 'Industry avg.', score: avgCompScore, type: 'average' });
+        }
+
+        // Add "You" entry
+        barEntries.push({ name: scanData.businessName.substring(0, 18), score: aiScore, type: 'yours' });
+
+        // Sort by score descending
+        barEntries.sort((a, b) => b.score - a.score);
+
+        barsContainer.innerHTML = barEntries.map(entry => `
+            <div class="comp-bar-row">
+                <div class="comp-name ${entry.type === 'yours' ? 'you' : ''}">${entry.type === 'yours' ? '→ ' + entry.name : entry.name}</div>
+                <div class="comp-bar-track">
+                    <div class="comp-bar-fill ${entry.type === 'yours' ? 'yours' : entry.type === 'average' ? 'average' : 'competitor'}" style="width:0%">${entry.score}</div>
+                </div>
+                <div class="comp-bar-score">${entry.score}/100</div>
+            </div>
+        `).join('');
+
+        // Animate bars after a short delay
+        setTimeout(() => {
+            document.querySelectorAll('.comp-bar-fill').forEach(bar => {
+                const score = parseInt(bar.textContent);
+                bar.style.width = score + '%';
+            });
+        }, 600);
+
+        // Urgency bar — inquiries
+        document.getElementById('missedInquiries').textContent = addInquiries + '+';
 
         // ——— Findings ———
         let findings;

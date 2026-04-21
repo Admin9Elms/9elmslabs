@@ -191,6 +191,90 @@
             margin: 0 auto;
         }
 
+        /* Free audit card */
+        .free-audit-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(0, 212, 255, 0.08) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 20px;
+            padding: 48px 36px;
+            text-align: center;
+            margin-bottom: 48px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .free-audit-card .plan-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #10b981;
+        }
+
+        .free-audit-card .plan-price .price-amount {
+            font-size: 42px;
+            font-weight: 700;
+            color: #10b981;
+            -webkit-text-fill-color: #10b981;
+        }
+
+        .free-audit-card .plan-price .price-period {
+            color: #8888a0;
+            font-size: 14px;
+        }
+
+        .free-audit-card .plan-features {
+            text-align: left;
+            display: inline-block;
+            margin: 24px 0 32px 0;
+        }
+
+        .free-audit-card .plan-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: #f0f0f5;
+        }
+
+        .free-audit-card .plan-feature::before {
+            content: '\2713';
+            width: 20px;
+            height: 20px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: #0a0a0f;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        .btn-free {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            background: #10b981;
+            color: #fff;
+        }
+
+        .btn-free:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+            background: #059669;
+        }
+
         /* Pricing cards grid */
         .pricing-grid {
             display: grid;
@@ -221,7 +305,7 @@
         }
 
         .pricing-plan.featured::before {
-            content: 'RECOMMENDED';
+            content: 'MOST POPULAR';
             position: absolute;
             top: -12px;
             left: 50%;
@@ -281,7 +365,7 @@
         }
 
         .plan-feature::before {
-            content: '✓';
+            content: '\2713';
             width: 20px;
             height: 20px;
             background: #10b981;
@@ -641,7 +725,7 @@
             <span class="logo">9EL</span>
             <div class="brand">
                 <div style="font-size: 13px; font-weight: 600;">9 Elms Labs</div>
-                <div style="font-size: 11px; color: #5a5a70;">by Audley & Oxford</div>
+                <div style="font-size: 11px; color: #5a5a70;">by Audley &amp; Oxford</div>
             </div>
         </a>
         <ul class="nav-links">
@@ -667,82 +751,96 @@
             </div>
         </section>
 
+        <!-- Free Audit Card -->
+        <section class="section" style="padding-top: 0;">
+            <div class="free-audit-card">
+                <h3 class="plan-name">Free AI Audit</h3>
+                <div class="plan-price">
+                    <div class="price-amount">&pound;0</div>
+                    <div class="price-period">one-time scan</div>
+                </div>
+                <div class="plan-features">
+                    <div class="plan-feature">One-time AI visibility scan</div>
+                    <div class="plan-feature">SEO &amp; conversion analysis</div>
+                    <div class="plan-feature">Revenue impact estimate</div>
+                    <div class="plan-feature">Competitor identification</div>
+                    <div class="plan-feature">PDF report emailed to you</div>
+                </div>
+                <a href="/scan.html" class="btn-free" style="width: auto; padding: 14px 48px;">Get Free Audit</a>
+            </div>
+        </section>
+
         <!-- Pricing Plans -->
-        <section class="section">
+        <section class="section" style="padding-top: 0;">
             <div class="pricing-grid">
-                <!-- Growth Plan -->
+                <!-- Starter Plan -->
                 <div class="pricing-plan">
-                    <h3 class="plan-name">Growth</h3>
-                    <p class="plan-description">Perfect for getting started with AI optimization</p>
+                    <h3 class="plan-name">Starter</h3>
+                    <p class="plan-description">Perfect for small businesses getting started with AI visibility</p>
 
                     <div class="plan-price">
-                        <div class="price-amount">£499</div>
-                        <div class="price-period">/month, billed annually</div>
+                        <div class="price-amount">&pound;199</div>
+                        <div class="price-period">/month</div>
                     </div>
 
                     <div class="plan-features">
-                        <div class="plan-feature"><strong>Weekly:</strong> AI visibility tracking (4 platforms)</div>
-                        <div class="plan-feature"><strong>Weekly:</strong> Keyword ranking monitoring (50 terms)</div>
-                        <div class="plan-feature"><strong>Monthly:</strong> Content optimisation recommendations</div>
-                        <div class="plan-feature"><strong>Monthly:</strong> Performance report + KPI dashboard</div>
-                        <div class="plan-feature"><strong>Monthly:</strong> 1x strategy call (30 min)</div>
-                        <div class="plan-feature"><strong>Ongoing:</strong> Basic conversion snippet installed</div>
-                        <div class="plan-feature"><strong>Ongoing:</strong> Email support (48h response)</div>
+                        <div class="plan-feature">Monthly AI visibility scan across ChatGPT, Perplexity, Gemini &amp; Copilot</div>
+                        <div class="plan-feature">Monthly website health audit (SEO + conversion scoring)</div>
+                        <div class="plan-feature">Monthly performance report via email</div>
+                        <div class="plan-feature">Live dashboard with score history &amp; trends</div>
+                        <div class="plan-feature">2 AI-generated content recommendations per month</div>
+                        <div class="plan-feature">Conversion tracking snippet for your website</div>
+                        <div class="plan-feature">Revenue impact calculator updated monthly</div>
                     </div>
 
-                    <a href="checkout.html?plan=growth" class="btn btn-primary">Get Started</a>
+                    <a href="/checkout.html?plan=starter" class="btn btn-primary">Start Starter Plan</a>
                 </div>
 
-                <!-- Scale Plan (Featured) -->
+                <!-- Growth Plan (Featured) -->
                 <div class="pricing-plan featured">
-                    <h3 class="plan-name">Scale</h3>
-                    <p class="plan-description">Most popular for growing agencies and brands</p>
+                    <h3 class="plan-name">Growth</h3>
+                    <p class="plan-description">Ideal for medium businesses ready to accelerate</p>
 
                     <div class="plan-price">
-                        <div class="price-amount">£1,499</div>
-                        <div class="price-period">/month, billed annually</div>
+                        <div class="price-amount">&pound;499</div>
+                        <div class="price-period">/month</div>
                     </div>
 
                     <div class="plan-features">
-                        <div class="plan-feature"><strong>Daily:</strong> AI mention monitoring & alerts</div>
-                        <div class="plan-feature"><strong>Daily:</strong> Conversion snippet A/B testing</div>
-                        <div class="plan-feature"><strong>Weekly:</strong> Full AI visibility tracking (all platforms)</div>
-                        <div class="plan-feature"><strong>Weekly:</strong> Competitor movement alerts & reports</div>
-                        <div class="plan-feature"><strong>Monthly:</strong> 2x strategy calls (45 min each)</div>
-                        <div class="plan-feature"><strong>Monthly:</strong> 4 optimised content articles</div>
-                        <div class="plan-feature"><strong>Monthly:</strong> Schema markup updates</div>
-                        <div class="plan-feature"><strong>Monthly:</strong> CRO review</div>
-                        <div class="plan-feature"><strong>Quarterly:</strong> Full re-audit & strategy refresh</div>
+                        <div class="plan-feature">Everything in Starter, plus:</div>
+                        <div class="plan-feature"><strong>Weekly</strong> AI visibility scans (not monthly)</div>
+                        <div class="plan-feature"><strong>Weekly</strong> detailed performance reports</div>
+                        <div class="plan-feature">4 full AI-written SEO articles per month (ready to publish)</div>
+                        <div class="plan-feature">Schema markup included with every article</div>
+                        <div class="plan-feature"><strong>Weekly</strong> competitor movement tracking</div>
+                        <div class="plan-feature">Conversion snippet with A/B testing</div>
+                        <div class="plan-feature">Alert emails on significant score changes</div>
                     </div>
 
-                    <a href="checkout.html?plan=scale" class="btn btn-primary">Get Started</a>
+                    <a href="/checkout.html?plan=growth" class="btn btn-primary">Start Growth Plan</a>
                 </div>
 
-                <!-- Enterprise Plan -->
+                <!-- Scale Plan -->
                 <div class="pricing-plan">
-                    <h3 class="plan-name">Enterprise</h3>
-                    <p class="plan-description">For large teams and complex requirements</p>
+                    <h3 class="plan-name">Scale</h3>
+                    <p class="plan-description">Built for large businesses demanding maximum AI presence</p>
 
                     <div class="plan-price">
-                        <div class="price-amount">£2,999</div>
-                        <div class="price-period">/month, billed annually</div>
+                        <div class="price-amount">&pound;999</div>
+                        <div class="price-period">/month</div>
                     </div>
 
                     <div class="plan-features">
-                        <div class="plan-feature"><strong>Daily:</strong> Real-time AI mention monitoring</div>
-                        <div class="plan-feature"><strong>Daily:</strong> Automated conversion optimisation</div>
-                        <div class="plan-feature"><strong>Daily:</strong> Priority issue escalation</div>
-                        <div class="plan-feature"><strong>Weekly:</strong> Dedicated account manager check-in</div>
-                        <div class="plan-feature"><strong>Weekly:</strong> Custom dashboard + live metrics</div>
-                        <div class="plan-feature"><strong>Weekly:</strong> Competitor intelligence briefing</div>
-                        <div class="plan-feature"><strong>Monthly:</strong> 4x strategy calls (60 min each)</div>
-                        <div class="plan-feature"><strong>Monthly:</strong> 8 optimised content pieces</div>
-                        <div class="plan-feature"><strong>Monthly:</strong> Custom integrations & API access</div>
-                        <div class="plan-feature"><strong>Quarterly:</strong> Board-ready performance report</div>
-                        <div class="plan-feature"><strong>Quarterly:</strong> On-site strategy workshop</div>
+                        <div class="plan-feature">Everything in Growth, plus:</div>
+                        <div class="plan-feature"><strong>Daily</strong> AI visibility monitoring</div>
+                        <div class="plan-feature">8 full AI-written articles per month</div>
+                        <div class="plan-feature"><strong>Daily</strong> competitor intelligence updates</div>
+                        <div class="plan-feature">Instant alert emails on any changes</div>
+                        <div class="plan-feature">Weekly content calendar with scheduling</div>
+                        <div class="plan-feature">Priority support</div>
                     </div>
 
-                    <a href="checkout.html?plan=enterprise" class="btn btn-primary">Get Started</a>
+                    <a href="/checkout.html?plan=scale" class="btn btn-primary">Start Scale Plan</a>
                 </div>
             </div>
         </section>
@@ -766,101 +864,95 @@
                 <thead>
                     <tr>
                         <th>Feature</th>
+                        <th>Starter</th>
                         <th>Growth</th>
                         <th>Scale</th>
-                        <th>Enterprise</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="feature-name">AI Visibility Monitoring</td>
+                        <td class="feature-name">AI Visibility Scans</td>
+                        <td><span class="feature-available">Monthly</span></td>
                         <td><span class="feature-available">Weekly</span></td>
                         <td><span class="feature-available">Daily</span></td>
-                        <td><span class="feature-available">Real-time</span></td>
                     </tr>
                     <tr>
                         <td class="feature-name">AI Platforms Tracked</td>
-                        <td><span class="feature-available">4</span></td>
-                        <td><span class="feature-available">All</span></td>
-                        <td><span class="feature-available">All + Custom</span></td>
+                        <td><span class="feature-available">ChatGPT, Perplexity, Gemini, Copilot</span></td>
+                        <td><span class="feature-available">ChatGPT, Perplexity, Gemini, Copilot</span></td>
+                        <td><span class="feature-available">ChatGPT, Perplexity, Gemini, Copilot</span></td>
                     </tr>
                     <tr>
-                        <td class="feature-name">Optimised Content Articles</td>
-                        <td><span class="feature-unavailable">Recommendations only</span></td>
-                        <td><span class="feature-available">4/month</span></td>
-                        <td><span class="feature-available">8/month</span></td>
-                    </tr>
-                    <tr>
-                        <td class="feature-name">Strategy Calls</td>
-                        <td><span class="feature-available">1x/mo (30 min)</span></td>
-                        <td><span class="feature-available">2x/mo (45 min)</span></td>
-                        <td><span class="feature-available">4x/mo (60 min)</span></td>
-                    </tr>
-                    <tr>
-                        <td class="feature-name">Conversion Optimisation</td>
-                        <td><span class="feature-available">Basic Snippet</span></td>
-                        <td><span class="feature-available">A/B Testing</span></td>
-                        <td><span class="feature-available">Automated</span></td>
-                    </tr>
-                    <tr>
-                        <td class="feature-name">Competitor Tracking</td>
-                        <td><span class="feature-unavailable">–</span></td>
-                        <td><span class="feature-available">Weekly Alerts</span></td>
-                        <td><span class="feature-available">Daily Briefing</span></td>
+                        <td class="feature-name">Website Health Audit</td>
+                        <td><span class="feature-available">Monthly</span></td>
+                        <td><span class="feature-available">Monthly</span></td>
+                        <td><span class="feature-available">Monthly</span></td>
                     </tr>
                     <tr>
                         <td class="feature-name">Performance Reports</td>
                         <td><span class="feature-available">Monthly</span></td>
                         <td><span class="feature-available">Weekly</span></td>
-                        <td><span class="feature-available">Custom Dashboard</span></td>
+                        <td><span class="feature-available">Weekly</span></td>
                     </tr>
                     <tr>
-                        <td class="feature-name">Dedicated Account Manager</td>
-                        <td><span class="feature-unavailable">–</span></td>
-                        <td><span class="feature-unavailable">–</span></td>
-                        <td><span class="feature-available">✓</span></td>
+                        <td class="feature-name">Live Dashboard</td>
+                        <td><span class="feature-available">&#10003;</span></td>
+                        <td><span class="feature-available">&#10003;</span></td>
+                        <td><span class="feature-available">&#10003;</span></td>
                     </tr>
                     <tr>
-                        <td class="feature-name">Support</td>
-                        <td><span class="feature-available">Email (48h)</span></td>
-                        <td><span class="feature-available">Priority Email</span></td>
-                        <td><span class="feature-available">Dedicated + Phone</span></td>
+                        <td class="feature-name">Content Recommendations</td>
+                        <td><span class="feature-available">2/month</span></td>
+                        <td><span class="feature-available">Included with articles</span></td>
+                        <td><span class="feature-available">Included with articles</span></td>
                     </tr>
                     <tr>
-                        <td class="feature-name">Quarterly Re-Audit</td>
-                        <td><span class="feature-unavailable">–</span></td>
-                        <td><span class="feature-available">✓</span></td>
-                        <td><span class="feature-available">✓ + Workshop</span></td>
+                        <td class="feature-name">AI-Written SEO Articles</td>
+                        <td><span class="feature-unavailable">&ndash;</span></td>
+                        <td><span class="feature-available">4/month</span></td>
+                        <td><span class="feature-available">8/month</span></td>
                     </tr>
                     <tr>
-                        <td class="feature-name">Slack Integration</td>
-                        <td><span class="feature-unavailable">–</span></td>
-                        <td><span class="feature-available">Dedicated Channel</span></td>
-                        <td><span class="feature-available">Dedicated Channel</span></td>
+                        <td class="feature-name">Schema Markup</td>
+                        <td><span class="feature-unavailable">&ndash;</span></td>
+                        <td><span class="feature-available">With every article</span></td>
+                        <td><span class="feature-available">With every article</span></td>
                     </tr>
                     <tr>
-                        <td class="feature-name">Custom Integrations</td>
-                        <td><span class="feature-unavailable">–</span></td>
-                        <td><span class="feature-unavailable">–</span></td>
-                        <td><span class="feature-available">✓</span></td>
+                        <td class="feature-name">Conversion Tracking</td>
+                        <td><span class="feature-available">Basic snippet</span></td>
+                        <td><span class="feature-available">Snippet + A/B testing</span></td>
+                        <td><span class="feature-available">Snippet + A/B testing</span></td>
                     </tr>
                     <tr>
-                        <td class="feature-name">Dedicated Account Manager</td>
-                        <td><span class="feature-unavailable">–</span></td>
-                        <td><span class="feature-unavailable">–</span></td>
-                        <td><span class="feature-available">✓</span></td>
+                        <td class="feature-name">Competitor Tracking</td>
+                        <td><span class="feature-unavailable">&ndash;</span></td>
+                        <td><span class="feature-available">Weekly</span></td>
+                        <td><span class="feature-available">Daily</span></td>
                     </tr>
                     <tr>
-                        <td class="feature-name">Quarterly Strategy Reviews</td>
-                        <td><span class="feature-unavailable">–</span></td>
-                        <td><span class="feature-unavailable">–</span></td>
-                        <td><span class="feature-available">✓</span></td>
+                        <td class="feature-name">Alert Emails</td>
+                        <td><span class="feature-unavailable">&ndash;</span></td>
+                        <td><span class="feature-available">Significant changes</span></td>
+                        <td><span class="feature-available">Instant on any change</span></td>
                     </tr>
                     <tr>
-                        <td class="feature-name">Custom API Access</td>
-                        <td><span class="feature-unavailable">–</span></td>
-                        <td><span class="feature-unavailable">–</span></td>
-                        <td><span class="feature-available">✓</span></td>
+                        <td class="feature-name">Content Calendar</td>
+                        <td><span class="feature-unavailable">&ndash;</span></td>
+                        <td><span class="feature-unavailable">&ndash;</span></td>
+                        <td><span class="feature-available">Weekly with scheduling</span></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Revenue Impact Calculator</td>
+                        <td><span class="feature-available">Monthly</span></td>
+                        <td><span class="feature-available">Monthly</span></td>
+                        <td><span class="feature-available">Monthly</span></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Priority Support</td>
+                        <td><span class="feature-unavailable">&ndash;</span></td>
+                        <td><span class="feature-unavailable">&ndash;</span></td>
+                        <td><span class="feature-available">&#10003;</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -876,8 +968,28 @@
             <div class="faq-section">
                 <div class="faq-item">
                     <div class="faq-question">
+                        <span>What is the Free AI Audit?</span>
+                        <div class="faq-toggle">&#9660;</div>
+                    </div>
+                    <div class="faq-answer">
+                        The Free AI Audit is a one-time scan that gives you an AI visibility score, SEO and conversion analysis, a revenue impact estimate, competitor identification, and a PDF report emailed to you. No credit card required &mdash; it's completely free.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What's the difference between Starter, Growth, and Scale?</span>
+                        <div class="faq-toggle">&#9660;</div>
+                    </div>
+                    <div class="faq-answer">
+                        Starter (&pound;199/mo) provides monthly scans, reports, and content recommendations &mdash; perfect for small businesses. Growth (&pound;499/mo) upgrades to weekly scans and reports, adds 4 AI-written SEO articles, competitor tracking, and A/B testing. Scale (&pound;999/mo) gives you daily monitoring, 8 articles, daily competitor intelligence, instant alerts, a content calendar, and priority support.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
                         <span>Can I change plans at any time?</span>
-                        <div class="faq-toggle">▼</div>
+                        <div class="faq-toggle">&#9660;</div>
                     </div>
                     <div class="faq-answer">
                         Absolutely. You can upgrade or downgrade your plan at any time. Changes take effect on your next billing cycle. If you upgrade mid-cycle, we'll prorate the charges fairly.
@@ -887,7 +999,7 @@
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>What happens if I cancel?</span>
-                        <div class="faq-toggle">▼</div>
+                        <div class="faq-toggle">&#9660;</div>
                     </div>
                     <div class="faq-answer">
                         You can cancel your subscription anytime with no penalty. Your access continues until the end of your current billing cycle. We'll never charge you again after cancellation.
@@ -896,48 +1008,38 @@
 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <span>Do you offer discounts for annual commitments?</span>
-                        <div class="faq-toggle">▼</div>
-                    </div>
-                    <div class="faq-answer">
-                        Yes! All our pricing is based on annual billing, which gives you a better rate than paying monthly. Contact our sales team to discuss quarterly or custom contract terms for Enterprise plans.
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
                         <span>What payment methods do you accept?</span>
-                        <div class="faq-toggle">▼</div>
+                        <div class="faq-toggle">&#9660;</div>
                     </div>
                     <div class="faq-answer">
-                        We accept all major credit cards, bank transfers, and Revolut Pay. Enterprise customers can arrange custom payment terms. Contact us for invoice-based billing options.
+                        We accept all major credit cards, bank transfers, and Revolut Pay. Contact us for invoice-based billing options.
                     </div>
                 </div>
 
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>Is there a setup fee?</span>
-                        <div class="faq-toggle">▼</div>
+                        <div class="faq-toggle">&#9660;</div>
                     </div>
                     <div class="faq-answer">
-                        No setup fees for Growth and Scale plans. You start paying your monthly subscription immediately. Enterprise plans include complimentary white-glove onboarding.
+                        No setup fees on any plan. You start paying your monthly subscription immediately and can cancel anytime.
                     </div>
                 </div>
 
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>Can I use 9 Elms Labs for multiple websites?</span>
-                        <div class="faq-toggle">▼</div>
+                        <div class="faq-toggle">&#9660;</div>
                     </div>
                     <div class="faq-answer">
-                        Growth and Scale plans are per-domain. Enterprise customers get access to multiple domains. Contact us if you need multi-domain setups on Growth or Scale plans—we may be able to work something out.
+                        All plans are per-domain. Contact us if you need multi-domain setups &mdash; we can work out a custom arrangement.
                     </div>
                 </div>
 
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>Do you offer refunds or credits?</span>
-                        <div class="faq-toggle">▼</div>
+                        <div class="faq-toggle">&#9660;</div>
                     </div>
                     <div class="faq-answer">
                         We offer a 30-day money-back guarantee on all plans. If you're not completely satisfied within 30 days of purchase, we'll refund 100% of your subscription fee. No questions asked.
@@ -946,11 +1048,11 @@
 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <span>What's included in the Scale plan's competitor tracking?</span>
-                        <div class="faq-toggle">▼</div>
+                        <span>What AI-written articles are included in Growth and Scale?</span>
+                        <div class="faq-toggle">&#9660;</div>
                     </div>
                     <div class="faq-answer">
-                        Competitor tracking monitors up to 10 competitors' AI visibility scores, content changes, schema markup updates, and conversion optimization efforts. You get weekly alerts when competitors make significant changes.
+                        Growth includes 4 full AI-written SEO articles per month, and Scale includes 8. Every article comes with schema markup and is ready to publish on your website. They are optimised to improve your visibility across AI platforms like ChatGPT, Perplexity, Gemini, and Copilot.
                     </div>
                 </div>
             </div>
@@ -960,17 +1062,8 @@
         <section class="section">
             <div class="cta-section">
                 <h2>Ready to Optimize Your AI Revenue?</h2>
-                <p>Join agencies and brands already using 9 Elms Labs to discover and capture hidden revenue opportunities.</p>
-                <a href="scan.html" class="btn btn-primary" style="width: auto; padding: 14px 48px;">Start Your Free Scan</a>
-            </div>
-        </section>
-
-        <!-- Alternative options -->
-        <section class="section" style="text-align: center; padding: 40px clamp(20px, 5vw, 48px);">
-            <p style="color: #8888a0; margin-bottom: 24px; font-size: 14px;">Still evaluating? Try our services first</p>
-            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-                <a href="checkout.html?plan=free-scan" class="btn btn-secondary" style="width: auto; padding: 12px 32px;">Free Visibility Scan</a>
-                <a href="checkout.html?plan=full-audit" class="btn btn-secondary" style="width: auto; padding: 12px 32px;">Full Audit (£2,499)</a>
+                <p>Join businesses already using 9 Elms Labs to discover and capture hidden revenue opportunities.</p>
+                <a href="scan.html" class="btn btn-primary" style="width: auto; padding: 14px 48px;">Start Your Free Audit</a>
             </div>
         </section>
     </main>
@@ -979,14 +1072,13 @@
         <div class="footer-content">
             <div class="footer-column">
                 <h4>9 Elms Labs</h4>
-                <p style="color: #8888a0; font-size: 14px;">AI-powered revenue optimization by Audley & Oxford Advisory Firm</p>
+                <p style="color: #8888a0; font-size: 14px;">AI-powered revenue optimization by Audley &amp; Oxford Advisory Firm</p>
             </div>
             <div class="footer-column">
                 <h4>Product</h4>
                 <ul>
                     <li><a href="index.html#solution">Features</a></li>
-                    <li><a href="scan.html">Free Scan</a></li>
-                    <li><a href="audit.html">Full Audit</a></li>
+                    <li><a href="scan.html">Free Audit</a></li>
                     <li><a href="pricing.html">Pricing</a></li>
                 </ul>
             </div>
@@ -1008,7 +1100,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 9 Elms Labs. All rights reserved. Audley & Oxford Advisory Firm.</p>
+            <p>&copy; 2024 9 Elms Labs. All rights reserved. Audley &amp; Oxford Advisory Firm.</p>
         </div>
     </footer>
 

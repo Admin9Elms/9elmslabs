@@ -130,40 +130,32 @@ function capitalize(s) {
 
 function getWelcomeEmail(client, loginUrl) {
   const planFeatures = {
-    'full-audit': [
-      'Comprehensive AI visibility audit across all platforms',
-      'Competitor benchmarking analysis',
-      'Full conversion audit with revenue estimation',
-      '90-minute strategy call with senior consultant',
-      '90-day prioritised implementation roadmap',
-      'Written executive summary report',
-    ],
-    growth: [
-      'Weekly AI visibility tracking across 4 platforms',
-      'Weekly keyword ranking monitoring (50 terms)',
-      'Monthly content optimisation recommendations',
+    starter: [
+      'Monthly AI visibility scan across all platforms',
       'Monthly performance report',
+      'Dashboard access',
+      '2 content recommendations per month',
       'Conversion tracking snippet',
     ],
-    scale: [
-      'Daily AI mention monitoring & alerts',
-      'Weekly competitor movement reports',
-      '4 optimised content articles per month (delivered to your dashboard)',
-      'Monthly schema markup updates',
-      'Conversion snippet with A/B testing',
-      'Quarterly full re-audit',
+    growth: [
+      'Weekly AI visibility scan across all platforms',
+      'Weekly performance report',
+      '4 AI-optimised articles per month',
+      'Competitor tracking',
+      'A/B testing',
+      'Performance alerts',
     ],
-    enterprise: [
-      'Real-time AI monitoring with priority escalation',
-      'Weekly competitor intelligence briefings',
-      '8 optimised content pieces per month',
-      'Dedicated account manager',
-      'Custom integrations & API access',
-      'Quarterly board-ready performance report',
+    scale: [
+      'Daily AI visibility scan across all platforms',
+      'Weekly performance report',
+      '8 AI-optimised articles per month',
+      'Daily competitor intelligence',
+      'Instant performance alerts',
+      'Priority support',
     ],
   };
 
-  const features = planFeatures[client.plan] || planFeatures.growth;
+  const features = planFeatures[client.plan] || planFeatures.starter;
 
   return `<!DOCTYPE html>
 <html>
