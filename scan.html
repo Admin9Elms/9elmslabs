@@ -691,10 +691,9 @@
         { text:'Crawling website structure',         detail:'Mapping internal pages and sitemap', duration:8000 },
         { text:'Analysing meta tags & headers',      detail:'Checking title, description, Open Graph', duration:7000 },
         { text:'Evaluating schema markup',           detail:'Scanning JSON-LD structured data', duration:7000 },
-        { text:'Querying ChatGPT for your brand',    detail:'Testing AI recommendation presence', duration:9000 },
-        { text:'Querying Perplexity AI',             detail:'Checking AI search visibility', duration:9000 },
-        { text:'Querying Google Gemini',             detail:'Analysing Gemini AI responses', duration:8000 },
-        { text:'Querying Microsoft Copilot',         detail:'Testing Copilot brand mentions', duration:8000 },
+        { text:'Querying AI search platforms',          detail:'Running 5 industry queries through AI engines', duration:14000 },
+        { text:'Analysing AI recommendation patterns', detail:'Cross-referencing brand mentions and competitor visibility', duration:12000 },
+        { text:'Scoring platform-by-platform visibility', detail:'Perplexity, ChatGPT, Gemini, Copilot signal estimation', duration:8000 },
         { text:'Mapping competitor landscape',       detail:'Identifying who AI recommends instead', duration:10000 },
         { text:'Analysing conversion signals',       detail:'CTAs, forms, trust badges, social proof', duration:7000 },
         { text:'Calculating search volume data',     detail:'Monthly queries × industry conversion rates', duration:8000 },
@@ -731,8 +730,8 @@
     const FEED_MESSAGES = {
         dns: ['[DNS] A record resolved: {ip}','[DNS] SSL certificate valid until 2027','[DNS] Server: Cloudflare edge node','[DNS] TTFB: {ms}ms (target <200ms)'],
         crawl: ['[CRAWL] Found {n} internal pages','[CRAWL] Sitemap.xml detected','[CRAWL] Robots.txt analysed','[CRAWL] Page load: {ms}ms'],
-        seo: ['[SEO] Title tag: {chars} chars (optimal: 50-60)','[SEO] Meta description: {status}','[SEO] H1 tags found: {n}','[SEO] Schema types: {types}','[SEO] Open Graph tags: {status}','[SEO] Canonical URL: {status}'],
-        ai: ['[AI:ChatGPT] Brand mention: {status}','[AI:Perplexity] Visibility score: {score}/10','[AI:Gemini] Recommendation rank: #{rank}','[AI:Copilot] Citation found: {status}'],
+        seo: ['[SEO] Parsing title tag...','[SEO] Checking meta description...','[SEO] Analysing heading structure...','[SEO] Scanning for schema markup...','[SEO] Checking Open Graph tags...','[SEO] Verifying canonical URL...'],
+        ai: ['[AI] Running industry query 1 of 5...','[AI] Searching brand mentions in AI responses...','[AI] Analysing competitor recommendation frequency...','[AI] Estimating cross-platform visibility score...'],
         conversion: ['[CRO] CTA buttons detected: {n}','[CRO] Trust badges: {status}','[CRO] Social proof elements: {n}','[CRO] Form optimisation: {status}'],
         revenue: ['[REV] Industry search volume: {vol}/mo','[REV] Avg conversion rate: {cr}%','[REV] Avg booking value: £{val}','[REV] Estimated monthly gap: £{amount}'],
     };
@@ -822,6 +821,45 @@
         }
 
         apiCallComplete = true;
+
+        // Inject real API data into the live feed so it matches the findings
+        if (apiResults && apiResults.scores) {
+            const feed = document.getElementById('dataFeed');
+            const realLines = [];
+            const s = apiResults.scores;
+            const a = apiResults.findings || [];
+            // Show actual scan results
+            realLines.push({ text: '[RESULT] AI Visibility score: ' + s.aiVisibility + '/100', cls: s.aiVisibility > 50 ? 'success' : 'warn' });
+            realLines.push({ text: '[RESULT] SEO Health score: ' + s.seoHealth + '/100', cls: s.seoHealth > 50 ? 'success' : 'warn' });
+            realLines.push({ text: '[RESULT] Conversion Potential: ' + s.conversion + '/100', cls: s.conversion > 50 ? 'success' : 'warn' });
+            if (apiResults.competitors && apiResults.competitors.length > 0) {
+                realLines.push({ text: '[COMP] ' + apiResults.competitors.length + ' competitors identified in AI results', cls: '' });
+            }
+            // Show top 2 critical findings
+            a.filter(f => f.severity === 'critical').slice(0, 2).forEach(f => {
+                realLines.push({ text: '[ALERT] ' + f.title, cls: 'warn' });
+            });
+            if (apiResults.growthPotential) {
+                const gp = apiResults.growthPotential;
+                realLines.push({ text: '[GROWTH] Visibility uplift potential: +' + (gp.visibilityUpliftPct||0) + '%', cls: 'success' });
+            }
+            // Inject lines with stagger
+            realLines.forEach((item, i) => {
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = 'feed-line ' + item.cls;
+                    const time = new Date().toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+                    const parts = item.text.match(/^(\[[^\]]+\])\s*(.*)/);
+                    if (parts) {
+                        line.innerHTML = '<span class="timestamp">' + time + '</span> <span class="label">' + parts[1] + '</span> <span class="value">' + parts[2] + '</span>';
+                    } else {
+                        line.innerHTML = '<span class="timestamp">' + time + '</span> ' + item.text;
+                    }
+                    feed.insertBefore(line, feed.firstChild);
+                    while (feed.children.length > 12) feed.removeChild(feed.lastChild);
+                }, i * 400);
+            });
+        }
 
         // Set the email address on the status element BEFORE the report fetch
         // (whose error handler may replace its parent innerHTML and destroy this element)
@@ -1023,23 +1061,10 @@
 
         messages.forEach((msg, i) => {
             setTimeout(() => {
-                let text = msg
-                    .replace('{ip}', '104.21.' + Math.floor(Math.random()*255) + '.' + Math.floor(Math.random()*255))
-                    .replace('{ms}', Math.floor(80 + Math.random()*400))
-                    .replace('{n}', Math.floor(3 + Math.random()*25))
-                    .replace('{chars}', Math.floor(35 + Math.random()*30))
-                    .replace('{status}', Math.random() > 0.4 ? 'FOUND' : 'MISSING')
-                    .replace('{score}', Math.floor(2 + Math.random()*6))
-                    .replace('{rank}', Math.floor(3 + Math.random()*12))
-                    .replace('{types}', ['Organization','LocalBusiness','WebPage'][Math.floor(Math.random()*3)])
-                    .replace('{vol}', Math.round(ind.monthlySearches * ind.aiSearchShare).toLocaleString())
-                    .replace('{cr}', (ind.convRate * 100).toFixed(1))
-                    .replace('{val}', ind.avgBooking.toLocaleString())
-                    .replace('{amount}', Math.floor(ind.monthlySearches * ind.aiSearchShare * 0.18 * 0.6 * ind.convRate * ind.avgBooking).toLocaleString());
+                let text = msg;
 
                 const line = document.createElement('div');
-                const statusClass = text.includes('MISSING') ? 'warn' : text.includes('error') ? 'error' : (Math.random() > 0.7 ? 'success' : '');
-                line.className = 'feed-line ' + statusClass;
+                line.className = 'feed-line';
 
                 const time = new Date().toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
                 const parts = text.match(/^(\[[^\]]+\])\s*(.*)/);

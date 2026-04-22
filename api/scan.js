@@ -347,6 +347,7 @@ function generateFindings(analysis, businessName, scores, competitors) {
       severity: 'critical',
       title: 'Not mentioned in AI recommendations',
       description: `${businessName} is not appearing in AI platform recommendations. This represents a significant gap in modern discovery channels.`,
+      impact: 'AI-driven leads are going entirely to competitors who are visible',
       recommendation: 'Invest in content marketing and SEO to increase visibility in AI training data and responses.',
     });
   } else if (scores.aiVisibility < 70) {
@@ -355,6 +356,7 @@ function generateFindings(analysis, businessName, scores, competitors) {
       severity: 'warning',
       title: 'Limited AI platform visibility',
       description: `${businessName} appears in less than 50% of AI recommendations tested.`,
+      impact: 'Missing out on a growing share of AI-referred traffic',
       recommendation: 'Enhance content quality, build backlinks, and ensure consistent business information across directories.',
     });
   }
@@ -366,6 +368,7 @@ function generateFindings(analysis, businessName, scores, competitors) {
       severity: 'critical',
       title: 'Missing meta description',
       description: 'Meta descriptions are crucial for CTR in search results and appear in AI summaries.',
+      impact: 'Reduced click-through from both AI and traditional search results',
       recommendation: 'Add unique, compelling meta descriptions (150-160 chars) to all key pages.',
     });
   } else if (analysis.seoMetrics.metaDescriptionLength < 120 || analysis.seoMetrics.metaDescriptionLength > 160) {
@@ -374,6 +377,7 @@ function generateFindings(analysis, businessName, scores, competitors) {
       severity: 'warning',
       title: 'Meta description length suboptimal',
       description: `Meta description is ${analysis.seoMetrics.metaDescriptionLength} characters (ideal: 150-160).`,
+      impact: 'Suboptimal snippet display in search and AI summaries',
       recommendation: 'Adjust meta description to recommended length range.',
     });
   }
@@ -385,6 +389,7 @@ function generateFindings(analysis, businessName, scores, competitors) {
       severity: 'critical',
       title: 'No H1 heading found',
       description: 'H1 tags are essential for page structure and AI understanding.',
+      impact: 'AI engines cannot determine the primary topic of your pages',
       recommendation: 'Add exactly one descriptive H1 tag per page with primary keywords.',
     });
   } else if (analysis.seoMetrics.h1Tags > 1) {
@@ -393,6 +398,7 @@ function generateFindings(analysis, businessName, scores, competitors) {
       severity: 'warning',
       title: 'Multiple H1 tags detected',
       description: `Page has ${analysis.seoMetrics.h1Tags} H1 tags (best practice: 1 per page).`,
+      impact: 'Diluted page topic signals for search engines and AI',
       recommendation: 'Restructure headings to use only one H1 tag per page.',
     });
   }
@@ -404,6 +410,7 @@ function generateFindings(analysis, businessName, scores, competitors) {
       severity: 'warning',
       title: 'No Open Graph tags',
       description: 'OG tags control how content appears when shared on social media.',
+      impact: 'Poor appearance when your site is shared on social platforms',
       recommendation: 'Add og:title, og:description, and og:image tags to homepage and key pages.',
     });
   }
@@ -415,6 +422,7 @@ function generateFindings(analysis, businessName, scores, competitors) {
       severity: 'critical',
       title: 'Missing schema markup',
       description: 'Schema.org markup helps AI systems understand business information and boosts search visibility.',
+      impact: 'AI engines cannot properly categorise your services or location',
       recommendation: 'Implement Organization or LocalBusiness schema at minimum. Add Product schema if applicable.',
     });
   }
@@ -426,6 +434,7 @@ function generateFindings(analysis, businessName, scores, competitors) {
       severity: 'critical',
       title: 'Missing mobile viewport meta tag',
       description: 'Mobile responsiveness is critical for both user experience and search rankings.',
+      impact: 'Poor mobile experience causing high bounce rate and lower rankings',
       recommendation: 'Add <meta name="viewport" content="width=device-width, initial-scale=1.0">',
     });
   }
@@ -437,6 +446,7 @@ function generateFindings(analysis, businessName, scores, competitors) {
       severity: 'critical',
       title: 'Not using HTTPS',
       description: 'HTTPS is a ranking factor and essential for user trust.',
+      impact: 'Browser security warnings driving away potential customers',
       recommendation: 'Migrate to HTTPS immediately using an SSL certificate.',
     });
   }
@@ -448,6 +458,7 @@ function generateFindings(analysis, businessName, scores, competitors) {
       severity: 'critical',
       title: 'Insufficient call-to-action elements',
       description: 'Limited CTA buttons reduce conversion potential.',
+      impact: 'Visitors leave without engaging — conversion rate far below industry average',
       recommendation: 'Add clear, visible CTAs above the fold and throughout the page (Get Quote, Contact Us, Learn More, etc.).',
     });
   }
@@ -459,6 +470,7 @@ function generateFindings(analysis, businessName, scores, competitors) {
       severity: 'critical',
       title: 'No contact forms detected',
       description: 'Forms are primary conversion mechanisms for B2B/service businesses.',
+      impact: 'No mechanism to capture interested visitors as leads',
       recommendation: 'Add a contact form or inquiry form to capture leads directly from your website.',
     });
   }
@@ -473,6 +485,7 @@ function generateFindings(analysis, businessName, scores, competitors) {
       severity: 'critical',
       title: 'No trust signals detected',
       description: 'Absence of testimonials, reviews, or case studies significantly impacts conversion rates.',
+      impact: 'Conversion rate estimated 40-60% below industry average without social proof',
       recommendation: 'Add customer testimonials, case studies, or request reviews from satisfied clients.',
     });
   }
@@ -484,6 +497,7 @@ function generateFindings(analysis, businessName, scores, competitors) {
       severity: 'warning',
       title: 'No social media links found',
       description: 'Social media presence builds credibility and provides alternative engagement channels.',
+      impact: 'Missing credibility signals that AI engines use for recommendation confidence',
       recommendation: 'Add links to active social media profiles (LinkedIn, Twitter, Facebook, etc.).',
     });
   }
@@ -495,6 +509,7 @@ function generateFindings(analysis, businessName, scores, competitors) {
       severity: 'critical',
       title: 'Missing contact information section',
       description: 'Visitors should easily find multiple ways to contact you.',
+      impact: 'Potential customers cannot easily reach you, leading to lost inquiries',
       recommendation: 'Add a clear Contact Us page with phone, email, address, and inquiry form.',
     });
   }
@@ -520,6 +535,7 @@ function generateFindings(analysis, businessName, scores, competitors) {
       severity: 'info',
       title: `${competitors.length} competitors found in AI recommendations`,
       description: `Other companies are being recommended instead of ${businessName}: ${competitors.slice(0, 3).map(c => c.name).join(', ')}.`,
+      impact: 'These businesses are capturing the AI-referred traffic you are missing',
       recommendation: 'Analyze competitor content strategies and differentiate through unique value propositions.',
     });
   }
@@ -531,6 +547,7 @@ function generateFindings(analysis, businessName, scores, competitors) {
       severity: 'warning',
       title: 'Limited page content',
       description: `Homepage has ${Math.round(analysis.contentLength / 100)} words. AI systems prefer comprehensive content.`,
+      impact: 'AI engines skip thin pages in favour of more detailed competitors',
       recommendation: 'Expand homepage with detailed information about services, team, and value proposition (1000+ words recommended).',
     });
   }

@@ -86,7 +86,7 @@ export default async function handler(req, res) {
       from: '9 Elms Labs <reports@9elmslabs.co.uk>',
       replyTo: 'hello@9elmslabs.co.uk',
       to: email,
-      subject: `Your AI Visibility & Revenue Report — ${businessName}`,
+      subject: `Your AI Visibility & Growth Report — ${businessName}`,
       html: getClientEmailHTML(contactName, businessName, aiScore, seoScore, conversionScore, visibilityUplift, trafficIncrease, additionalInquiries),
       attachments: [
         {
@@ -230,7 +230,7 @@ function addCoverPage(doc, data) {
 
   // Main title
   doc.moveDown(3);
-  doc.fontSize(44).font('Helvetica-Bold').text('AI Visibility & Revenue Report', 50, doc.y, {
+  doc.fontSize(44).font('Helvetica-Bold').text('AI Visibility & Growth Report', 50, doc.y, {
     align: 'center',
     width: 512,
   });
@@ -639,14 +639,13 @@ function addRevenueImpact(doc, data) {
   doc.fontSize(8).font('Helvetica').fillColor(COLORS.lightText).text('Based on published industry benchmarks. Actual results depend on execution quality and market conditions.');
   doc.moveDown(0.5);
 
-  doc.fontSize(10).fillColor(COLORS.text).text(`Investment in Full Audit: £${investmentCost}`);
-  const roiMonths = projectedRecovery > 0 ? Math.ceil(investmentCost / projectedRecovery) : 12;
-  doc.fontSize(10).fillColor(COLORS.success).font('Helvetica-Bold').text(`Estimated ROI Timeline: ${roiMonths} months to break even`);
+  doc.fontSize(10).fillColor(COLORS.text).text('With ongoing AI optimisation, these improvements compound month over month.');
+  doc.fontSize(10).fillColor(COLORS.success).font('Helvetica-Bold').text(`Projected additional inquiries within 90 days: +${data.additionalInquiries || 5}/month`);
 
   doc.moveDown(1.5);
 
   // Impact factors — realistic percentages
-  doc.fontSize(12).font('Helvetica-Bold').fillColor(COLORS.text).text('How Fixing Issues Will Impact Revenue');
+  doc.fontSize(12).font('Helvetica-Bold').fillColor(COLORS.text).text('How Fixing These Issues Drives Growth');
   doc.moveDown(0.5);
 
   const impacts = [
@@ -849,8 +848,8 @@ function addTableOfContents(doc, data) {
     { num: '11', title: 'User Experience & Trust Signals', page: '13' },
     { num: '12', title: 'Competitor Landscape', page: '14' },
     { num: '13', title: 'Competitive Intelligence Detail', page: '15' },
-    { num: '14', title: 'Revenue Impact Analysis', page: '16' },
-    { num: '15', title: 'Revenue Projection Scenarios', page: '17' },
+    { num: '14', title: 'Growth Impact Analysis', page: '16' },
+    { num: '15', title: 'Growth Projection Scenarios', page: '17' },
     { num: '16', title: 'Critical Findings Summary', page: '18' },
     { num: '17', title: 'Warnings & Opportunities', page: '19' },
     { num: '18', title: '30-Day Quick Wins Action Plan', page: '20' },
@@ -1460,7 +1459,7 @@ function addFindingsSummary(doc, data, severity) {
   const headerColor = isCritical ? COLORS.danger : COLORS.warning;
   doc.fontSize(10).font('Helvetica').fillColor(COLORS.text).text(
     isCritical
-      ? 'The following critical issues are actively harming your AI visibility and revenue. These should be addressed as a priority.'
+      ? 'The following critical issues are actively harming your AI visibility and growth potential. These should be addressed as a priority.'
       : 'These items represent opportunities for improvement. Addressing them will strengthen your competitive position.',
     60, doc.y, { width: 492 }
   );
@@ -1848,7 +1847,7 @@ function getClientEmailHTML(contactName, businessName, aiScore, seoScore, conver
         <div class="header">
           <div class="logo">9EL</div>
           <div class="logo-sub">9 Elms Labs</div>
-          <p style="margin-top: 15px;">AI Visibility & Revenue Report</p>
+          <p style="margin-top: 15px;">AI Visibility & Growth Report</p>
         </div>
 
         <div class="content">
