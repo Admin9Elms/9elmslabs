@@ -202,10 +202,11 @@ async function generatePDF(data) {
     addNextSteps(doc, data);
 
     // Add page numbers and footers to all pages
-    const pages = doc.bufferedPages;
-    for (let i = 0; i < pages.length; i++) {
+    const range = doc.bufferedPageRange();
+    const totalPages = range.start + range.count;
+    for (let i = range.start; i < totalPages; i++) {
       doc.switchToPage(i);
-      addFooter(doc, i + 1, pages.length, data.businessName);
+      addFooter(doc, i + 1, totalPages, data.businessName);
     }
 
     doc.end();
