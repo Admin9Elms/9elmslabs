@@ -869,7 +869,7 @@ export default async function handler(req, res) {
       recommendations,
       metadata: {
         totalFindingsAvailable: findings.length,
-        scanDuration: '~30 seconds',
+        scanDuration: '~2 minutes',
         analysisDate: new Date().toISOString(),
       },
     });
