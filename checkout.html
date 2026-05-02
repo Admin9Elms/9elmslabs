@@ -793,7 +793,7 @@
                             <button type="submit" class="submit-btn" id="submitBtn">Continue to Payment</button>
                             <div class="security-note" id="securityNote">
                                 <span class="lock-icon">&#128274;</span>
-                                <span>Secure payment via Revolut</span>
+                                <span>Secure payment via Stripe</span>
                             </div>
                         </div>
                     </form>
@@ -810,7 +810,7 @@
                 <div class="trust-signal">
                     <div class="trust-signal-icon">&#128274;</div>
                     <div class="trust-signal-title">Secure Payment</div>
-                    <div class="trust-signal-text">Powered by Revolut</div>
+                    <div class="trust-signal-text">Powered by Stripe</div>
                 </div>
                 <div class="trust-signal">
                     <div class="trust-signal-icon">&#11088;</div>
@@ -828,8 +828,7 @@
                 <a href="index.html">Home</a>
                 <a href="pricing.html">Pricing</a>
                 <a href="contact.html">Contact</a>
-                <a href="#">Privacy</a>
-                <a href="#">Terms</a>
+                <a href="contact.html">Privacy Enquiries</a>
             </div>
             <div>&copy; 2026 9 Elms Labs. All rights reserved.</div>
         </div>
@@ -854,7 +853,7 @@
                     'A/B conversion tracking snippet for your website'
                 ],
                 type: 'paid',
-                revolutUrl: 'https://checkout.revolut.com/pay/a564878d-77f8-47a7-8cfa-29d2437bf10b'
+                type: 'paid'
             },
             'growth': {
                 name: 'Growth',
@@ -871,8 +870,7 @@
                     'Weekly competitor movement tracking',
                     'Alert emails on significant score changes (8pt+ threshold)'
                 ],
-                type: 'paid',
-                revolutUrl: 'https://checkout.revolut.com/pay/56dae156-6d94-4668-a80b-07b47a35d04c'
+                type: 'paid'
             },
             'scale': {
                 name: 'Scale',
@@ -889,8 +887,7 @@
                     'Sensitive alert emails (5pt+ threshold)',
                     'Quarterly full re-audit with PDF report (Jan/Apr/Jul/Oct)'
                 ],
-                type: 'paid',
-                revolutUrl: 'https://checkout.revolut.com/pay/5e149e66-c9e6-478d-b408-3f98e0cc94c7'
+                type: 'paid'
             }
         };
 
@@ -902,6 +899,15 @@
 
         // Initialize page
         function init() {
+            // Show cancellation message if user came back from Stripe
+            var params = new URLSearchParams(window.location.search);
+            if (params.get('cancelled') === 'true') {
+                var banner = document.createElement('div');
+                banner.style.cssText = 'background:#2a1a1a;border:1px solid #e74c3c;color:#ff6b6b;padding:16px;border-radius:8px;margin-bottom:24px;text-align:center;font-size:15px;';
+                banner.textContent = 'Payment was cancelled. You can try again when you\'re ready.';
+                document.querySelector('main').prepend(banner);
+            }
+
             var selectedPlan = getPlanFromUrl();
 
             if (selectedPlan && plans[selectedPlan]) {
@@ -1026,8 +1032,8 @@
             localStorage.setItem('checkoutFormData', JSON.stringify(data));
         }
 
-        // Handle form submission
-        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+        // Handle form submission — redirect to Stripe Checkout
+        document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
             if (!validateForm()) {
@@ -1035,30 +1041,43 @@
             }
 
             var formData = getFormData();
-            var planId = formData.plan;
-            var plan = plans[planId];
+            var submitBtn = document.getElementById('submitBtn');
 
             // Show loading spinner
             document.getElementById('loadingSpinner').classList.add('active');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Redirecting to secure payment...';
 
-            // Save form data
-            saveFormData(formData);
-
-            // Save form data so onboard page can pre-fill
-            try { localStorage.setItem('9el_checkout', JSON.stringify(formData)); } catch(err) {}
-
-            // Notify team
             try {
-                fetch('/api/contact', {
+                // Create Stripe Checkout Session via our API
+                var response = await fetch('/api/create-checkout-session', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
-                }).catch(function() {});
-            } catch (err) {}
+                    body: JSON.stringify({
+                        plan: formData.plan,
+                        email: formData.email,
+                        businessName: formData.businessName,
+                        contactName: formData.contactName,
+                        websiteUrl: formData.websiteUrl,
+                        industry: formData.industry,
+                        phone: formData.phone,
+                    })
+                });
 
-            // Open Revolut payment in new tab, redirect current tab to onboarding
-            window.open(plan.revolutUrl, '_blank');
-            window.location.href = 'onboard.html?plan=' + formData.plan;
+                var data = await response.json();
+
+                if (data.url) {
+                    // Redirect to Stripe Checkout (same tab — they return to our success URL)
+                    window.location.href = data.url;
+                } else {
+                    throw new Error(data.error || 'Failed to create checkout session');
+                }
+            } catch (err) {
+                document.getElementById('loadingSpinner').classList.remove('active');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Continue to Payment';
+                alert('Something went wrong: ' + err.message + '. Please try again or contact hello@9elmslabs.co.uk');
+            }
         });
 
         // Initialize on load

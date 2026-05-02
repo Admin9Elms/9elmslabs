@@ -181,6 +181,24 @@
                         <div><span style="font-size:12px;color:#8888a0;">Member Since</span><div id="settSince" style="font-size:15px;margin-top:4px;">—</div></div>
                     </div>
                 </div>
+                <div class="section" id="subscriptionSection">
+                    <h3>Subscription</h3>
+                    <div id="subLoading" style="color:#8888a0;font-size:14px;">Loading subscription details...</div>
+                    <div id="subDetails" style="display:none;margin-top:12px;">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                            <div><span style="font-size:12px;color:#8888a0;">Status</span><div id="subStatus" style="font-size:15px;margin-top:4px;">—</div></div>
+                            <div><span style="font-size:12px;color:#8888a0;">Next billing date</span><div id="subRenew" style="font-size:15px;margin-top:4px;">—</div></div>
+                        </div>
+                        <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;" id="subActions">
+                            <button id="billingBtn" style="background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);color:#00d4ff;padding:10px 20px;border-radius:8px;font-size:13px;cursor:pointer;">Manage Billing</button>
+                            <button id="cancelBtn" style="background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);color:#e74c3c;padding:10px 20px;border-radius:8px;font-size:13px;cursor:pointer;">Cancel Subscription</button>
+                        </div>
+                        <div id="cancelNotice" style="display:none;margin-top:16px;padding:14px;background:rgba(243,156,18,0.1);border:1px solid rgba(243,156,18,0.3);border-radius:8px;">
+                            <span style="color:#f39c12;font-size:13px;">Your subscription is set to cancel on <strong id="cancelDate"></strong>. You'll keep access until then.</span>
+                            <button id="reactivateBtn" style="background:#f39c12;color:#0a0e27;border:none;padding:8px 16px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;margin-left:12px;">Reactivate</button>
+                        </div>
+                    </div>
+                </div>
                 <div class="section">
                     <h3>Need Help?</h3>
                     <p style="font-size:14px;color:#8888a0;line-height:1.7;">Email <a href="mailto:hello@9elmslabs.co.uk" style="color:#00d4ff;">hello@9elmslabs.co.uk</a> or <a href="https://calendly.com/9elmslabs/intro" target="_blank" style="color:#00d4ff;">book a call</a></p>
@@ -370,7 +388,130 @@
             }
         }
 
-        init();
+        // ——— Subscription Management ———
+        async function loadSubscription() {
+            try {
+                const resp = await fetch('/api/manage-subscription', { credentials: 'same-origin' });
+                if (!resp.ok) {
+                    document.getElementById('subLoading').textContent = 'Subscription details unavailable.';
+                    return;
+                }
+                const sub = await resp.json();
+                document.getElementById('subLoading').style.display = 'none';
+                document.getElementById('subDetails').style.display = 'block';
+
+                const statusEl = document.getElementById('subStatus');
+                if (sub.subscriptionStatus === 'active') {
+                    statusEl.innerHTML = '<span style="color:#2ecc71;">Active</span>';
+                } else if (sub.subscriptionStatus === 'past_due') {
+                    statusEl.innerHTML = '<span style="color:#e74c3c;">Payment failed — please update</span>';
+                } else if (sub.cancelAtPeriodEnd) {
+                    statusEl.innerHTML = '<span style="color:#f39c12;">Cancelling</span>';
+                } else {
+                    statusEl.textContent = sub.subscriptionStatus || 'Unknown';
+                }
+
+                if (sub.currentPeriodEnd) {
+                    document.getElementById('subRenew').textContent = new Date(sub.currentPeriodEnd).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                }
+
+                if (sub.cancelAtPeriodEnd) {
+                    document.getElementById('cancelBtn').style.display = 'none';
+                    document.getElementById('cancelNotice').style.display = 'block';
+                    document.getElementById('cancelDate').textContent = new Date(sub.currentPeriodEnd).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                }
+
+                // Billing portal button
+                if (sub.billingPortalUrl) {
+                    document.getElementById('billingBtn').addEventListener('click', function() {
+                        window.open(sub.billingPortalUrl, '_blank');
+                    });
+                } else {
+                    document.getElementById('billingBtn').style.display = 'none';
+                }
+
+                // Cancel button
+                document.getElementById('cancelBtn').addEventListener('click', async function() {
+                    if (!confirm('Are you sure you want to cancel? You will keep access until the end of your current billing period.')) return;
+                    this.disabled = true; this.textContent = 'Cancelling...';
+                    try {
+                        const r = await fetch('/api/manage-subscription', {
+                            method: 'POST', credentials: 'same-origin',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ action: 'cancel' })
+                        });
+                        const d = await r.json();
+                        if (d.success) { location.reload(); } else { alert(d.error || 'Failed to cancel'); }
+                    } catch(e) { alert('Network error'); }
+                    this.disabled = false; this.textContent = 'Cancel Subscription';
+                });
+
+                // Reactivate button
+                document.getElementById('reactivateBtn').addEventListener('click', async function() {
+                    this.disabled = true; this.textContent = 'Reactivating...';
+                    try {
+                        const r = await fetch('/api/manage-subscription', {
+                            method: 'POST', credentials: 'same-origin',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ action: 'reactivate' })
+                        });
+                        const d = await r.json();
+                        if (d.success) { location.reload(); } else { alert(d.error || 'Failed to reactivate'); }
+                    } catch(e) { alert('Network error'); }
+                    this.disabled = false; this.textContent = 'Reactivate';
+                });
+            } catch (err) {
+                document.getElementById('subLoading').textContent = 'Could not load subscription. Contact hello@9elmslabs.co.uk';
+            }
+        }
+
+        // ——— Improved empty state: show onboarding progress ———
+        function showOnboardingState() {
+            if (!clientData || !clientData.scores) {
+                const overview = document.getElementById('tab-overview');
+                const header = overview.querySelector('.page-header');
+                const onboarding = document.createElement('div');
+                onboarding.className = 'section';
+                onboarding.style.cssText = 'background:linear-gradient(135deg,rgba(0,212,255,0.06),rgba(157,78,237,0.06));border-color:rgba(0,212,255,0.2);';
+                onboarding.innerHTML = `
+                    <h3 style="color:#00d4ff;">Welcome! Your first scan is running</h3>
+                    <p style="color:#c0c0d0;font-size:14px;margin:12px 0;line-height:1.7;">We're analysing your business across AI search platforms right now. This usually takes 2-3 minutes. Here's what's happening:</p>
+                    <div style="display:grid;gap:12px;margin-top:16px;">
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="width:32px;height:32px;border-radius:50%;background:rgba(46,204,113,0.15);display:flex;align-items:center;justify-content:center;font-size:14px;">✓</div>
+                            <div><div style="font-size:14px;color:#2ecc71;">Account created</div><div style="font-size:12px;color:#8888a0;">Your subscription is active</div></div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="width:32px;height:32px;border-radius:50%;background:rgba(0,212,255,0.15);display:flex;align-items:center;justify-content:center;"><div class="spinner" style="width:16px;height:16px;border-width:2px;"></div></div>
+                            <div><div style="font-size:14px;color:#00d4ff;">Running AI visibility scan</div><div style="font-size:12px;color:#8888a0;">Querying ChatGPT, Perplexity, Gemini, Copilot for your business</div></div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:14px;color:#8888a0;">3</div>
+                            <div><div style="font-size:14px;color:#8888a0;">Analysing your website</div><div style="font-size:12px;color:#666;">SEO, conversion signals, trust elements</div></div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:14px;color:#8888a0;">4</div>
+                            <div><div style="font-size:14px;color:#8888a0;">Building your dashboard</div><div style="font-size:12px;color:#666;">Scores, findings, competitor data</div></div>
+                        </div>
+                    </div>
+                    <p style="color:#8888a0;font-size:13px;margin-top:20px;">Refresh this page in a couple of minutes to see your results, or wait for the email notification.</p>
+                `;
+                header.after(onboarding);
+            }
+        }
+
+        // Load subscription when settings tab is first opened
+        let subLoaded = false;
+        document.querySelectorAll('.nav-item[data-tab]').forEach(function(item) {
+            if (item.dataset.tab === 'settings') {
+                const originalClick = item.onclick;
+                item.addEventListener('click', function() {
+                    if (!subLoaded) { subLoaded = true; loadSubscription(); }
+                });
+            }
+        });
+
+        init().then(function() { showOnboardingState(); });
     })();
     </script>
 </body>

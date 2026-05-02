@@ -166,102 +166,39 @@
     <script>
     (function() {
         const params = new URLSearchParams(window.location.search);
-        const plan = params.get('plan') || 'starter';
-        document.getElementById('plan').value = plan;
+        const sessionId = params.get('session_id');
 
-        const planNames = {
-            'starter': 'Starter — £199/mo',
-            'growth': 'Growth — £499/mo',
-            'scale': 'Scale — £999/mo',
-        };
-        document.getElementById('planBadge').textContent = planNames[plan] || plan;
+        // If no session_id, this page was accessed directly — redirect to checkout
+        if (!sessionId) {
+            document.querySelector('.onboard-card').innerHTML = `
+                <div class="logo">9EL</div>
+                <div class="logo-sub">9 Elms Labs</div>
+                <div style="text-align:center;margin-top:32px;">
+                    <h2>Payment Required</h2>
+                    <p class="subtitle">Please complete payment before setting up your account.</p>
+                    <a href="/checkout.html" class="btn-primary" style="display:inline-block;text-decoration:none;margin-top:16px;width:auto;padding:14px 32px;">Go to Checkout</a>
+                </div>
+            `;
+            return;
+        }
 
-        // Pre-fill from localStorage if available (from checkout)
-        try {
-            const saved = JSON.parse(localStorage.getItem('9el_checkout') || '{}');
-            if (saved.businessName) document.getElementById('businessName').value = saved.businessName;
-            if (saved.email) document.getElementById('email').value = saved.email;
-            if (saved.contactName) document.getElementById('contactName').value = saved.contactName;
-            if (saved.websiteUrl) document.getElementById('websiteUrl').value = saved.websiteUrl;
-            if (saved.industry) document.getElementById('industry').value = saved.industry;
-            if (saved.phone) document.getElementById('phone').value = saved.phone;
-        } catch(e) {}
+        // Payment confirmed via Stripe — the webhook has already created the account.
+        // Show success state immediately.
+        document.getElementById('formState').style.display = 'none';
+        document.getElementById('successState').style.display = 'block';
 
-        // Plan-specific next steps
-        const nextSteps = {
-            starter: [
-                'Your first scan results will be ready in ~2 minutes',
-                'Check your email — we\'ve sent your dashboard login link',
-                'Monthly AI visibility reports arrive on the 1st of each month',
-                '2 content recommendations delivered monthly',
-                'Your conversion tracking snippet is ready in the dashboard',
-            ],
-            growth: [
-                'Your first scan results will be ready in ~2 minutes',
-                'Check your email — we\'ve sent your dashboard login link',
-                'Weekly AI visibility reports start next Monday',
-                '4 AI-optimised articles delivered on the 1st of each month',
-                'Competitor tracking and A/B testing are now active',
-                'Performance alerts are enabled',
-            ],
-            scale: [
-                'Your first scan results will be ready in ~2 minutes',
-                'Check your email — we\'ve sent your dashboard login link',
-                'Daily AI monitoring starts tomorrow morning',
-                'Weekly reports arrive every Monday',
-                '8 AI-optimised articles delivered on the 1st of each month',
-                'Daily competitor intelligence and sensitive alerts (5pt+) are active',
-                'Quarterly full re-audit runs automatically (Jan/Apr/Jul/Oct)',
-            ],
-        };
+        // Fetch session details to show the right plan info
+        document.getElementById('planBadge').textContent = 'Payment Confirmed';
+
+        // Update next steps with generic message (webhook handles everything)
         const list = document.getElementById('nextStepsList');
-        const steps = nextSteps[plan] || nextSteps.starter;
-        list.innerHTML = steps.map(s => `<li>${s}</li>`).join('');
-
-        // Form submit
-        document.getElementById('onboardForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            const msg = document.getElementById('statusMsg');
-            btn.disabled = true;
-            btn.textContent = 'Setting up your account...';
-            msg.textContent = '';
-
-            const payload = {
-                businessName: document.getElementById('businessName').value.trim(),
-                email: document.getElementById('email').value.trim().toLowerCase(),
-                contactName: document.getElementById('contactName').value.trim(),
-                websiteUrl: document.getElementById('websiteUrl').value.trim(),
-                industry: document.getElementById('industry').value,
-                phone: document.getElementById('phone').value.trim(),
-                plan: plan,
-            };
-
-            try {
-                const resp = await fetch('/api/register-client', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                });
-                const data = await resp.json();
-                if (data.success) {
-                    document.getElementById('formState').style.display = 'none';
-                    document.getElementById('successState').style.display = 'block';
-                    // Clear checkout data
-                    try { localStorage.removeItem('9el_checkout'); } catch(e) {}
-                } else {
-                    msg.textContent = data.error || 'Something went wrong. Please try again.';
-                    msg.className = 'status-msg error';
-                    btn.disabled = false;
-                    btn.textContent = 'Activate My Account';
-                }
-            } catch(err) {
-                msg.textContent = 'Network error. Please try again.';
-                msg.className = 'status-msg error';
-                btn.disabled = false;
-                btn.textContent = 'Activate My Account';
-            }
-        });
+        list.innerHTML = [
+            'Your payment has been processed securely via Stripe',
+            'Your account is being set up automatically',
+            'Check your email — your dashboard login link is on the way',
+            'Your first AI visibility scan is running now',
+            'Monitoring, reports, and content delivery start automatically',
+        ].map(s => `<li>${s}</li>`).join('');
     })();
     </script>
 </body>

@@ -37,6 +37,20 @@ export default async function handler(req, res) {
     console.log(`[CRON] ${clients.length} active clients`);
 
     for (const client of clients) {
+      // Skip clients with expired subscriptions (3-day grace period)
+      if (client.currentPeriodEnd) {
+        const periodEnd = new Date(client.currentPeriodEnd).getTime();
+        const gracePeriod = 3 * 24 * 60 * 60 * 1000;
+        if (Date.now() > periodEnd + gracePeriod) {
+          console.log(`[CRON] Skipping ${client.businessName} — subscription expired`);
+          continue;
+        }
+      }
+      if (client.subscriptionStatus === 'cancelled') {
+        console.log(`[CRON] Skipping ${client.businessName} — subscription cancelled`);
+        continue;
+      }
+
       const plan = client.plan || 'starter';
       const shouldMonitor =
         (plan === 'starter' && isFirstOfMonth) ||

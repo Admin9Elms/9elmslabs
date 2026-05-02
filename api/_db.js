@@ -60,7 +60,12 @@ export async function createClient(data) {
     contactName: data.contactName || '',
     phone: data.phone || '',
     createdAt: new Date().toISOString(),
-    status: 'active',
+    status: data.status || 'active',
+    // Stripe subscription fields (set by webhook after payment)
+    stripeCustomerId: data.stripeCustomerId || null,
+    stripeSubscriptionId: data.stripeSubscriptionId || null,
+    subscriptionStatus: data.subscriptionStatus || null,
+    currentPeriodEnd: data.currentPeriodEnd || null,
   };
   await kvSet(`client:${clientId}`, client);
   await kvSet(`client:email:${client.email}`, clientId);

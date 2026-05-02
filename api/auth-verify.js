@@ -21,7 +21,18 @@ export default async function handler(req, res) {
     // Verify client still exists and is active
     const client = await getClient(authData.clientId);
     if (!client || client.status !== 'active') {
-      return res.redirect(302, '/login.html?error=inactive');
+      // Check if subscription expired (allow grace period of 3 days)
+      if (client && client.currentPeriodEnd) {
+        const periodEnd = new Date(client.currentPeriodEnd).getTime();
+        const gracePeriod = 3 * 24 * 60 * 60 * 1000;
+        if (Date.now() < periodEnd + gracePeriod) {
+          // Still within grace period — allow access
+        } else {
+          return res.redirect(302, '/login.html?error=expired-subscription');
+        }
+      } else {
+        return res.redirect(302, '/login.html?error=inactive');
+      }
     }
 
     // Invalidate the magic link so it can't be reused

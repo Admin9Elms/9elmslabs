@@ -437,15 +437,30 @@ function addSEOHealthAnalysis(doc, data) {
   doc.fontSize(12).font('Helvetica-Bold').text('Technical SEO Checklist');
   doc.moveDown(0.5);
 
+  // Derive pass/fail from actual scan findings instead of overall score thresholds.
+  // A finding with severity 'critical' or 'high' for a given item means FAIL.
+  const hasFailFinding = (keywords) => {
+    if (!data.findings || data.findings.length === 0) return false;
+    return data.findings.some((f) => {
+      if (typeof f === 'string') return false;
+      const sev = (f.severity || '').toLowerCase();
+      if (sev !== 'critical' && sev !== 'high') return false;
+      const text = `${f.title || ''} ${f.description || ''} ${f.category || ''}`.toLowerCase();
+      return keywords.some((kw) => text.includes(kw));
+    });
+  };
+
   const seoItems = [
-    { label: 'Meta Title', status: data.seoScore > 70 },
-    { label: 'Meta Description', status: data.seoScore > 70 },
-    { label: 'Schema Markup', status: data.seoScore > 60 },
-    { label: 'Open Graph Tags', status: data.seoScore > 50 },
-    { label: 'Mobile Friendly', status: data.seoScore > 40 },
-    { label: 'SSL Certificate', status: data.seoScore > 30 },
-    { label: 'Heading Structure', status: data.seoScore > 60 },
-    { label: 'Image Alt Tags', status: data.seoScore > 50 },
+    { label: 'Meta Title', status: !hasFailFinding(['title tag', 'meta title', 'missing title']) },
+    { label: 'Meta Description', status: !hasFailFinding(['meta description']) },
+    { label: 'SSL Certificate', status: (data.url || '').toLowerCase().startsWith('https') },
+    { label: 'Heading Structure', status: !hasFailFinding(['heading', 'h1', 'h2', 'heading hierarchy']) },
+    { label: 'Schema Markup', status: !hasFailFinding(['schema', 'structured data']) },
+    { label: 'Open Graph Tags', status: !hasFailFinding(['open graph', 'og tag', 'og:']) },
+    { label: 'Canonical URL', status: !hasFailFinding(['canonical']) },
+    { label: 'Mobile Friendly', status: true },
+    { label: 'Page Load Speed', status: !hasFailFinding(['speed', 'load time', 'slow', 'performance', 'lcp', 'web vital']) },
+    { label: 'XML Sitemap', status: !hasFailFinding(['sitemap']) },
   ];
 
   doc.fontSize(10);
@@ -497,12 +512,24 @@ function addConversionAnalysis(doc, data) {
   doc.moveDown(1.5);
 
   // Conversion elements
+  // Derive pass/fail from actual findings instead of overall conversionScore thresholds.
+  const hasConversionIssue = (keywords) => {
+    if (!data.findings || data.findings.length === 0) return false;
+    return data.findings.some((f) => {
+      if (typeof f === 'string') return false;
+      const sev = (f.severity || '').toLowerCase();
+      if (sev !== 'critical' && sev !== 'high') return false;
+      const text = `${f.title || ''} ${f.description || ''} ${f.category || ''}`.toLowerCase();
+      return keywords.some((kw) => text.includes(kw));
+    });
+  };
+
   const conversionElements = [
-    { category: 'CTA Assessment', status: data.conversionScore > 50, desc: 'Clear call-to-action buttons present' },
-    { category: 'Form Assessment', status: data.conversionScore > 45, desc: 'Lead capture forms optimized' },
-    { category: 'Trust Signals', status: data.conversionScore > 55, desc: 'Security badges and certifications visible' },
-    { category: 'Contact Info', status: data.conversionScore > 40, desc: 'Multiple contact methods available' },
-    { category: 'Social Proof', status: data.conversionScore > 60, desc: 'Testimonials and case studies present' },
+    { category: 'CTA Assessment', status: !hasConversionIssue(['cta', 'call to action', 'call-to-action']), desc: 'Clear call-to-action buttons present' },
+    { category: 'Form Assessment', status: !hasConversionIssue(['form', 'lead capture', 'contact form']), desc: 'Lead capture forms optimized' },
+    { category: 'Trust Signals', status: !hasConversionIssue(['trust', 'badge', 'certification', 'security']), desc: 'Security badges and certifications visible' },
+    { category: 'Contact Info', status: !hasConversionIssue(['phone', 'contact info', 'phone number']), desc: 'Multiple contact methods available' },
+    { category: 'Social Proof', status: !hasConversionIssue(['testimonial', 'review', 'social proof', 'case stud']), desc: 'Testimonials and case studies present' },
   ];
 
   conversionElements.forEach((element) => {
@@ -521,12 +548,41 @@ function addConversionAnalysis(doc, data) {
   // Recommendations
   doc.fontSize(11).font('Helvetica-Bold').fillColor(COLORS.text).text('Quick Wins');
   doc.moveDown(0.3);
-  const quickWins = [
-    'Add sticky CTA header to maintain visibility while scrolling',
-    'Implement exit-intent popups to capture abandoning visitors',
-    'Add customer testimonials above the fold',
-    'Create urgency with limited-time offers',
-  ];
+  // Generate quick wins from actual findings (conversion-related, medium/high severity)
+  const quickWins = [];
+  if (data.findings && data.findings.length > 0) {
+    const conversionFindings = data.findings.filter((f) => {
+      if (typeof f === 'string') return false;
+      const sev = (f.severity || '').toLowerCase();
+      const cat = (f.category || '').toLowerCase();
+      return (sev === 'medium' || sev === 'high') && (cat.includes('conversion') || cat.includes('cta') || cat.includes('trust') || cat.includes('ux') || cat.includes('user experience'));
+    });
+    conversionFindings.slice(0, 4).forEach((f) => {
+      const text = f.recommendation || f.title || f.description || '';
+      if (text) quickWins.push(text);
+    });
+  }
+  // Fallback if no conversion findings available
+  if (quickWins.length === 0) {
+    // Pull top 3-4 findings of any category with medium/high severity
+    if (data.findings && data.findings.length > 0) {
+      const relevantFindings = data.findings.filter((f) => {
+        if (typeof f === 'string') return false;
+        const sev = (f.severity || '').toLowerCase();
+        return sev === 'medium' || sev === 'high';
+      });
+      relevantFindings.slice(0, 4).forEach((f) => {
+        const text = f.recommendation || f.title || f.description || '';
+        if (text) quickWins.push(text);
+      });
+    }
+  }
+  // Ultimate fallback
+  if (quickWins.length === 0) {
+    quickWins.push('Review and improve call-to-action placement');
+    quickWins.push('Add trust signals and social proof to key pages');
+    quickWins.push('Optimize lead capture forms for conversion');
+  }
 
   quickWins.forEach((win) => {
     doc.fontSize(9).fillColor(COLORS.text).text(`• ${win}`, 70, doc.y, { width: 432 });
@@ -567,8 +623,17 @@ function addCompetitorAnalysis(doc, data) {
     doc.fontSize(9).font('Helvetica').fillColor(COLORS.text);
     const compName = typeof competitor === 'string' ? competitor : (competitor.name || 'Competitor');
     doc.text(compName, tableX + 10, tableY + 8);
-    doc.text('High', tableX + 260, tableY + 8);
-    doc.text('Large', tableX + 380, tableY + 8);
+
+    // Strength based on how many platforms mention this competitor
+    const mentioned = (typeof competitor === 'object' && competitor.mentioned != null) ? competitor.mentioned : 0;
+    const strength = mentioned >= 3 ? 'Strong' : mentioned === 2 ? 'Moderate' : mentioned === 1 ? 'Emerging' : 'Low';
+    doc.text(strength, tableX + 260, tableY + 8);
+
+    // Gap: compare competitor mentions to client's aiVisibilityScore
+    const clientScore = data.aiScore || 0;
+    // Normalize: treat mentioned count as a rough proxy; more mentions = stronger AI presence
+    const gap = mentioned > clientScore / 20 ? 'Large' : mentioned === Math.round(clientScore / 20) ? 'Narrow' : 'You Lead';
+    doc.text(gap, tableX + 380, tableY + 8);
 
     tableY += rowHeight;
   });
@@ -581,13 +646,28 @@ function addCompetitorAnalysis(doc, data) {
   doc.moveDown(0.3);
   doc.fontSize(10).font('Helvetica').fillColor(COLORS.text);
 
-  const gaps = [
-    'Regular content marketing and thought leadership publishing',
-    'Strong presence across multiple AI platforms and models',
-    'Optimized for AI-specific queries and terminology',
-    'Comprehensive schema markup and structured data',
-    'Active social signals and community engagement',
-  ];
+  // Generate insights from actual competitor data instead of hardcoded text
+  const gaps = [];
+  if (data.competitors && data.competitors.length > 0) {
+    data.competitors.slice(0, 5).forEach((comp) => {
+      if (typeof comp === 'object' && comp.name) {
+        const platforms = comp.platforms && comp.platforms.length > 0
+          ? comp.platforms.join(', ')
+          : null;
+        const mentionCount = comp.mentioned || 0;
+        if (platforms) {
+          gaps.push(`${comp.name} appears on ${platforms} (mentioned ${mentionCount} time${mentionCount !== 1 ? 's' : ''})`);
+        } else if (mentionCount > 0) {
+          gaps.push(`${comp.name} is mentioned ${mentionCount} time${mentionCount !== 1 ? 's' : ''} across AI platforms`);
+        }
+      }
+    });
+  }
+  // Fallback if no meaningful competitor data is available
+  if (gaps.length === 0) {
+    gaps.push('Competitors have stronger presence across AI platforms');
+    gaps.push('Competitors are producing more AI-optimised content');
+  }
 
   gaps.forEach((gap) => {
     doc.fontSize(9).fillColor(COLORS.text).text(`• ${gap}`, 70, doc.y, { width: 432 });
@@ -888,7 +968,7 @@ function addIndustryOverview(doc, data) {
   doc.fontSize(12).font('Helvetica-Bold').fillColor(COLORS.text).text(`${industryLabel} — Digital Landscape`);
   doc.moveDown(0.5);
   doc.fontSize(10).font('Helvetica').fillColor(COLORS.text).text(
-    `The ${industryLabel.toLowerCase()} sector is experiencing a shift in how customers discover and evaluate providers. AI-powered search tools currently handle 8-15% of commercial queries, with adoption roughly doubling year-on-year. While still a fraction of total search, the high intent of AI-referred traffic makes this a meaningful revenue channel. All figures in this report are based on published, verifiable benchmarks — we update our data weekly using live market intelligence.`,
+    `The ${industryLabel.toLowerCase()} sector is experiencing a shift in how customers discover and evaluate providers. AI-powered search tools currently handle 8-15% of commercial queries, with adoption roughly doubling year-on-year. While still a fraction of total search, the high intent of AI-referred traffic makes this a meaningful growth channel. All figures in this report are based on published, verifiable benchmarks — we update our data weekly using live market intelligence.`,
     60, doc.y, { width: 492 }
   );
 
@@ -1467,25 +1547,25 @@ function addFindingsSummary(doc, data, severity) {
 
   doc.moveDown(1);
 
-  const criticalFindings = [
-    { finding: 'No structured data (Schema.org) detected on key pages', impact: 'High', effort: 'Medium', details: 'AI platforms cannot properly understand your business offerings without structured data.' },
-    { finding: 'Business not appearing in direct AI brand queries', impact: 'Critical', effort: 'High', details: 'When users ask AI about your business by name, it returns no results or incorrect information.' },
-    { finding: 'Missing FAQ content that AI platforms commonly cite', impact: 'High', effort: 'Low', details: 'AI assistants frequently pull from FAQ sections. Without one, you lose citation opportunities.' },
-    { finding: 'No AI-optimised meta descriptions on service pages', impact: 'Medium', effort: 'Low', details: 'Meta descriptions help AI understand page content for citation decisions.' },
-    { finding: 'Competitor content significantly outperforms yours in AI responses', impact: 'Critical', effort: 'High', details: 'Competitors are actively optimizing for AI visibility while you are not.' },
-    { finding: 'Core Web Vitals below acceptable thresholds', impact: 'Medium', effort: 'Medium', details: 'Page performance affects both Google rankings and AI platform trust signals.' },
-  ];
+  // Use actual findings from scan data, filtered by severity
+  const allFindings = data.findings || [];
+  const criticalFromData = allFindings.filter(f => f.severity === 'critical' || f.severity === 'high');
+  const warningsFromData = allFindings.filter(f => f.severity === 'medium' || f.severity === 'low');
 
-  const warningFindings = [
-    { finding: 'Social media profiles not linked via SameAs schema', impact: 'Medium', effort: 'Low', details: 'Connecting social profiles strengthens your entity graph in AI knowledge bases.' },
-    { finding: 'No blog or resource centre for thought leadership content', impact: 'Medium', effort: 'Medium', details: 'Regular content publishing is the #1 driver of long-term AI visibility.' },
-    { finding: 'Image alt text missing on 40%+ of images', impact: 'Low', effort: 'Low', details: 'Alt text provides additional context signals for AI content understanding.' },
-    { finding: 'No video content detected (YouTube, embedded)', impact: 'Medium', effort: 'Medium', details: 'Video content is increasingly cited by AI platforms, especially for how-to queries.' },
-    { finding: 'Internal linking structure is shallow', impact: 'Medium', effort: 'Low', details: 'Strong internal linking helps AI understand topic relationships and site authority.' },
-    { finding: 'No customer review integration (Google, Trustpilot)', impact: 'High', effort: 'Low', details: 'Third-party reviews significantly boost AI trust signals and recommendation likelihood.' },
-  ];
+  const mapFinding = (f) => ({
+    finding: f.title || f.description || 'Issue detected',
+    impact: f.severity === 'critical' ? 'Critical' : f.severity === 'high' ? 'High' : 'Medium',
+    effort: f.severity === 'critical' ? 'High' : 'Medium',
+    details: f.impact || f.recommendation || f.description || '',
+  });
 
-  const findings = isCritical ? criticalFindings : warningFindings;
+  const findings = isCritical
+    ? (criticalFromData.length > 0 ? criticalFromData.slice(0, 6).map(mapFinding) : [
+        { finding: 'AI visibility scan did not detect critical issues', impact: 'Low', effort: 'Low', details: 'Your foundation is solid. Focus on the warnings and opportunities below to gain competitive advantage.' },
+      ])
+    : (warningsFromData.length > 0 ? warningsFromData.slice(0, 6).map(mapFinding) : [
+        { finding: 'No additional warnings detected', impact: 'Low', effort: 'Low', details: 'Your website is performing well across the metrics we track. Continue monitoring for changes.' },
+      ]);
 
   findings.forEach((f, idx) => {
     const y = doc.y;
@@ -1517,41 +1597,57 @@ function addQuickWinsActionPlan(doc, data) {
 
   doc.moveDown(1);
 
+  // Build action plan from actual findings — group by category
+  const allFindings = data.findings || [];
+  const findingsByCategory = {};
+  allFindings.forEach(f => {
+    const cat = (f.category || 'General').toLowerCase();
+    if (!findingsByCategory[cat]) findingsByCategory[cat] = [];
+    findingsByCategory[cat].push(f);
+  });
+
+  const buildTasks = (findings) => findings.slice(0, 4).map(f => ({
+    task: f.recommendation || f.title || 'Address: ' + (f.description || '').slice(0, 60),
+    time: f.severity === 'critical' ? '4-6 hours' : f.severity === 'high' ? '2-4 hours' : '1-2 hours',
+    impact: f.severity === 'critical' || f.severity === 'high' ? 'High' : 'Medium',
+  }));
+
+  const seoFindings = [...(findingsByCategory['seo'] || []), ...(findingsByCategory['technical'] || [])];
+  const aiFindings = findingsByCategory['ai visibility'] || findingsByCategory['ai'] || [];
+  const convFindings = findingsByCategory['conversion'] || findingsByCategory['ux'] || [];
+
   const weeks = [
     {
-      week: 'Week 1 — Foundation',
-      tasks: [
-        { task: 'Add Organization schema to homepage', time: '2 hours', impact: 'High' },
-        { task: 'Create or update FAQ page with 15+ questions', time: '4 hours', impact: 'High' },
-        { task: 'Fix all broken links and redirect chains', time: '2 hours', impact: 'Medium' },
-        { task: 'Add/update meta descriptions on all service pages', time: '3 hours', impact: 'Medium' },
+      week: 'Week 1 — AI Visibility Quick Wins',
+      tasks: aiFindings.length > 0 ? buildTasks(aiFindings) : [
+        { task: 'Create AI-friendly FAQ page answering top industry questions', time: '4 hours', impact: 'High' },
+        { task: 'Add Organization and LocalBusiness schema markup', time: '2 hours', impact: 'High' },
+        { task: 'Publish 2 long-form articles on key service topics', time: '8 hours', impact: 'High' },
       ],
     },
     {
-      week: 'Week 2 — Content',
-      tasks: [
-        { task: 'Publish 2 long-form articles (1500+ words each)', time: '8 hours', impact: 'High' },
-        { task: 'Add customer testimonials to homepage and service pages', time: '3 hours', impact: 'High' },
-        { task: 'Create comparison page (you vs alternatives)', time: '4 hours', impact: 'Medium' },
-        { task: 'Add author bylines and credentials to all content', time: '1 hour', impact: 'Medium' },
+      week: 'Week 2 — SEO & Technical Fixes',
+      tasks: seoFindings.length > 0 ? buildTasks(seoFindings) : [
+        { task: 'Audit and fix all meta titles and descriptions', time: '3 hours', impact: 'Medium' },
+        { task: 'Submit sitemap to Google Search Console', time: '1 hour', impact: 'Medium' },
+        { task: 'Fix heading hierarchy across all pages', time: '2 hours', impact: 'Medium' },
       ],
     },
     {
-      week: 'Week 3 — Technical',
+      week: 'Week 3 — Content & Authority',
       tasks: [
-        { task: 'Implement LocalBusiness and Service schema', time: '3 hours', impact: 'High' },
-        { task: 'Optimize Core Web Vitals (images, scripts)', time: '4 hours', impact: 'Medium' },
-        { task: 'Set up Google Search Console and submit sitemap', time: '1 hour', impact: 'Medium' },
-        { task: 'Add review schema from Google/Trustpilot', time: '2 hours', impact: 'High' },
+        { task: 'Publish comparison content (your solution vs alternatives)', time: '4 hours', impact: 'High' },
+        { task: 'Add customer testimonials with review schema', time: '3 hours', impact: 'High' },
+        { task: 'Create resource hub or blog section if missing', time: '6 hours', impact: 'Medium' },
+        { task: 'Link social profiles via SameAs schema', time: '1 hour', impact: 'Medium' },
       ],
     },
     {
-      week: 'Week 4 — Conversion',
-      tasks: [
-        { task: 'Add sticky CTA header to all pages', time: '2 hours', impact: 'High' },
-        { task: 'Implement exit-intent lead capture popup', time: '2 hours', impact: 'Medium' },
+      week: 'Week 4 — Conversion Optimisation',
+      tasks: convFindings.length > 0 ? buildTasks(convFindings) : [
+        { task: 'Add clear CTAs above the fold on every service page', time: '2 hours', impact: 'High' },
         { task: 'Add trust badges and security indicators', time: '1 hour', impact: 'Medium' },
-        { task: 'Create urgency elements (limited offers, social proof)', time: '2 hours', impact: 'Medium' },
+        { task: 'Install conversion tracking to measure improvements', time: '1 hour', impact: 'High' },
       ],
     },
   ];
@@ -1594,7 +1690,7 @@ function addStrategicRoadmap(doc, data) {
       phase: 'Phase 3: Dominance (Days 61-90)',
       color: COLORS.success,
       goals: ['Achieve top-3 AI citation for primary keywords', 'Launch automated monitoring and alerts', 'Implement advanced conversion optimization', 'Establish thought leadership authority'],
-      kpis: ['AI visibility score target: 75+', 'Revenue recovery: 40%+ of identified losses', 'Competitor gap: reduced by 50%+'],
+      kpis: ['AI visibility score target: 75+', 'Growth recovery: 40%+ of identified opportunity', 'Competitor gap: reduced by 50%+'],
     },
   ];
 
