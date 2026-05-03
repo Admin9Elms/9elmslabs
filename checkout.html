@@ -21,8 +21,8 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0a0f;
-            color: #f0f0f5;
+            background: #060a14;
+            color: #eaeef6;
             overflow-x: hidden;
         }
 
@@ -35,8 +35,8 @@
             right: 0;
             bottom: 0;
             background-image:
-                radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 20% 50%, rgba(200, 162, 55, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(74, 124, 224, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 40% 0%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
             pointer-events: none;
             z-index: -1;
@@ -54,8 +54,8 @@
                     0deg,
                     transparent,
                     transparent 2px,
-                    rgba(139, 92, 246, 0.03) 2px,
-                    rgba(139, 92, 246, 0.03) 4px
+                    rgba(74, 124, 224, 0.03) 2px,
+                    rgba(74, 124, 224, 0.03) 4px
                 );
             pointer-events: none;
             z-index: -1;
@@ -66,9 +66,9 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(10, 10, 15, 0.8);
+            background: rgba(6, 10, 20, 0.8);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid #2a2a3a;
+            border-bottom: 1px solid #1a2545;
             padding: 1rem 2rem;
         }
 
@@ -85,13 +85,13 @@
             align-items: center;
             gap: 1rem;
             text-decoration: none;
-            color: #f0f0f5;
+            color: #eaeef6;
         }
 
         .navbar-logo {
             width: 32px;
             height: 32px;
-            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #c8a237 0%, #e0c55a 100%);
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -113,7 +113,7 @@
 
         .navbar-brand-text small {
             font-size: 11px;
-            color: #8888a0;
+            color: #7a849e;
         }
 
         .navbar-links {
@@ -124,17 +124,17 @@
 
         .navbar-links a {
             text-decoration: none;
-            color: #8888a0;
+            color: #7a849e;
             font-size: 14px;
             transition: color 0.3s ease;
         }
 
         .navbar-links a:hover {
-            color: #00d4ff;
+            color: #c8a237;
         }
 
         .navbar-links a.active {
-            color: #00d4ff;
+            color: #c8a237;
         }
 
         /* Main container */
@@ -156,14 +156,14 @@
         .page-header h1 {
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #c8a237 0%, #e0c55a 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
         .page-header p {
-            color: #8888a0;
+            color: #7a849e;
             font-size: 1rem;
         }
 
@@ -178,8 +178,8 @@
         }
 
         .plan-card {
-            background: #16161f;
-            border: 1px solid #2a2a3a;
+            background: #0f1628;
+            border: 1px solid #1a2545;
             border-radius: 16px;
             padding: 2rem;
             cursor: pointer;
@@ -189,9 +189,9 @@
         }
 
         .plan-card:hover {
-            border-color: #00d4ff;
+            border-color: #c8a237;
             transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(200, 162, 55, 0.1);
         }
 
         .plan-card .plan-name {
@@ -202,18 +202,18 @@
 
         .plan-card .plan-price {
             font-size: 1.75rem;
-            color: #00d4ff;
+            color: #c8a237;
             margin-bottom: 1rem;
         }
 
         .plan-card .plan-description {
-            color: #8888a0;
+            color: #7a849e;
             font-size: 0.9rem;
             line-height: 1.5;
         }
 
         .plan-card.popular {
-            border-color: #00d4ff;
+            border-color: #c8a237;
             position: relative;
         }
 
@@ -223,8 +223,8 @@
             top: -10px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
-            color: #0a0a0f;
+            background: linear-gradient(135deg, #c8a237 0%, #e0c55a 100%);
+            color: #060a14;
             padding: 4px 12px;
             border-radius: 12px;
             font-size: 10px;
@@ -240,8 +240,8 @@
         }
 
         .checkout-card {
-            background: #16161f;
-            border: 1px solid #2a2a3a;
+            background: #0f1628;
+            border: 1px solid #1a2545;
             border-radius: 20px;
             padding: 3rem;
             margin-bottom: 2rem;
@@ -251,7 +251,7 @@
             text-align: center;
             margin-bottom: 2rem;
             padding-bottom: 2rem;
-            border-bottom: 1px solid #2a2a3a;
+            border-bottom: 1px solid #1a2545;
         }
 
         .plan-badge {
@@ -271,9 +271,9 @@
         }
 
         .plan-badge.paid {
-            background: rgba(0, 212, 255, 0.1);
-            color: #00d4ff;
-            border: 1px solid #00d4ff;
+            background: rgba(200, 162, 55, 0.1);
+            color: #c8a237;
+            border: 1px solid #c8a237;
         }
 
         .plan-title {
@@ -284,7 +284,7 @@
 
         .plan-price {
             font-size: 2.5rem;
-            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #c8a237 0%, #e0c55a 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -292,12 +292,12 @@
         }
 
         .plan-billing {
-            color: #8888a0;
+            color: #7a849e;
             font-size: 0.95rem;
         }
 
         .plan-description {
-            color: #8888a0;
+            color: #7a849e;
             font-size: 1rem;
             line-height: 1.6;
             margin-top: 1rem;
@@ -306,12 +306,12 @@
         .plan-features {
             margin-top: 2rem;
             padding-top: 2rem;
-            border-top: 1px solid #2a2a3a;
+            border-top: 1px solid #1a2545;
         }
 
         .plan-features-title {
             font-size: 0.9rem;
-            color: #5a5a70;
+            color: #4d5670;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             margin-bottom: 1rem;
@@ -323,7 +323,7 @@
 
         .plan-features li {
             padding: 0.75rem 0;
-            color: #8888a0;
+            color: #7a849e;
             display: flex;
             align-items: flex-start;
             gap: 0.75rem;
@@ -342,13 +342,13 @@
         .form-section {
             margin-top: 2rem;
             padding-top: 2rem;
-            border-top: 1px solid #2a2a3a;
+            border-top: 1px solid #1a2545;
         }
 
         .form-section h3 {
             font-size: 1.1rem;
             margin-bottom: 1.5rem;
-            color: #f0f0f5;
+            color: #eaeef6;
         }
 
         .form-group {
@@ -359,7 +359,7 @@
             display: block;
             margin-bottom: 0.5rem;
             font-size: 0.9rem;
-            color: #f0f0f5;
+            color: #eaeef6;
             font-weight: 500;
         }
 
@@ -367,10 +367,10 @@
         .form-group select {
             width: 100%;
             padding: 0.75rem;
-            background: #0a0a0f;
-            border: 1px solid #2a2a3a;
+            background: #060a14;
+            border: 1px solid #1a2545;
             border-radius: 8px;
-            color: #f0f0f5;
+            color: #eaeef6;
             font-family: 'Inter', sans-serif;
             font-size: 0.95rem;
             transition: all 0.3s ease;
@@ -379,12 +379,12 @@
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
-            border-color: #00d4ff;
-            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+            border-color: #c8a237;
+            box-shadow: 0 0 0 3px rgba(200, 162, 55, 0.1);
         }
 
         .form-group input::placeholder {
-            color: #5a5a70;
+            color: #4d5670;
         }
 
         .form-row {
@@ -423,7 +423,7 @@
         .button-group {
             margin-top: 2rem;
             padding-top: 2rem;
-            border-top: 1px solid #2a2a3a;
+            border-top: 1px solid #1a2545;
         }
 
         .submit-btn {
@@ -450,13 +450,13 @@
         }
 
         .submit-btn.paid {
-            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #c8a237 0%, #e0c55a 100%);
             color: #fff;
         }
 
         .submit-btn.paid:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(200, 162, 55, 0.3);
         }
 
         .submit-btn:active {
@@ -468,7 +468,7 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            color: #8888a0;
+            color: #7a849e;
             font-size: 0.85rem;
             margin-top: 1rem;
             text-align: center;
@@ -490,7 +490,7 @@
             gap: 1.5rem;
             margin-top: 3rem;
             padding-top: 2rem;
-            border-top: 1px solid #2a2a3a;
+            border-top: 1px solid #1a2545;
             max-width: 700px;
             margin-left: auto;
             margin-right: auto;
@@ -512,17 +512,17 @@
         }
 
         .trust-signal-text {
-            color: #8888a0;
+            color: #7a849e;
             font-size: 0.85rem;
         }
 
         /* Footer */
         footer {
-            background: rgba(10, 10, 15, 0.8);
-            border-top: 1px solid #2a2a3a;
+            background: rgba(6, 10, 20, 0.8);
+            border-top: 1px solid #1a2545;
             padding: 2rem;
             text-align: center;
-            color: #8888a0;
+            color: #7a849e;
             font-size: 0.85rem;
         }
 
@@ -540,13 +540,13 @@
         }
 
         .footer-links a {
-            color: #8888a0;
+            color: #7a849e;
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
         .footer-links a:hover {
-            color: #00d4ff;
+            color: #c8a237;
         }
 
         .loading {
@@ -556,7 +556,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(10, 10, 15, 0.9);
+            background: rgba(6, 10, 20, 0.9);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -567,8 +567,8 @@
         }
 
         .spinner {
-            border: 3px solid #2a2a3a;
-            border-top: 3px solid #00d4ff;
+            border: 3px solid #1a2545;
+            border-top: 3px solid #c8a237;
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -649,17 +649,17 @@
         <div class="plan-selection-grid" id="planSelectionGrid" style="display: none;">
             <a href="checkout.html?plan=starter" class="plan-card">
                 <div class="plan-name">Starter</div>
-                <div class="plan-price">&pound;199<span style="font-size: 0.6em; color: #8888a0;">/mo</span></div>
+                <div class="plan-price">&pound;199<span style="font-size: 0.6em; color: #7a849e;">/mo</span></div>
                 <div class="plan-description">Monthly AI visibility scans, reports, and content recommendations for small businesses</div>
             </a>
             <a href="checkout.html?plan=growth" class="plan-card popular">
                 <div class="plan-name">Growth</div>
-                <div class="plan-price">&pound;499<span style="font-size: 0.6em; color: #8888a0;">/mo</span></div>
+                <div class="plan-price">&pound;499<span style="font-size: 0.6em; color: #7a849e;">/mo</span></div>
                 <div class="plan-description">Weekly scans, 4 AI-written articles, competitor tracking, and A/B testing for medium businesses</div>
             </a>
             <a href="checkout.html?plan=scale" class="plan-card">
                 <div class="plan-name">Scale</div>
-                <div class="plan-price">&pound;999<span style="font-size: 0.6em; color: #8888a0;">/mo</span></div>
+                <div class="plan-price">&pound;999<span style="font-size: 0.6em; color: #7a849e;">/mo</span></div>
                 <div class="plan-description">Daily monitoring, 8 articles, competitor intelligence, and quarterly re-audits for large businesses</div>
             </a>
         </div>

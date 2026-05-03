@@ -18,8 +18,8 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0a0a0f;
-            color: #f0f0f5;
+            background-color: #060a14;
+            color: #eaeef6;
             line-height: 1.6;
             overflow-x: hidden;
         }
@@ -32,9 +32,9 @@
             width: 100%;
             height: 100%;
             background-image:
-                linear-gradient(rgba(42, 42, 58, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(42, 42, 58, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
+                linear-gradient(rgba(26, 37, 69, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(26, 37, 69, 0.1) 1px, transparent 1px);
+            background-size: 80px 80px;
             pointer-events: none;
             z-index: 0;
         }
@@ -45,8 +45,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.05) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+            background: radial-gradient(circle at 20% 50%, rgba(200, 162, 55, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(74, 124, 224, 0.05) 0%, transparent 50%);
             pointer-events: none;
             z-index: 0;
         }
@@ -57,11 +57,11 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: #0a0a0f;
+            background: #060a14;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            background: #1a2545;
             border-radius: 10px;
         }
 
@@ -71,9 +71,9 @@
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(10, 10, 15, 0.8);
+            background: rgba(6, 10, 20, 0.8);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid #2a2a3a;
+            border-bottom: 1px solid #1a2545;
             z-index: 1000;
             padding: 0 clamp(20px, 5vw, 48px);
             height: 70px;
@@ -87,13 +87,13 @@
             align-items: center;
             gap: 12px;
             text-decoration: none;
-            color: #f0f0f5;
+            color: #eaeef6;
         }
 
         nav .logo {
             font-size: 20px;
             font-weight: 700;
-            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #c8a237 0%, #e0c55a 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -101,7 +101,7 @@
 
         nav .brand {
             font-size: 14px;
-            color: #8888a0;
+            color: #7a849e;
         }
 
         nav .nav-links {
@@ -111,7 +111,7 @@
         }
 
         nav a {
-            color: #f0f0f5;
+            color: #eaeef6;
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
@@ -126,12 +126,12 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #c8a237 0%, #e0c55a 100%);
             transition: width 0.3s;
         }
 
         nav a:hover {
-            color: #00d4ff;
+            color: #c8a237;
         }
 
         nav a:hover::after {
@@ -148,7 +148,7 @@
         .hamburger span {
             width: 25px;
             height: 2px;
-            background: #f0f0f5;
+            background: #eaeef6;
             border-radius: 2px;
             transition: 0.3s;
         }
@@ -178,7 +178,7 @@
             font-weight: 700;
             margin-bottom: 20px;
             line-height: 1.2;
-            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #c8a237 0%, #e0c55a 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -186,7 +186,7 @@
 
         .hero p {
             font-size: 18px;
-            color: #8888a0;
+            color: #7a849e;
             max-width: 600px;
             margin: 0 auto;
         }
@@ -201,8 +201,8 @@
 
         /* Form styling */
         .contact-form {
-            background: #16161f;
-            border: 1px solid #2a2a3a;
+            background: #0f1628;
+            border: 1px solid #1a2545;
             border-radius: 20px;
             padding: 48px;
         }
@@ -215,17 +215,17 @@
             display: block;
             font-size: 14px;
             font-weight: 600;
-            color: #f0f0f5;
+            color: #eaeef6;
             margin-bottom: 8px;
         }
 
         input, select, textarea {
             width: 100%;
-            background: #0a0a0f;
-            border: 1px solid #2a2a3a;
+            background: #060a14;
+            border: 1px solid #1a2545;
             border-radius: 12px;
             padding: 12px 16px;
-            color: #f0f0f5;
+            color: #eaeef6;
             font-family: inherit;
             font-size: 14px;
             transition: all 0.3s;
@@ -234,8 +234,8 @@
 
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #00d4ff;
-            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+            border-color: #c8a237;
+            box-shadow: 0 0 0 3px rgba(200, 162, 55, 0.1);
         }
 
         textarea {
@@ -266,13 +266,13 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
-            color: #0a0a0f;
+            background: linear-gradient(135deg, #c8a237 0%, #e0c55a 100%);
+            color: #060a14;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(200, 162, 55, 0.3);
         }
 
         .btn-primary:disabled {
@@ -312,8 +312,8 @@
         }
 
         .info-card {
-            background: #16161f;
-            border: 1px solid #2a2a3a;
+            background: #0f1628;
+            border: 1px solid #1a2545;
             border-radius: 20px;
             padding: 36px;
         }
@@ -322,7 +322,7 @@
             font-size: 18px;
             font-weight: 600;
             margin-bottom: 16px;
-            color: #f0f0f5;
+            color: #eaeef6;
         }
 
         .info-card-content {
@@ -334,7 +334,7 @@
         .info-icon {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #c8a237 0%, #e0c55a 100%);
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -348,24 +348,24 @@
         }
 
         .info-text p {
-            color: #f0f0f5;
+            color: #eaeef6;
             font-size: 14px;
             margin-bottom: 8px;
         }
 
         .info-text a {
-            color: #00d4ff;
+            color: #c8a237;
             text-decoration: none;
             font-weight: 600;
             transition: color 0.3s;
         }
 
         .info-text a:hover {
-            color: #8b5cf6;
+            color: #4a7ce0;
         }
 
         .info-label {
-            color: #8888a0;
+            color: #7a849e;
             font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -374,8 +374,8 @@
 
         /* Booking section */
         .booking-section {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
-            border: 1px solid rgba(139, 92, 246, 0.2);
+            background: linear-gradient(135deg, rgba(74, 124, 224, 0.1) 0%, rgba(200, 162, 55, 0.1) 100%);
+            border: 1px solid rgba(74, 124, 224, 0.2);
             border-radius: 20px;
             padding: 36px;
         }
@@ -387,7 +387,7 @@
         }
 
         .booking-section p {
-            color: #8888a0;
+            color: #7a849e;
             font-size: 14px;
             margin-bottom: 20px;
         }
@@ -396,8 +396,8 @@
             display: inline-block;
             padding: 12px 28px;
             background: transparent;
-            border: 1px solid #2a2a3a;
-            color: #f0f0f5;
+            border: 1px solid #1a2545;
+            color: #eaeef6;
             text-decoration: none;
             border-radius: 12px;
             font-size: 14px;
@@ -406,14 +406,14 @@
         }
 
         .booking-btn:hover {
-            border-color: #00d4ff;
-            color: #00d4ff;
+            border-color: #c8a237;
+            color: #c8a237;
         }
 
         /* Trust signals */
         .trust-section {
-            background: #16161f;
-            border: 1px solid #2a2a3a;
+            background: #0f1628;
+            border: 1px solid #1a2545;
             border-radius: 20px;
             padding: 36px;
             margin-bottom: 80px;
@@ -439,7 +439,7 @@
         .trust-number {
             font-size: 32px;
             font-weight: 700;
-            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #c8a237 0%, #e0c55a 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -447,14 +447,14 @@
         }
 
         .trust-label {
-            color: #8888a0;
+            color: #7a849e;
             font-size: 14px;
         }
 
         /* Footer */
         footer {
-            background: #0a0a0f;
-            border-top: 1px solid #2a2a3a;
+            background: #060a14;
+            border-top: 1px solid #1a2545;
             padding: 60px clamp(20px, 5vw, 48px) 40px;
             position: relative;
             z-index: 1;
@@ -472,7 +472,7 @@
         .footer-column h4 {
             font-size: 14px;
             font-weight: 600;
-            color: #f0f0f5;
+            color: #eaeef6;
             margin-bottom: 16px;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -483,7 +483,7 @@
         }
 
         .footer-column a {
-            color: #8888a0;
+            color: #7a849e;
             text-decoration: none;
             font-size: 14px;
             transition: color 0.3s;
@@ -492,14 +492,14 @@
         }
 
         .footer-column a:hover {
-            color: #00d4ff;
+            color: #c8a237;
         }
 
         .footer-bottom {
             text-align: center;
-            color: #5a5a70;
+            color: #4d5670;
             font-size: 12px;
-            border-top: 1px solid #2a2a3a;
+            border-top: 1px solid #1a2545;
             padding-top: 24px;
             max-width: 1200px;
             margin: 0 auto;
@@ -559,7 +559,7 @@
             <span class="logo">9EL</span>
             <div class="brand">
                 <div style="font-size: 13px; font-weight: 600;">9 Elms Labs</div>
-                <div style="font-size: 11px; color: #5a5a70;">by Audley & Oxford</div>
+                <div style="font-size: 11px; color: #4d5670;">by Audley & Oxford</div>
             </div>
         </a>
         <ul class="nav-links">
@@ -634,7 +634,7 @@
 
                         <button type="submit" class="btn btn-primary">Send Message</button>
 
-                        <p style="color: #5a5a70; font-size: 12px; margin-top: 16px; text-align: center;">
+                        <p style="color: #4d5670; font-size: 12px; margin-top: 16px; text-align: center;">
                             We'll respond within 24 hours. Your data is secure and never shared.
                         </p>
                     </form>
@@ -663,7 +663,7 @@
                             <div class="info-text">
                                 <div class="info-label">Where we're based</div>
                                 <p>London, United Kingdom</p>
-                                <p style="color: #8888a0; font-size: 13px; margin-bottom: 0;">Serving clients globally with remote partnerships</p>
+                                <p style="color: #7a849e; font-size: 13px; margin-bottom: 0;">Serving clients globally with remote partnerships</p>
                             </div>
                         </div>
                     </div>
@@ -706,7 +706,7 @@
         <!-- FAQ Alternative -->
         <section class="section" style="text-align: center; padding: 40px clamp(20px, 5vw, 48px);">
             <h2 style="font-size: 24px; margin-bottom: 16px;">Not sure which option is right for you?</h2>
-            <p style="color: #8888a0; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+            <p style="color: #7a849e; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
                 Try our free visibility scan to get started, or dive straight into our full audit for comprehensive analysis.
             </p>
             <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
@@ -720,7 +720,7 @@
         <div class="footer-content">
             <div class="footer-column">
                 <h4>9 Elms Labs</h4>
-                <p style="color: #8888a0; font-size: 14px;">AI visibility optimisation by Audley & Oxford Advisory Firm</p>
+                <p style="color: #7a849e; font-size: 14px;">AI visibility optimisation by Audley & Oxford Advisory Firm</p>
             </div>
             <div class="footer-column">
                 <h4>Product</h4>

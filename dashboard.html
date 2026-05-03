@@ -8,7 +8,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #0a0e27; color: #e0e0e0; }
         .loading-screen { position: fixed; inset: 0; background: #0a0e27; display: flex; align-items: center; justify-content: center; z-index: 1000; flex-direction: column; gap: 16px; }
-        .loading-screen .spinner { width: 40px; height: 40px; border: 3px solid rgba(0,212,255,0.2); border-top-color: #00d4ff; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        .loading-screen .spinner { width: 40px; height: 40px; border: 3px solid rgba(200,162,55,0.2); border-top-color: #c8a237; border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .app { display: flex; min-height: 100vh; }
@@ -17,26 +17,26 @@
             padding: 24px 0; display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 10;
         }
         .sidebar-logo { text-align: center; font-size: 24px; font-weight: 900; letter-spacing: 2px; padding-bottom: 8px; }
-        .sidebar-sub { text-align: center; font-size: 11px; color: #00d4ff; margin-bottom: 24px; }
+        .sidebar-sub { text-align: center; font-size: 11px; color: #c8a237; margin-bottom: 24px; }
         .sidebar-plan { text-align: center; margin-bottom: 24px; }
         .sidebar-plan .badge {
-            display: inline-block; background: linear-gradient(135deg,#00d4ff,#9d4edd); color: #0a0e27;
+            display: inline-block; background: linear-gradient(135deg,#c8a237,#4a7ce0); color: #0a0e27;
             padding: 3px 14px; border-radius: 16px; font-size: 11px; font-weight: 700; text-transform: uppercase;
         }
         .nav-item {
             display: flex; align-items: center; gap: 10px; padding: 11px 24px; font-size: 14px;
-            color: #8888a0; cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent;
+            color: #7a849e; cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent;
         }
         .nav-item:hover { background: rgba(255,255,255,0.03); color: #fff; }
-        .nav-item.active { color: #00d4ff; border-left-color: #00d4ff; background: rgba(0,212,255,0.05); }
+        .nav-item.active { color: #c8a237; border-left-color: #c8a237; background: rgba(200,162,55,0.05); }
         .nav-item.locked { opacity: 0.35; cursor: not-allowed; }
         .nav-item .lock-icon { font-size: 10px; margin-left: auto; }
         .sidebar-bottom { margin-top: auto; padding: 20px 24px; border-top: 1px solid rgba(255,255,255,0.06); }
         .sidebar-bottom .user-name { font-size: 13px; font-weight: 600; }
-        .sidebar-bottom .user-email { font-size: 11px; color: #8888a0; margin-bottom: 12px; }
+        .sidebar-bottom .user-email { font-size: 11px; color: #7a849e; margin-bottom: 12px; }
         .logout-btn {
             display: block; width: 100%; padding: 8px; background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #8888a0;
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #7a849e;
             font-size: 12px; cursor: pointer; text-align: center;
         }
         .logout-btn:hover { color: #e74c3c; border-color: #e74c3c; }
@@ -44,50 +44,50 @@
         .main { flex: 1; margin-left: 240px; padding: 32px; }
         .page-header { margin-bottom: 28px; }
         .page-header h1 { font-size: 24px; color: white; }
-        .page-header .date { font-size: 13px; color: #8888a0; margin-top: 4px; }
+        .page-header .date { font-size: 13px; color: #7a849e; margin-top: 4px; }
 
         .score-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
         .score-card {
             background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
             border-radius: 12px; padding: 20px;
         }
-        .score-card .label { font-size: 12px; color: #8888a0; text-transform: uppercase; letter-spacing: 0.5px; }
+        .score-card .label { font-size: 12px; color: #7a849e; text-transform: uppercase; letter-spacing: 0.5px; }
         .score-card .value { font-size: 32px; font-weight: 700; margin: 8px 0 4px; }
         .score-card .trend { font-size: 12px; }
-        .trend.up { color: #2ecc71; } .trend.down { color: #e74c3c; } .trend.flat { color: #8888a0; }
+        .trend.up { color: #2ecc71; } .trend.down { color: #e74c3c; } .trend.flat { color: #7a849e; }
 
         .section { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
         .section h3 { font-size: 16px; color: white; margin-bottom: 16px; }
-        .section .empty { color: #8888a0; font-size: 14px; font-style: italic; }
+        .section .empty { color: #7a849e; font-size: 14px; font-style: italic; }
 
         .chart-canvas { width: 100%; height: 200px; }
 
         .findings-table { width: 100%; border-collapse: collapse; }
-        .findings-table th { text-align: left; font-size: 11px; color: #8888a0; text-transform: uppercase; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .findings-table th { text-align: left; font-size: 11px; color: #7a849e; text-transform: uppercase; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.08); }
         .findings-table td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 13px; }
         .severity-badge { display: inline-block; padding: 2px 10px; border-radius: 10px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
         .severity-badge.critical { background: rgba(231,76,60,0.15); color: #e74c3c; }
         .severity-badge.high { background: rgba(243,156,18,0.15); color: #f39c12; }
-        .severity-badge.medium { background: rgba(0,212,255,0.15); color: #00d4ff; }
+        .severity-badge.medium { background: rgba(200,162,55,0.15); color: #c8a237; }
         .severity-badge.low { background: rgba(46,204,113,0.15); color: #2ecc71; }
 
         .competitor-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
         .competitor-row:last-child { border: none; }
-        .competitor-name { font-size: 14px; } .competitor-score { font-size: 14px; font-weight: 600; color: #00d4ff; }
+        .competitor-name { font-size: 14px; } .competitor-score { font-size: 14px; font-weight: 600; color: #c8a237; }
 
         .content-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 16px; margin-bottom: 12px; }
         .content-item .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .content-item .content-title { font-size: 14px; font-weight: 600; color: white; }
-        .content-item .content-date { font-size: 11px; color: #8888a0; }
-        .content-item .content-type { font-size: 11px; color: #00d4ff; text-transform: uppercase; }
+        .content-item .content-date { font-size: 11px; color: #7a849e; }
+        .content-item .content-type { font-size: 11px; color: #c8a237; text-transform: uppercase; }
         .content-item .copy-btn {
-            background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.3); color: #00d4ff;
+            background: rgba(200,162,55,0.1); border: 1px solid rgba(200,162,55,0.3); color: #c8a237;
             padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; margin-top: 10px;
         }
-        .content-item .copy-btn:hover { background: rgba(0,212,255,0.2); }
+        .content-item .copy-btn:hover { background: rgba(200,162,55,0.2); }
 
-        .snippet-box { background: #0d1130; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px; font-family: monospace; font-size: 13px; color: #00d4ff; word-break: break-all; position: relative; }
-        .snippet-copy { position: absolute; top: 8px; right: 8px; background: #00d4ff; color: #0a0e27; border: none; padding: 4px 12px; border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: 600; }
+        .snippet-box { background: #0d1130; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px; font-family: monospace; font-size: 13px; color: #c8a237; word-break: break-all; position: relative; }
+        .snippet-copy { position: absolute; top: 8px; right: 8px; background: #c8a237; color: #0a0e27; border: none; padding: 4px 12px; border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: 600; }
 
         .tab-content { display: none; } .tab-content.active { display: block; }
 
@@ -97,7 +97,7 @@
 <body>
     <div class="loading-screen" id="loadingScreen">
         <div class="spinner"></div>
-        <div style="color:#8888a0;font-size:14px;">Loading your dashboard...</div>
+        <div style="color:#7a849e;font-size:14px;">Loading your dashboard...</div>
     </div>
 
     <div class="app" id="app" style="display:none;">
@@ -127,7 +127,7 @@
                     <div class="date" id="headerDate"></div>
                 </div>
                 <div class="score-cards">
-                    <div class="score-card"><div class="label">Overall Score</div><div class="value" id="overallScore" style="color:#00d4ff;">—</div><div class="trend flat" id="overallTrend">No data yet</div></div>
+                    <div class="score-card"><div class="label">Overall Score</div><div class="value" id="overallScore" style="color:#c8a237;">—</div><div class="trend flat" id="overallTrend">No data yet</div></div>
                     <div class="score-card"><div class="label">AI Visibility</div><div class="value" id="aiScore">—</div><div class="trend flat">out of 100</div></div>
                     <div class="score-card"><div class="label">SEO Health</div><div class="value" id="seoScore">—</div><div class="trend flat">out of 100</div></div>
                     <div class="score-card"><div class="label">Conversion</div><div class="value" id="convScore">—</div><div class="trend flat">out of 100</div></div>
@@ -159,12 +159,12 @@
                 <div class="page-header"><h1>Conversion Tracking Snippet</h1><div class="date">Add this to your website to enable conversion tracking and A/B testing</div></div>
                 <div class="section">
                     <h3>Installation</h3>
-                    <p style="font-size:14px;color:#8888a0;margin-bottom:16px;">Copy this code and paste it before the closing &lt;/body&gt; tag on every page of your website.</p>
+                    <p style="font-size:14px;color:#7a849e;margin-bottom:16px;">Copy this code and paste it before the closing &lt;/body&gt; tag on every page of your website.</p>
                     <div class="snippet-box" id="snippetCode">Loading...</div>
                 </div>
                 <div class="section">
                     <h3>What it does</h3>
-                    <p style="font-size:14px;color:#8888a0;line-height:1.7;">The snippet runs lightweight A/B tests on your headlines, CTAs, and forms. It also measures scroll depth, time on page, and bounce rate. All data feeds into your dashboard. GDPR-compliant — first-party only, no cross-site tracking.</p>
+                    <p style="font-size:14px;color:#7a849e;line-height:1.7;">The snippet runs lightweight A/B tests on your headlines, CTAs, and forms. It also measures scroll depth, time on page, and bounce rate. All data feeds into your dashboard. GDPR-compliant — first-party only, no cross-site tracking.</p>
                 </div>
             </div>
 
@@ -173,24 +173,24 @@
                 <div class="section">
                     <h3>Business Details</h3>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;">
-                        <div><span style="font-size:12px;color:#8888a0;">Business Name</span><div id="settBiz" style="font-size:15px;margin-top:4px;">—</div></div>
-                        <div><span style="font-size:12px;color:#8888a0;">Website</span><div id="settUrl" style="font-size:15px;margin-top:4px;">—</div></div>
-                        <div><span style="font-size:12px;color:#8888a0;">Industry</span><div id="settIndustry" style="font-size:15px;margin-top:4px;">—</div></div>
-                        <div><span style="font-size:12px;color:#8888a0;">Plan</span><div id="settPlan" style="font-size:15px;margin-top:4px;">—</div></div>
-                        <div><span style="font-size:12px;color:#8888a0;">Email</span><div id="settEmail" style="font-size:15px;margin-top:4px;">—</div></div>
-                        <div><span style="font-size:12px;color:#8888a0;">Member Since</span><div id="settSince" style="font-size:15px;margin-top:4px;">—</div></div>
+                        <div><span style="font-size:12px;color:#7a849e;">Business Name</span><div id="settBiz" style="font-size:15px;margin-top:4px;">—</div></div>
+                        <div><span style="font-size:12px;color:#7a849e;">Website</span><div id="settUrl" style="font-size:15px;margin-top:4px;">—</div></div>
+                        <div><span style="font-size:12px;color:#7a849e;">Industry</span><div id="settIndustry" style="font-size:15px;margin-top:4px;">—</div></div>
+                        <div><span style="font-size:12px;color:#7a849e;">Plan</span><div id="settPlan" style="font-size:15px;margin-top:4px;">—</div></div>
+                        <div><span style="font-size:12px;color:#7a849e;">Email</span><div id="settEmail" style="font-size:15px;margin-top:4px;">—</div></div>
+                        <div><span style="font-size:12px;color:#7a849e;">Member Since</span><div id="settSince" style="font-size:15px;margin-top:4px;">—</div></div>
                     </div>
                 </div>
                 <div class="section" id="subscriptionSection">
                     <h3>Subscription</h3>
-                    <div id="subLoading" style="color:#8888a0;font-size:14px;">Loading subscription details...</div>
+                    <div id="subLoading" style="color:#7a849e;font-size:14px;">Loading subscription details...</div>
                     <div id="subDetails" style="display:none;margin-top:12px;">
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-                            <div><span style="font-size:12px;color:#8888a0;">Status</span><div id="subStatus" style="font-size:15px;margin-top:4px;">—</div></div>
-                            <div><span style="font-size:12px;color:#8888a0;">Next billing date</span><div id="subRenew" style="font-size:15px;margin-top:4px;">—</div></div>
+                            <div><span style="font-size:12px;color:#7a849e;">Status</span><div id="subStatus" style="font-size:15px;margin-top:4px;">—</div></div>
+                            <div><span style="font-size:12px;color:#7a849e;">Next billing date</span><div id="subRenew" style="font-size:15px;margin-top:4px;">—</div></div>
                         </div>
                         <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;" id="subActions">
-                            <button id="billingBtn" style="background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);color:#00d4ff;padding:10px 20px;border-radius:8px;font-size:13px;cursor:pointer;">Manage Billing</button>
+                            <button id="billingBtn" style="background:rgba(200,162,55,0.1);border:1px solid rgba(200,162,55,0.3);color:#c8a237;padding:10px 20px;border-radius:8px;font-size:13px;cursor:pointer;">Manage Billing</button>
                             <button id="cancelBtn" style="background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);color:#e74c3c;padding:10px 20px;border-radius:8px;font-size:13px;cursor:pointer;">Cancel Subscription</button>
                         </div>
                         <div id="cancelNotice" style="display:none;margin-top:16px;padding:14px;background:rgba(243,156,18,0.1);border:1px solid rgba(243,156,18,0.3);border-radius:8px;">
@@ -201,7 +201,7 @@
                 </div>
                 <div class="section">
                     <h3>Need Help?</h3>
-                    <p style="font-size:14px;color:#8888a0;line-height:1.7;">Email <a href="mailto:hello@9elmslabs.co.uk" style="color:#00d4ff;">hello@9elmslabs.co.uk</a> or <a href="https://calendly.com/9elmslabs/intro" target="_blank" style="color:#00d4ff;">book a call</a></p>
+                    <p style="font-size:14px;color:#7a849e;line-height:1.7;">Email <a href="mailto:hello@9elmslabs.co.uk" style="color:#c8a237;">hello@9elmslabs.co.uk</a> or <a href="https://calendly.com/9elmslabs/intro" target="_blank" style="color:#c8a237;">book a call</a></p>
                 </div>
             </div>
         </main>
@@ -257,9 +257,9 @@
                 const g = data.growthPotential;
                 document.getElementById('growthSection').innerHTML =
                     '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">' +
-                    '<div><div style="font-size:12px;color:#8888a0;">Visibility Uplift</div><div style="font-size:24px;font-weight:700;color:#00d4ff;margin-top:4px;">+' + (g.visibilityUpliftPct||0) + '%</div></div>' +
-                    '<div><div style="font-size:12px;color:#8888a0;">Traffic Increase</div><div style="font-size:24px;font-weight:700;color:#f39c12;margin-top:4px;">+' + (g.trafficIncreasePct||0) + '%</div></div>' +
-                    '<div><div style="font-size:12px;color:#8888a0;">Additional Inquiries/mo</div><div style="font-size:24px;font-weight:700;color:#2ecc71;margin-top:4px;">+' + (g.additionalInquiries||0) + '</div></div>' +
+                    '<div><div style="font-size:12px;color:#7a849e;">Visibility Uplift</div><div style="font-size:24px;font-weight:700;color:#c8a237;margin-top:4px;">+' + (g.visibilityUpliftPct||0) + '%</div></div>' +
+                    '<div><div style="font-size:12px;color:#7a849e;">Traffic Increase</div><div style="font-size:24px;font-weight:700;color:#f39c12;margin-top:4px;">+' + (g.trafficIncreasePct||0) + '%</div></div>' +
+                    '<div><div style="font-size:12px;color:#7a849e;">Additional Inquiries/mo</div><div style="font-size:24px;font-weight:700;color:#2ecc71;margin-top:4px;">+' + (g.additionalInquiries||0) + '</div></div>' +
                     '</div>';
             }
 
@@ -270,7 +270,7 @@
                 document.getElementById('findingsBody').innerHTML = data.findings.map(function(f) {
                     return '<tr><td><span class="severity-badge ' + (f.severity||'medium') + '">' + (f.severity||'medium').toUpperCase() + '</span></td>' +
                         '<td style="color:white;">' + (f.title||f.description||'') + '</td>' +
-                        '<td style="color:#8888a0;">' + (f.impact||'') + '</td></tr>';
+                        '<td style="color:#7a849e;">' + (f.impact||'') + '</td></tr>';
                 }).join('');
             } else { document.getElementById('findingsEmpty').style.display = 'block'; }
 
@@ -332,15 +332,15 @@
             for (var y = 0; y <= 100; y += 25) {
                 var py = pad.top + (1 - y / 100) * (h - pad.top - pad.bottom);
                 ctx.beginPath(); ctx.moveTo(pad.left, py); ctx.lineTo(w - pad.right, py); ctx.stroke();
-                ctx.fillStyle = '#8888a0'; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
+                ctx.fillStyle = '#7a849e'; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
                 ctx.fillText(y, pad.left - 6, py + 3);
             }
-            drawLine(ctx, points.map(function(p){return p.aiScore||0;}), '#00d4ff', pad, w, h, xStep);
-            drawLine(ctx, points.map(function(p){return p.seoScore||0;}), '#9d4edd', pad, w, h, xStep);
+            drawLine(ctx, points.map(function(p){return p.aiScore||0;}), '#c8a237', pad, w, h, xStep);
+            drawLine(ctx, points.map(function(p){return p.seoScore||0;}), '#4a7ce0', pad, w, h, xStep);
             drawLine(ctx, points.map(function(p){return p.convScore||0;}), '#2ecc71', pad, w, h, xStep);
             ctx.font = '11px sans-serif';
-            ctx.fillStyle = '#00d4ff'; ctx.fillText('\u2014 AI Visibility', pad.left, h - 8);
-            ctx.fillStyle = '#9d4edd'; ctx.fillText('\u2014 SEO Health', pad.left + 100, h - 8);
+            ctx.fillStyle = '#c8a237'; ctx.fillText('\u2014 AI Visibility', pad.left, h - 8);
+            ctx.fillStyle = '#4a7ce0'; ctx.fillText('\u2014 SEO Health', pad.left + 100, h - 8);
             ctx.fillStyle = '#2ecc71'; ctx.fillText('\u2014 Conversion', pad.left + 190, h - 8);
         }
 
@@ -472,29 +472,29 @@
                 const header = overview.querySelector('.page-header');
                 const onboarding = document.createElement('div');
                 onboarding.className = 'section';
-                onboarding.style.cssText = 'background:linear-gradient(135deg,rgba(0,212,255,0.06),rgba(157,78,237,0.06));border-color:rgba(0,212,255,0.2);';
+                onboarding.style.cssText = 'background:linear-gradient(135deg,rgba(200,162,55,0.06),rgba(157,78,237,0.06));border-color:rgba(200,162,55,0.2);';
                 onboarding.innerHTML = `
-                    <h3 style="color:#00d4ff;">Welcome! Your first scan is running</h3>
+                    <h3 style="color:#c8a237;">Welcome! Your first scan is running</h3>
                     <p style="color:#c0c0d0;font-size:14px;margin:12px 0;line-height:1.7;">We're analysing your business across AI search platforms right now. This usually takes 2-3 minutes. Here's what's happening:</p>
                     <div style="display:grid;gap:12px;margin-top:16px;">
                         <div style="display:flex;align-items:center;gap:12px;">
                             <div style="width:32px;height:32px;border-radius:50%;background:rgba(46,204,113,0.15);display:flex;align-items:center;justify-content:center;font-size:14px;">✓</div>
-                            <div><div style="font-size:14px;color:#2ecc71;">Account created</div><div style="font-size:12px;color:#8888a0;">Your subscription is active</div></div>
+                            <div><div style="font-size:14px;color:#2ecc71;">Account created</div><div style="font-size:12px;color:#7a849e;">Your subscription is active</div></div>
                         </div>
                         <div style="display:flex;align-items:center;gap:12px;">
-                            <div style="width:32px;height:32px;border-radius:50%;background:rgba(0,212,255,0.15);display:flex;align-items:center;justify-content:center;"><div class="spinner" style="width:16px;height:16px;border-width:2px;"></div></div>
-                            <div><div style="font-size:14px;color:#00d4ff;">Running AI visibility scan</div><div style="font-size:12px;color:#8888a0;">Querying ChatGPT, Perplexity, Gemini, Copilot for your business</div></div>
+                            <div style="width:32px;height:32px;border-radius:50%;background:rgba(200,162,55,0.15);display:flex;align-items:center;justify-content:center;"><div class="spinner" style="width:16px;height:16px;border-width:2px;"></div></div>
+                            <div><div style="font-size:14px;color:#c8a237;">Running AI visibility scan</div><div style="font-size:12px;color:#7a849e;">Querying ChatGPT, Perplexity, Gemini, Copilot for your business</div></div>
                         </div>
                         <div style="display:flex;align-items:center;gap:12px;">
-                            <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:14px;color:#8888a0;">3</div>
-                            <div><div style="font-size:14px;color:#8888a0;">Analysing your website</div><div style="font-size:12px;color:#666;">SEO, conversion signals, trust elements</div></div>
+                            <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:14px;color:#7a849e;">3</div>
+                            <div><div style="font-size:14px;color:#7a849e;">Analysing your website</div><div style="font-size:12px;color:#666;">SEO, conversion signals, trust elements</div></div>
                         </div>
                         <div style="display:flex;align-items:center;gap:12px;">
-                            <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:14px;color:#8888a0;">4</div>
-                            <div><div style="font-size:14px;color:#8888a0;">Building your dashboard</div><div style="font-size:12px;color:#666;">Scores, findings, competitor data</div></div>
+                            <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:14px;color:#7a849e;">4</div>
+                            <div><div style="font-size:14px;color:#7a849e;">Building your dashboard</div><div style="font-size:12px;color:#666;">Scores, findings, competitor data</div></div>
                         </div>
                     </div>
-                    <p style="color:#8888a0;font-size:13px;margin-top:20px;">Refresh this page in a couple of minutes to see your results, or wait for the email notification.</p>
+                    <p style="color:#7a849e;font-size:13px;margin-top:20px;">Refresh this page in a couple of minutes to see your results, or wait for the email notification.</p>
                 `;
                 header.after(onboarding);
             }

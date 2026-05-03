@@ -18,8 +18,8 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0a0a0f;
-            color: #f0f0f5;
+            background-color: #060a14;
+            color: #eaeef6;
             line-height: 1.6;
             overflow-x: hidden;
         }
@@ -32,9 +32,9 @@
             width: 100%;
             height: 100%;
             background-image:
-                linear-gradient(rgba(42, 42, 58, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(42, 42, 58, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
+                linear-gradient(rgba(26, 37, 69, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(26, 37, 69, 0.1) 1px, transparent 1px);
+            background-size: 80px 80px;
             pointer-events: none;
             z-index: 0;
         }
@@ -45,8 +45,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.05) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+            background: radial-gradient(circle at 20% 50%, rgba(200, 162, 55, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(74, 124, 224, 0.05) 0%, transparent 50%);
             pointer-events: none;
             z-index: 0;
         }
@@ -57,11 +57,11 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: #0a0a0f;
+            background: #060a14;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            background: #1a2545;
             border-radius: 10px;
         }
 
@@ -71,9 +71,9 @@
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(10, 10, 15, 0.8);
+            background: rgba(6, 10, 20, 0.8);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid #2a2a3a;
+            border-bottom: 1px solid #1a2545;
             z-index: 1000;
             padding: 0 clamp(20px, 5vw, 48px);
             height: 70px;
@@ -87,13 +87,13 @@
             align-items: center;
             gap: 12px;
             text-decoration: none;
-            color: #f0f0f5;
+            color: #eaeef6;
         }
 
         nav .logo {
             font-size: 20px;
             font-weight: 700;
-            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #c8a237 0%, #e0c55a 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -101,7 +101,7 @@
 
         nav .brand {
             font-size: 14px;
-            color: #8888a0;
+            color: #7a849e;
         }
 
         nav .nav-links {
@@ -111,7 +111,7 @@
         }
 
         nav a {
-            color: #f0f0f5;
+            color: #eaeef6;
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
@@ -126,12 +126,12 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #c8a237 0%, #e0c55a 100%);
             transition: width 0.3s;
         }
 
         nav a:hover {
-            color: #00d4ff;
+            color: #c8a237;
         }
 
         nav a:hover::after {
@@ -148,7 +148,7 @@
         .hamburger span {
             width: 25px;
             height: 2px;
-            background: #f0f0f5;
+            background: #eaeef6;
             border-radius: 2px;
             transition: 0.3s;
         }
@@ -178,7 +178,7 @@
             font-weight: 700;
             margin-bottom: 20px;
             line-height: 1.2;
-            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #c8a237 0%, #e0c55a 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -186,14 +186,14 @@
 
         .hero p {
             font-size: 18px;
-            color: #8888a0;
+            color: #7a849e;
             max-width: 600px;
             margin: 0 auto;
         }
 
         /* Free audit card */
         .free-audit-card {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(0, 212, 255, 0.08) 100%);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(200, 162, 55, 0.08) 100%);
             border: 1px solid rgba(16, 185, 129, 0.3);
             border-radius: 20px;
             padding: 48px 36px;
@@ -219,7 +219,7 @@
         }
 
         .free-audit-card .plan-price .price-period {
-            color: #8888a0;
+            color: #7a849e;
             font-size: 14px;
         }
 
@@ -235,7 +235,7 @@
             gap: 12px;
             margin-bottom: 16px;
             font-size: 14px;
-            color: #f0f0f5;
+            color: #eaeef6;
         }
 
         .free-audit-card .plan-feature::before {
@@ -248,7 +248,7 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            color: #0a0a0f;
+            color: #060a14;
             font-size: 12px;
             font-weight: 700;
             margin-top: 2px;
@@ -284,8 +284,8 @@
         }
 
         .pricing-plan {
-            background: #16161f;
-            border: 1px solid #2a2a3a;
+            background: #0f1628;
+            border: 1px solid #1a2545;
             border-radius: 20px;
             padding: 48px 36px;
             position: relative;
@@ -295,13 +295,13 @@
         }
 
         .pricing-plan:hover {
-            border-color: #00d4ff;
-            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.1);
+            border-color: #c8a237;
+            box-shadow: 0 20px 60px rgba(200, 162, 55, 0.1);
         }
 
         .pricing-plan.featured {
-            border-color: #00d4ff;
-            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.15);
+            border-color: #c8a237;
+            box-shadow: 0 20px 60px rgba(200, 162, 55, 0.15);
         }
 
         .pricing-plan.featured::before {
@@ -310,8 +310,8 @@
             top: -12px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
-            color: #0a0a0f;
+            background: linear-gradient(135deg, #c8a237 0%, #e0c55a 100%);
+            color: #060a14;
             padding: 6px 16px;
             border-radius: 20px;
             font-size: 11px;
@@ -326,7 +326,7 @@
         }
 
         .plan-description {
-            color: #8888a0;
+            color: #7a849e;
             font-size: 14px;
             margin-bottom: 24px;
             min-height: 40px;
@@ -339,14 +339,14 @@
         .price-amount {
             font-size: 42px;
             font-weight: 700;
-            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #c8a237 0%, #e0c55a 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
         .price-period {
-            color: #8888a0;
+            color: #7a849e;
             font-size: 14px;
         }
 
@@ -361,7 +361,7 @@
             gap: 12px;
             margin-bottom: 16px;
             font-size: 14px;
-            color: #f0f0f5;
+            color: #eaeef6;
         }
 
         .plan-feature::before {
@@ -374,7 +374,7 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            color: #0a0a0f;
+            color: #060a14;
             font-size: 12px;
             font-weight: 700;
             margin-top: 2px;
@@ -396,24 +396,24 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
-            color: #0a0a0f;
+            background: linear-gradient(135deg, #c8a237 0%, #e0c55a 100%);
+            color: #060a14;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(200, 162, 55, 0.3);
         }
 
         .btn-secondary {
             background: transparent;
-            border: 1px solid #2a2a3a;
-            color: #f0f0f5;
+            border: 1px solid #1a2545;
+            color: #eaeef6;
         }
 
         .btn-secondary:hover {
-            border-color: #00d4ff;
-            color: #00d4ff;
+            border-color: #c8a237;
+            color: #c8a237;
         }
 
         /* Comparison table */
@@ -433,15 +433,15 @@
         }
 
         .section-header p {
-            color: #8888a0;
+            color: #7a849e;
             font-size: 16px;
         }
 
         .comparison-table {
             width: 100%;
             border-collapse: collapse;
-            background: #16161f;
-            border: 1px solid #2a2a3a;
+            background: #0f1628;
+            border: 1px solid #1a2545;
             border-radius: 16px;
             overflow: hidden;
         }
@@ -450,20 +450,20 @@
         .comparison-table td {
             padding: 16px;
             text-align: left;
-            border-bottom: 1px solid #2a2a3a;
+            border-bottom: 1px solid #1a2545;
             font-size: 14px;
         }
 
         .comparison-table th {
-            background: #0a0a0f;
+            background: #060a14;
             font-weight: 600;
-            color: #8888a0;
+            color: #7a849e;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .comparison-table td {
-            color: #f0f0f5;
+            color: #eaeef6;
         }
 
         .comparison-table tr:last-child td {
@@ -472,7 +472,7 @@
 
         .feature-name {
             font-weight: 500;
-            color: #f0f0f5;
+            color: #eaeef6;
             min-width: 200px;
         }
 
@@ -481,7 +481,7 @@
         }
 
         .feature-unavailable {
-            color: #8888a0;
+            color: #7a849e;
         }
 
         /* FAQ */
@@ -490,8 +490,8 @@
         }
 
         .faq-item {
-            background: #16161f;
-            border: 1px solid #2a2a3a;
+            background: #0f1628;
+            border: 1px solid #1a2545;
             border-radius: 16px;
             padding: 24px;
             margin-bottom: 16px;
@@ -500,7 +500,7 @@
         }
 
         .faq-item:hover {
-            border-color: #00d4ff;
+            border-color: #c8a237;
         }
 
         .faq-question {
@@ -508,7 +508,7 @@
             justify-content: space-between;
             align-items: center;
             font-weight: 600;
-            color: #f0f0f5;
+            color: #eaeef6;
         }
 
         .faq-toggle {
@@ -524,7 +524,7 @@
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s;
-            color: #8888a0;
+            color: #7a849e;
             font-size: 14px;
             margin-top: 0;
         }
@@ -540,7 +540,7 @@
 
         /* Guarantee box */
         .guarantee-box {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(200, 162, 55, 0.1) 100%);
             border: 1px solid rgba(16, 185, 129, 0.3);
             border-radius: 16px;
             padding: 24px;
@@ -555,14 +555,14 @@
         }
 
         .guarantee-box p {
-            color: #8888a0;
+            color: #7a849e;
             font-size: 14px;
         }
 
         /* Final CTA */
         .cta-section {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-            border: 1px solid rgba(0, 212, 255, 0.2);
+            background: linear-gradient(135deg, rgba(200, 162, 55, 0.1) 0%, rgba(74, 124, 224, 0.1) 100%);
+            border: 1px solid rgba(200, 162, 55, 0.2);
             border-radius: 20px;
             padding: 60px 40px;
             text-align: center;
@@ -575,7 +575,7 @@
         }
 
         .cta-section p {
-            color: #8888a0;
+            color: #7a849e;
             font-size: 16px;
             margin-bottom: 32px;
             max-width: 600px;
@@ -585,8 +585,8 @@
 
         /* Footer */
         footer {
-            background: #0a0a0f;
-            border-top: 1px solid #2a2a3a;
+            background: #060a14;
+            border-top: 1px solid #1a2545;
             padding: 60px clamp(20px, 5vw, 48px) 40px;
             position: relative;
             z-index: 1;
@@ -605,7 +605,7 @@
         .footer-column h4 {
             font-size: 14px;
             font-weight: 600;
-            color: #f0f0f5;
+            color: #eaeef6;
             margin-bottom: 16px;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -616,7 +616,7 @@
         }
 
         .footer-column a {
-            color: #8888a0;
+            color: #7a849e;
             text-decoration: none;
             font-size: 14px;
             transition: color 0.3s;
@@ -625,14 +625,14 @@
         }
 
         .footer-column a:hover {
-            color: #00d4ff;
+            color: #c8a237;
         }
 
         .footer-bottom {
             text-align: center;
-            color: #5a5a70;
+            color: #4d5670;
             font-size: 12px;
-            border-top: 1px solid #2a2a3a;
+            border-top: 1px solid #1a2545;
             padding-top: 24px;
             max-width: 1200px;
             margin: 0 auto;
@@ -725,7 +725,7 @@
             <span class="logo">9EL</span>
             <div class="brand">
                 <div style="font-size: 13px; font-weight: 600;">9 Elms Labs</div>
-                <div style="font-size: 11px; color: #5a5a70;">by Audley &amp; Oxford</div>
+                <div style="font-size: 11px; color: #4d5670;">by Audley &amp; Oxford</div>
             </div>
         </a>
         <ul class="nav-links">
@@ -747,7 +747,7 @@
             <div class="hero">
                 <h1>Simple, Transparent Pricing</h1>
                 <p>Choose the plan that fits your business. Scale up anytime as your needs grow.</p>
-                <p style="font-size: 14px; color: #00d4ff; margin-top: 12px; font-weight: 600;">We only report real numbers. Every metric and score is calculated using published, verifiable industry benchmarks &mdash; never inflated.</p>
+                <p style="font-size: 14px; color: #c8a237; margin-top: 12px; font-weight: 600;">We only report real numbers. Every metric and score is calculated using published, verifiable industry benchmarks &mdash; never inflated.</p>
             </div>
         </section>
 
@@ -1055,7 +1055,7 @@
         <div class="footer-content">
             <div class="footer-column">
                 <h4>9 Elms Labs</h4>
-                <p style="color: #8888a0; font-size: 14px;">AI visibility optimisation by Audley &amp; Oxford Advisory Firm</p>
+                <p style="color: #7a849e; font-size: 14px;">AI visibility optimisation by Audley &amp; Oxford Advisory Firm</p>
             </div>
             <div class="footer-column">
                 <h4>Product</h4>
