@@ -1,6 +1,16 @@
 // AI Visibility Scanning Engine - 9 Elms Labs
 // Comprehensive analysis of AI platform visibility and website optimization
 
+import Redis from 'ioredis';
+
+const redis = new Redis(process.env.REDIS_URL, {
+  tls: process.env.REDIS_URL?.startsWith('rediss://') ? {} : undefined,
+  maxRetriesPerRequest: 3,
+  lazyConnect: true,
+});
+
+const SCAN_COOLDOWN_DAYS = 7;
+
 const INDUSTRY_SUBCATEGORIES = {
   'digital marketing': ['social media marketing', 'SEO', 'PPC advertising', 'content marketing'],
   'web development': ['e-commerce', 'SaaS', 'mobile apps', 'custom web applications'],
@@ -687,6 +697,24 @@ export default async function handler(req, res) {
     });
   }
 
+  // Rate limit: 1 free scan per email per 7 days
+  const rateLimitKey = `scan:ratelimit:${email.toLowerCase().trim()}`;
+  try {
+    const lastScan = await redis.get(rateLimitKey);
+    if (lastScan) {
+      const daysSince = (Date.now() - parseInt(lastScan)) / (1000 * 60 * 60 * 24);
+      if (daysSince < SCAN_COOLDOWN_DAYS) {
+        const daysLeft = Math.ceil(SCAN_COOLDOWN_DAYS - daysSince);
+        return res.status(429).json({
+          error: `You've already run a free scan this week. Your next scan is available in ${daysLeft} day${daysLeft === 1 ? '' : 's'}. Subscribe to a plan for continuous monitoring.`,
+          nextScanAvailable: new Date(parseInt(lastScan) + SCAN_COOLDOWN_DAYS * 24 * 60 * 60 * 1000).toISOString(),
+        });
+      }
+    }
+  } catch (rlErr) {
+    console.error('Rate limit check failed (proceeding anyway):', rlErr.message);
+  }
+
   try {
     // Normalize URL — add https:// if missing
     let normalizedUrl = rawUrl.trim();
@@ -847,6 +875,13 @@ export default async function handler(req, res) {
 
     // Estimate growth potential (visibility %, traffic %, inquiries)
     const growthPotential = estimateGrowthPotential(scores, industry, companySize, annualTurnover, competitorsArray);
+
+    // Stamp rate limit after successful scan
+    try {
+      await redis.set(rateLimitKey, Date.now().toString(), 'EX', SCAN_COOLDOWN_DAYS * 24 * 60 * 60);
+    } catch (rlErr) {
+      console.error('Rate limit stamp failed:', rlErr.message);
+    }
 
     return res.status(200).json({
       success: true,
