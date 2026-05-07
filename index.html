@@ -567,6 +567,106 @@ section { position: relative; z-index: 1; }
 .faq-item.open .faq-answer { max-height: 300px; padding-bottom: 24px; }
 .faq-answer p { font-size: 15px; color: var(--text-secondary); line-height: 1.7; }
 
+/* ========== PLAN LIFECYCLE ========== */
+.lifecycle-section { padding: 60px 0; }
+.lifecycle-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.lifecycle-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 20px; padding: 36px 28px; position: relative; overflow: hidden;
+  transition: all 0.3s;
+}
+.lifecycle-card:hover { border-color: var(--border-light); transform: translateY(-3px); box-shadow: 0 12px 48px rgba(0,0,0,0.3); }
+.lifecycle-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.lifecycle-card.lc-starter::before { background: var(--accent-green); }
+.lifecycle-card.lc-growth::before { background: var(--gradient-main); }
+.lifecycle-card.lc-scale::before { background: linear-gradient(135deg, var(--accent-blue), var(--accent-gold)); }
+.lifecycle-card .lc-tier {
+  font-family: var(--font-mono); font-size: 12px; text-transform: uppercase;
+  letter-spacing: 3px; margin-bottom: 8px;
+}
+.lifecycle-card.lc-starter .lc-tier { color: var(--accent-green); }
+.lifecycle-card.lc-growth .lc-tier { color: var(--accent-gold); }
+.lifecycle-card.lc-scale .lc-tier { color: var(--accent-blue); }
+.lifecycle-card .lc-price {
+  font-size: 36px; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 16px;
+}
+.lifecycle-card .lc-price span { font-size: 15px; font-weight: 400; color: var(--text-muted); }
+.lifecycle-card .lc-tagline {
+  font-size: 16px; font-weight: 600; margin-bottom: 20px; line-height: 1.4;
+}
+.lifecycle-card .lc-body { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 24px; }
+.lifecycle-card .lc-schedule {
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px; margin-bottom: 20px;
+}
+.lifecycle-card .lc-schedule-title {
+  font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--text-muted); margin-bottom: 10px;
+}
+.lifecycle-card .lc-schedule-item {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 13px; color: var(--text-secondary); padding: 4px 0;
+}
+.lifecycle-card .lc-schedule-item .lc-freq {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+  padding: 2px 8px; border-radius: 4px; flex-shrink: 0; min-width: 64px; text-align: center;
+}
+.lc-starter .lc-freq { background: rgba(16,185,129,0.12); color: var(--accent-green); }
+.lc-growth .lc-freq { background: var(--accent-gold-dim); color: var(--accent-gold); }
+.lc-scale .lc-freq { background: var(--accent-blue-dim); color: var(--accent-blue); }
+.lifecycle-card .lc-cta {
+  display: block; width: 100%; text-align: center;
+  padding: 14px; border-radius: 10px; font-weight: 600; font-size: 14px;
+  text-decoration: none; transition: all 0.2s;
+}
+.lc-starter .lc-cta { background: transparent; border: 1px solid var(--accent-green); color: var(--accent-green); }
+.lc-starter .lc-cta:hover { background: rgba(16,185,129,0.1); }
+.lc-growth .lc-cta { background: var(--gradient-main); color: var(--bg-primary); }
+.lc-growth .lc-cta:hover { opacity: 0.9; transform: translateY(-1px); }
+.lc-scale .lc-cta { background: transparent; border: 1px solid var(--accent-blue); color: var(--accent-blue); }
+.lc-scale .lc-cta:hover { background: rgba(74,124,224,0.1); }
+
+/* ========== COMPARISON TABLE ========== */
+.compare-section { padding: 60px 0; background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.compare-table-wrap { overflow-x: auto; margin-top: 8px; }
+.compare-table {
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  font-size: 14px; min-width: 700px;
+}
+.compare-table thead th {
+  padding: 16px 20px; text-align: left;
+  font-family: var(--font-mono); font-size: 12px; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--text-muted);
+  border-bottom: 2px solid var(--border); background: var(--bg-secondary);
+  position: sticky; top: 0;
+}
+.compare-table thead th:not(:first-child) { text-align: center; }
+.compare-table thead th.th-growth {
+  color: var(--accent-gold); border-bottom-color: var(--accent-gold);
+}
+.compare-table tbody td {
+  padding: 14px 20px; border-bottom: 1px solid var(--border);
+  color: var(--text-secondary); vertical-align: middle;
+}
+.compare-table tbody td:not(:first-child) { text-align: center; }
+.compare-table tbody td:first-child { font-weight: 500; color: var(--text-primary); }
+.compare-table tbody tr:hover td { background: rgba(255,255,255,0.02); }
+.compare-table .cat-row td {
+  font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--accent-gold); padding-top: 24px;
+  border-bottom: 1px solid var(--border-light); font-weight: 600;
+}
+.compare-check { color: var(--accent-green); font-size: 16px; }
+.compare-cross { color: var(--text-muted); font-size: 14px; opacity: 0.4; }
+.compare-val { font-family: var(--font-mono); font-weight: 600; font-size: 13px; }
+.td-growth { background: rgba(200,162,55,0.03); }
+
+@media (max-width: 768px) {
+  .lifecycle-grid { grid-template-columns: 1fr; }
+}
+
 /* ========== FINAL CTA ========== */
 .final-cta { padding: 30px 0; text-align: center; }
 .final-cta h2 {
@@ -850,7 +950,7 @@ section { position: relative; z-index: 1; }
           <ul class="pricing-features">
             <li><span class="check">&check;</span> Monthly AI visibility scan across all platforms</li>
             <li><span class="check">&check;</span> 2 content recommendations/month</li>
-            <li><span class="check">&check;</span> Conversion A/B testing snippet</li>
+            <li><span class="check">&check;</span> Website conversion health scoring</li>
             <li><span class="check">&check;</span> Monthly performance report (email)</li>
             <li><span class="check">&check;</span> Dashboard with score history</li>
           </ul>
@@ -889,6 +989,198 @@ section { position: relative; z-index: 1; }
   </div>
 </section>
 
+<!-- ==================== PLAN LIFECYCLE ==================== -->
+<section class="lifecycle-section" id="how-it-works">
+  <div class="container">
+    <div class="section-label" style="text-align:center;">What You Get</div>
+    <h2 class="section-title" style="text-align:center;">Your AI Visibility Programme, Fully Automated</h2>
+    <p class="section-subtitle" style="text-align:center; margin-left:auto; margin-right:auto; max-width:680px;">Every plan runs on autopilot. You subscribe, we scan your business across every major AI platform, monitor your visibility, generate content, and send you reports &mdash; all without lifting a finger.</p>
+
+    <div class="lifecycle-grid">
+      <!-- STARTER -->
+      <div class="lifecycle-card lc-starter">
+        <div class="lc-tier">Starter</div>
+        <div class="lc-price">&pound;199<span>/month</span></div>
+        <div class="lc-tagline">Monthly pulse check on your AI presence</div>
+        <div class="lc-body">Perfect for small businesses that want to track whether AI platforms are recommending them. Once a month, we scan your visibility across ChatGPT, Perplexity, Gemini, and Copilot, crawl your website for SEO and conversion health, and email you a performance report with 2 content recommendations you can act on.</div>
+        <div class="lc-schedule">
+          <div class="lc-schedule-title">What happens automatically</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Monthly</span> Full AI visibility scan across all platforms</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Monthly</span> Website SEO &amp; conversion health check</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Monthly</span> Performance report emailed to you</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Monthly</span> 2 content topic recommendations</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Always</span> Dashboard with score history &amp; trends</div>
+        </div>
+        <a href="checkout.html?plan=starter" class="lc-cta">Start Starter Plan &rarr;</a>
+      </div>
+
+      <!-- GROWTH -->
+      <div class="lifecycle-card lc-growth">
+        <div class="lc-tier">Growth &mdash; Most Popular</div>
+        <div class="lc-price">&pound;499<span>/month</span></div>
+        <div class="lc-tagline">Weekly monitoring + done-for-you content</div>
+        <div class="lc-body">The engine room. Every Monday at 6 AM, we run a full scan of your AI visibility, crawl your website, compare you against competitors, and detect any score changes. You get a weekly email report. On the 1st of each month, we generate 4 SEO-optimised articles (600&ndash;800 words each) with schema markup &mdash; ready to paste onto your website. If your scores shift by 8+ points, we email you an alert immediately.</div>
+        <div class="lc-schedule">
+          <div class="lc-schedule-title">What happens automatically</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Weekly</span> AI visibility scan across all platforms</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Weekly</span> Website SEO &amp; conversion audit</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Weekly</span> Competitor tracking &amp; comparison</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Weekly</span> Performance report emailed to you</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Monthly</span> 4 AI-written articles with schema markup</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Instant</span> Alert emails on significant score changes</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Always</span> Dashboard with full history &amp; trends</div>
+        </div>
+        <a href="checkout.html?plan=growth" class="lc-cta">Start Growth Plan &rarr;</a>
+      </div>
+
+      <!-- SCALE -->
+      <div class="lifecycle-card lc-scale">
+        <div class="lc-tier">Scale</div>
+        <div class="lc-price">&pound;999<span>/month</span></div>
+        <div class="lc-tagline">Daily intelligence + maximum content output</div>
+        <div class="lc-body">For businesses that can't afford blind spots. Every single day, we scan your AI presence, track competitors, and monitor your website. You get 8 AI-written articles per month and the tightest alert threshold &mdash; we notify you when scores shift by just 5 points. Every quarter, we run a complete re-audit of your business with a comprehensive PDF report. Daily intelligence, maximum content, zero gaps.</div>
+        <div class="lc-schedule">
+          <div class="lc-schedule-title">What happens automatically</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Daily</span> AI visibility scan across all platforms</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Daily</span> Website SEO &amp; conversion audit</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Daily</span> Competitor intelligence &amp; tracking</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Weekly</span> Performance report emailed to you</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Monthly</span> 8 AI-written articles with schema markup</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Quarterly</span> Full re-audit + comprehensive PDF report</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Instant</span> Sensitive alert emails (5pt threshold)</div>
+          <div class="lc-schedule-item"><span class="lc-freq">Always</span> Dashboard with daily granularity</div>
+        </div>
+        <a href="checkout.html?plan=scale" class="lc-cta">Start Scale Plan &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== COMPARISON TABLE ==================== -->
+<section class="compare-section" id="compare">
+  <div class="container">
+    <div class="section-label" style="text-align:center;">Plan Comparison</div>
+    <h2 class="section-title" style="text-align:center;">Everything Side by Side</h2>
+    <p class="section-subtitle" style="text-align:center; margin-left:auto; margin-right:auto; max-width:600px;">Every feature is fully automated. No manual work, no account managers to chase &mdash; the system runs 24/7.</p>
+
+    <div class="compare-table-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th style="width:40%;">Feature</th>
+            <th>Starter &pound;199</th>
+            <th class="th-growth">Growth &pound;499</th>
+            <th>Scale &pound;999</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Monitoring -->
+          <tr class="cat-row"><td colspan="4">Monitoring</td></tr>
+          <tr>
+            <td>AI visibility scan frequency</td>
+            <td><span class="compare-val">Monthly</span></td>
+            <td class="td-growth"><span class="compare-val">Weekly</span></td>
+            <td><span class="compare-val">Daily</span></td>
+          </tr>
+          <tr>
+            <td>Platforms scanned</td>
+            <td><span class="compare-val">All 4</span></td>
+            <td class="td-growth"><span class="compare-val">All 4</span></td>
+            <td><span class="compare-val">All 4</span></td>
+          </tr>
+          <tr>
+            <td>Website SEO &amp; conversion audit</td>
+            <td><span class="compare-val">Monthly</span></td>
+            <td class="td-growth"><span class="compare-val">Weekly</span></td>
+            <td><span class="compare-val">Daily</span></td>
+          </tr>
+          <tr>
+            <td>Competitor tracking</td>
+            <td><span class="compare-val">Monthly</span></td>
+            <td class="td-growth"><span class="compare-val">Weekly</span></td>
+            <td><span class="compare-val">Daily</span></td>
+          </tr>
+          <tr>
+            <td>Alert threshold</td>
+            <td><span class="compare-val">10pt</span></td>
+            <td class="td-growth"><span class="compare-val">8pt</span></td>
+            <td><span class="compare-val">5pt</span></td>
+          </tr>
+
+          <!-- Reporting -->
+          <tr class="cat-row"><td colspan="4">Reporting</td></tr>
+          <tr>
+            <td>Email performance reports</td>
+            <td><span class="compare-val">Monthly</span></td>
+            <td class="td-growth"><span class="compare-val">Weekly</span></td>
+            <td><span class="compare-val">Weekly</span></td>
+          </tr>
+          <tr>
+            <td>Alert emails on score changes</td>
+            <td><span class="compare-check">&check;</span></td>
+            <td class="td-growth"><span class="compare-check">&check;</span></td>
+            <td><span class="compare-check">&check;</span></td>
+          </tr>
+          <tr>
+            <td>Quarterly full PDF re-audit</td>
+            <td><span class="compare-cross">&mdash;</span></td>
+            <td class="td-growth"><span class="compare-cross">&mdash;</span></td>
+            <td><span class="compare-check">&check;</span></td>
+          </tr>
+
+          <!-- Content -->
+          <tr class="cat-row"><td colspan="4">Content</td></tr>
+          <tr>
+            <td>Monthly content delivery</td>
+            <td><span class="compare-val">2 briefs</span></td>
+            <td class="td-growth"><span class="compare-val">4 articles</span></td>
+            <td><span class="compare-val">8 articles</span></td>
+          </tr>
+          <tr>
+            <td>Content type</td>
+            <td>Topic recommendations</td>
+            <td class="td-growth">Full 600&ndash;800 word articles</td>
+            <td>Full 600&ndash;800 word articles</td>
+          </tr>
+          <tr>
+            <td>Schema markup included</td>
+            <td><span class="compare-cross">&mdash;</span></td>
+            <td class="td-growth"><span class="compare-check">&check;</span></td>
+            <td><span class="compare-check">&check;</span></td>
+          </tr>
+
+          <!-- Dashboard & Billing -->
+          <tr class="cat-row"><td colspan="4">Dashboard &amp; Billing</td></tr>
+          <tr>
+            <td>Live dashboard with history</td>
+            <td><span class="compare-check">&check;</span></td>
+            <td class="td-growth"><span class="compare-check">&check;</span></td>
+            <td><span class="compare-check">&check;</span></td>
+          </tr>
+          <tr>
+            <td>Billing management portal</td>
+            <td><span class="compare-check">&check;</span></td>
+            <td class="td-growth"><span class="compare-check">&check;</span></td>
+            <td><span class="compare-check">&check;</span></td>
+          </tr>
+          <tr>
+            <td>Cancel anytime</td>
+            <td><span class="compare-check">&check;</span></td>
+            <td class="td-growth"><span class="compare-check">&check;</span></td>
+            <td><span class="compare-check">&check;</span></td>
+          </tr>
+          <tr>
+            <td>Billing</td>
+            <td><span class="compare-val">Monthly</span></td>
+            <td class="td-growth"><span class="compare-val">Monthly</span></td>
+            <td><span class="compare-val">Monthly</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <!-- ==================== FAQ ==================== -->
 <section class="faq-section" id="faq">
   <div class="container">
@@ -904,20 +1196,20 @@ section { position: relative; z-index: 1; }
         <div class="faq-answer"><p>Traditional SEO optimises for Google's blue link rankings. AI visibility optimisation ensures your business is cited by AI models directly. The techniques differ &mdash; AI models favour structured data, authoritative content, and entity presence. We handle both so you're covered as search evolves.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)"><span>How does the conversion optimisation snippet work?</span><span class="faq-icon">+</span></button>
-        <div class="faq-answer"><p>You add one line of JavaScript to your website. Our AI continuously tests variations of headlines, buttons, CTAs, forms, and layouts. It learns which combinations convert best for your audience and automatically serves the winners. Your website gets better every week without you doing anything.</p></div>
+        <button class="faq-question" onclick="toggleFaq(this)"><span>How does the conversion analysis work?</span><span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>Every scan crawls your live website and checks over 30 conversion signals: CTA buttons, forms, contact details, trust elements, social proof, testimonials, and more. Your dashboard shows a conversion score out of 100 with specific findings &mdash; like missing CTAs, no contact form, or weak trust signals &mdash; so you know exactly what to fix. We also generate content with strong calls-to-action built in.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaq(this)"><span>How quickly will I see results?</span><span class="faq-icon">+</span></button>
-        <div class="faq-answer"><p>Conversion improvements typically show within 2-4 weeks. AI visibility improvements are more gradual &mdash; expect increased citations within 4-8 weeks as content is indexed and structured data takes effect. Monthly reports track every improvement.</p></div>
+        <div class="faq-answer"><p>You'll see your first AI visibility scores and competitor analysis within minutes of subscribing. From there, improvements depend on how quickly you publish the content we generate. Most clients see measurable changes in AI citations within 4&ndash;8 weeks as new content is indexed. Your dashboard tracks every improvement over time so you always know where you stand.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaq(this)"><span>What happens if I cancel?</span><span class="faq-icon">+</span></button>
-        <div class="faq-answer"><p>The conversion snippet stops running and your website reverts to its unoptimised state. Published content remains, but ongoing optimisation stops. Most clients see an immediate performance dip, which is why our retention rate exceeds 95%.</p></div>
+        <div class="faq-answer"><p>Your subscription continues until the end of your current billing period. You can cancel anytime from your dashboard or through the Stripe billing portal &mdash; no phone calls, no hoops. After cancellation, monitoring stops, new content stops being generated, and dashboard access expires after a short grace period. Any content already delivered remains yours to keep.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaq(this)"><span>Do I need technical knowledge?</span><span class="faq-icon">+</span></button>
-        <div class="faq-answer"><p>None at all. Enter your URL, we handle everything. The only technical step is adding our JavaScript snippet &mdash; one line of code with simple instructions. On WordPress, Shopify, or Wix it takes under 2 minutes. We can do it for you.</p></div>
+        <div class="faq-answer"><p>None at all. You enter your business details during checkout, and everything runs automatically from there. Scans, reports, content, and alerts are all handled by our system. The only action on your end is publishing the articles we generate onto your website &mdash; and we give you the ready-made HTML to paste in.</p></div>
       </div>
     </div>
   </div>
